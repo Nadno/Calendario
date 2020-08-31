@@ -18,12 +18,12 @@ const calendarGenerator = (year, month) => {
     selectedDate = new Date(year, month, 1);
   } else {
     selectedDate = new Date(actualDate.getFullYear(), actualDate.getMonth(), 1);
-  }
+  };
 
-  return {
+  const calendar = {
     selected: {
       day: selectedDate.getDate(),
-      weekDay: selectedDate.getDay(),
+      week_day: selectedDate.getDay(),
       month: selectedDate.getMonth(),
       year: selectedDate.getUTCFullYear(),
     },
@@ -33,6 +33,8 @@ const calendarGenerator = (year, month) => {
       year: actualDate.getUTCFullYear(),
     },
   };
+
+  return calendar;
 };
 
 export default calendarGenerator;
