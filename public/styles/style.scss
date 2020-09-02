@@ -1,6 +1,14 @@
 $background-color: #f5f5f5;
+$primary-color: #61b9eb;
+$secondary-color: #6d7695;
+$text-title: #3a495e;
+$neutral-color: #959595;
+
+$primary-spacing: 1rem;
+$secondary-spacing: 2rem;
 
 :root {
+  font-family: 'Roboto', sans-serif;
   font-size: 60%;
 }
 
@@ -14,45 +22,5 @@ body {
   background-color: $background-color;
 }
 
-.calendar {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-
-  .days li {
-    height: 40px;
-    font-size: 1.6rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 50%;
-  }
-
-  .days .this__month {
-    color: #6B7897;
-  }
-
-  .week__days {
-    border-bottom: 1px solid #6B7897;
-    padding: 0.4rem 0;
-  }
-
-  .week__days,
-  .days {
-    display: grid;
-    grid-template-columns: repeat(7, 40px);
-    row-gap: 1.5rem;
-    column-gap: 1rem;
-    margin-top: 1rem;
-    
-    list-style: none;
-    text-align: center;
-  }
-
-  .today {
-    border-radius: 50%;
-    background-color: cyan;
-  }
-}
+@import "menu-todo";
+@import "calendar";
