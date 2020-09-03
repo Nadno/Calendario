@@ -1,33 +1,15 @@
-import { render } from "./menu";
+import Storage from "./storage";
+import { update } from "./menu";
 
-class Storage {
-  constructor() {
-    this.data;
-  }
-
-  save(data) {}
-
-  delete(month, day, position) {}
-
-  getStorage(year) {
-    const save = JSON.parse(localStorage.getItem(year));
-    if (save) this.data = save;
-
-    this.data = {
-      Daily: [],
-    };
-  }
-}
-
-class todoItems extends Storage {
+class ToDo extends Storage {
   constructor(year, month) {
     super();
-    this.getStorage(2324);
     this.calendar = {
       year,
       month,
     };
-  };
+    this.getStorage(year);
+  }
 
   addNewToDoOnDay(day) {
     this.checkIfYearExists();
@@ -39,20 +21,20 @@ class todoItems extends Storage {
         ...this.data[year][month][day],
         { task, checked },
       ]);
-      
+
       return this;
-    };
+    }
     Object.assign(this.data[year][month], {
-      [day]: [{ task, checked }]
+      [day]: [{ task, checked }],
     });
-    
+
     return this;
-  };
+  }
 
   addNewToDoOnDaily() {
     this.data.Daily.push(this.ToDo);
     return this;
-  };
+  }
 
   checkIfYearExists() {
     const { year } = this.calendar;
@@ -87,9 +69,11 @@ class todoItems extends Storage {
   }
 
   update() {
-    render(this.data[2020][8][2]);
+    const { year, month } = this.calendar;
+    const Month = this.data[year][month];
+    update(Month);
     return this;
   }
 }
 
-export default todoItems;
+export default ToDo;
