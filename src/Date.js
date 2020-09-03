@@ -11,23 +11,27 @@ export const selectDate = (year, month) => {
   return selected;
 };
 
-const initialCalendar = () => {
+export const getActualDate = () => {
   const actualDate = new Date();
+
+  return {
+    day: actualDate.getDate(),
+    month: actualDate.getMonth(),
+    year: actualDate.getUTCFullYear(),
+  };
+};
+
+const initialCalendar = () => {
+  const actual = getActualDate();
   const selected = selectDate(
-    actualDate.getFullYear(),
-    actualDate.getMonth()
+    actual.year,
+    actual.month,
   );
 
-  const calendar = {
-    actual: {
-      day: actualDate.getDate(),
-      month: actualDate.getMonth(),
-      year: actualDate.getUTCFullYear(),
-    },
+  return {
+    actual,
     selected,
   };
-
-  return calendar;
 };
 
 export const monthTotalDays = (year, month) => {

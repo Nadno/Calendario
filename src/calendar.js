@@ -1,5 +1,5 @@
 import Element from "./element";
-import calendarGenerator, { monthTotalDays } from "./Date";
+import calendarGenerator, { monthTotalDays } from "./date";
 
 const element = new Element();
 
@@ -40,6 +40,7 @@ const renderThisMonth = (totalDays, week_day) => {
         name: HTML_LIST_ITEM,
         className: THIS_MONTH,
         content: day,
+        tabindex: day - 1,
         id: day,
         week_day: indexWeekDay,
       })
@@ -53,7 +54,7 @@ const actualDate = (isNow, day) => {
   if (isNow) { 
     const today = document.getElementById(day);
     return today.classList.add("today");
-  }
+  };
 };
 
 const calendar = () => { 
@@ -85,7 +86,7 @@ const calendar = () => {
   renderLastMonth(lastMonthTotalDays, selected.week_day);
   renderThisMonth(selectedMonthTotalDays, selected.week_day);
   actualDate(
-    actual.month === selected.month && 
+    actual.month === selected.month &&
     actual.year === selected.year,
     actual.day
   );
