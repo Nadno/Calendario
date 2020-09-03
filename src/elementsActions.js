@@ -4,7 +4,7 @@ const HTML_CALENDAR = 'ul.days';
 const HTML_CREATE_TODO_INPUT = 'create-todo-input';
 const HTML_CREATE_TODO_BUTTON = 'create-todo-button';
 
-const todos = new todoItems();
+const todos = new todoItems(2020, 8);
 
 export const CalendarOnClick = () => {
   const calendar = document.querySelector(HTML_CALENDAR);
@@ -12,7 +12,7 @@ export const CalendarOnClick = () => {
     const day = Number(target.id);
     if (day <= 0 || day > 31) return;
 
-    console.log(day);
+ 
   };
 };
 
@@ -23,7 +23,7 @@ export const CreateToDoOnClick = () => {
     if (!ToDo.value) return;
     todos
       .createToDo(ToDo.value)
-      .addNewToDo(2,8)
+      .addNewToDo(2)
       .update();
   };
 };

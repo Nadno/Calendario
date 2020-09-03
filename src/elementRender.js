@@ -1,12 +1,7 @@
-class Element {
-  constructor () {
+class ElementRender {
+  constructor (renderElement) {
     this.element;
-  }
-
-  renderOn (elementRender) {
-    const renderEl = document.querySelector(elementRender);
-    renderEl ? renderEl.appendChild(this.element) : null;
-    return this;
+    this.renderElement = renderElement;
   }
   
   create ({
@@ -23,10 +18,17 @@ class Element {
     return this;
   };
 
-  clear (element) {
-    document.querySelector(element).innerHTML = '';
+  render () {
+    const renderEl = document.querySelector(this.renderElement);
+    renderEl ? renderEl.appendChild(this.element) : null;
+    return this;
+  }
+
+  clear () {
+    document.querySelector(this.renderElement).innerHTML = '';
     return this;
   };
+
 };
 
-export default Element;
+export default ElementRender;

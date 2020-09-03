@@ -1,11 +1,12 @@
-import Element from "./element";
+import ElementRender from "./elementRender";
 import calendarGenerator, { monthTotalDays } from "./date";
-
-const element = new Element();
 
 const HTML_CALENDAR = "ul.days";
 const HTML_CALENDAR_MONTH_NAME = "div.month__name";
 const HTML_LIST_ITEM = "li";
+
+const CalendarElement = new ElementRender(HTML_CALENDAR);
+const CalendarTitleElement = new ElementRender(HTML_CALENDAR_MONTH_NAME);
 
 const renderLastMonth = (total_days, week_day) => {
   if (week_day === 0) return;
@@ -14,14 +15,12 @@ const renderLastMonth = (total_days, week_day) => {
   const firstWeekDay = total_days - week_day + 1;
 
   for (let day = firstWeekDay; day <= total_days; day++) {
-    element
-      .create({
-        name: HTML_LIST_ITEM,
-        className: LAST_MONTH,
-        content: day,
-      })
-      .renderOn(HTML_CALENDAR);
-  };
+    CalendarElement.create({
+      name: HTML_LIST_ITEM,
+      className: LAST_MONTH,
+      content: day,
+    }).render();
+  }
 };
 
 const nextWeekDay = (indexWeekDay) => {
@@ -35,29 +34,27 @@ const renderThisMonth = (totalDays, week_day) => {
   let indexWeekDay = week_day;
 
   for (let day = 1; day <= totalDays; day++) {
-    element
-      .create({
-        name: HTML_LIST_ITEM,
-        className: THIS_MONTH,
-        content: day,
-        tabindex: day - 1,
-        id: day,
-        week_day: indexWeekDay,
-      })
-      .renderOn(HTML_CALENDAR);
-      
-      indexWeekDay = nextWeekDay(indexWeekDay);
-  };
+    CalendarElement.create({
+      name: HTML_LIST_ITEM,
+      className: THIS_MONTH,
+      content: day,
+      tabindex: day - 1,
+      id: day,
+      week_day: indexWeekDay,
+    }).render();
+
+    indexWeekDay = nextWeekDay(indexWeekDay);
+  }
 };
 
 const actualDate = (isNow, day) => {
-  if (isNow) { 
+  if (isNow) {
     const today = document.getElementById(day);
     return today.classList.add("today");
-  };
+  }
 };
 
-const calendar = () => { 
+const calendar = () => {
   const MONTH_NAME = [
     "Janeiro",
     "Fevereiro",
@@ -78,16 +75,15 @@ const calendar = () => {
   const selectedMonthTotalDays = monthTotalDays(selected.year, selected.month);
   const lastMonthTotalDays = monthTotalDays(selected.year, selected.month - 1);
 
-  element.create({
+  CalendarTitleElement.create({
     name: HTML_TITLE,
     content: MONTH_NAME[selected.month],
-  }).renderOn(HTML_CALENDAR_MONTH_NAME);
-  
+  }).render();
+
   renderLastMonth(lastMonthTotalDays, selected.week_day);
   renderThisMonth(selectedMonthTotalDays, selected.week_day);
   actualDate(
-    actual.month === selected.month &&
-    actual.year === selected.year,
+    actual.month === selected.month && actual.year === selected.year,
     actual.day
   );
 };

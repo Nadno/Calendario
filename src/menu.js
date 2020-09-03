@@ -1,15 +1,16 @@
-import Element from "./element";
+import ElementRender from "./elementRender";
 
-const element = new Element();
 
-const HTML_LISTING_TODOS = 'form.listing__todo';
+const HTML_LISTING_TODO = 'form.listing__todo';
+
+const ListingToDo = new ElementRender(HTML_LISTING_TODO);
 
 export const render = (ToDos) => {
-  element.clear(HTML_LISTING_TODOS);
+  ListingToDo.clear();
 
-  ToDos.map(item => {
-    element.create({
+  ToDos.forEach(item => {
+    ListingToDo.create({
       name: 'li', content: item.task,
-    }).renderOn(HTML_LISTING_TODOS);
+    }).render();
   });
 };
