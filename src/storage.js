@@ -1,20 +1,40 @@
-class Storage {
-  constructor() {
-    this.data;
+const parseJson = (save) => {
+  try {
+    return JSON.parse(save);
+  } catch {
+    return null;
   }
+};
 
-  save(data) {}
+const Storage = () => {
+  let calendarData = {};
 
-  delete(month, day, position) {}
+  const getCalendarDataOnStorage = () => {
+    const save = localStorage.getItem("Cronos");
+    if (save) {
+      data = parseJson(save);
+      if (data) calendarData = data;
+    }
+  };
 
-  getStorage(year) {
-    const save = JSON.parse(localStorage.getItem(year));
-    if (save) this.data = save;
+  const setCalendarData = (data) => {
+    data ? (calendarData = data) : null;
+  };
 
-    this.data = {
-      Daily: [],
-    };
-  }
+  const getCalendarData = () => {
+    return Object.create(calendarData);
+  };
+
+  const saveCalendarData = () => {
+    localStorage.setItem("Cronos", calendarData);
+  };
+
+  return {
+    getCalendarDataOnStorage,
+    setCalendarData,
+    getCalendarData,
+    saveCalendarData,
+  };
 };
 
 export default Storage;

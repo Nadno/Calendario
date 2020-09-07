@@ -20,7 +20,7 @@ const renderLastMonth = (total_days, week_day) => {
       className: LAST_MONTH,
       content: day,
     }).render();
-  }
+  };
 };
 
 const nextWeekDay = (indexWeekDay) => {
@@ -47,8 +47,8 @@ const renderThisMonth = (totalDays, week_day) => {
   }
 };
 
-const actualDate = (isNow, day) => {
-  if (isNow) {
+const actualDate = (isToday, day) => {
+  if (isToday) {
     const today = document.getElementById(day);
     return today.classList.add("today");
   }
