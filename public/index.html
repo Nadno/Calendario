@@ -11,16 +11,14 @@
     <header class="menu__header">
       X
     </header>
-    <article class="menu__selected__day">
-      <div class="menu__date">
-        <h1>Tarefas diárias</h1>
+    <div class="menu__selected__day">
+      <article class="selected__day">
         <strong id="full__date"></strong>
-        <hr/>
-        <span>Tarefas:</span>
-      </div>
+      </article>
+      <h2>Tarefas diárias:</h2>
 
       <form class="listing__todo"></form>
-    </article>
+    </div>
     
     <section class="create__todo">
       <textarea
@@ -34,9 +32,6 @@
   </section>
 
   <main>
-    <section class="mobile__menu">
-      
-    </section>
     <article class="calendar">
       <div class="month__name"></div>
       <div class="days__container">
@@ -53,6 +48,15 @@
       </div>
     </article>
   </main>
+
+  <section class="mobile__menu">
+    <button id="mobile-menu" type="button">
+      Menu
+    </button>
+    <article class="selected__day">
+        <strong id="mobile__full__date"></strong>
+    </article>
+  </section>
   
   <script src="../src/index.js"></script>
 </body>

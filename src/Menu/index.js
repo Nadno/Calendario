@@ -33,42 +33,53 @@ const Menu = () => {
     "Segunda-feira",
     "Terça-feira",
     "Quarta-feira",
-    "Quinta-feira",    
+    "Quinta-feira",
     "Sexta-feira",
     "Sábado",
   ];
-  const htmlMenu = document.querySelector('.todo__menu')
-  const title = document.querySelector('.menu__date>h1');
-  const fullDate = document.getElementById('full__date');
+  const htmlMenu = document.querySelector(".todo__menu");
+  const fullDate = document.getElementById("full__date");
 
-  const toggleMenu = () => htmlMenu.classList.toggle('on');
-
-  const update = (day, week_day, month) => {
-    const newFullDate = `${DAY_NAME[week_day]}, dia ${day} de ${MONTH_NAME[month]}`;
-    const actualFullDate = fullDate.textContent;
-
-    if (actualFullDate === newFullDate) {
-      toggleMenu();
-      return fullDate.innerHTML = '';
-    };
-    toggleMenu();
-    fullDate.innerHTML = newFullDate;
+  const ToDoList = {
+    setToDos: function (ToDos) {
+      Object.assign(ToDoList, {
+        ...ToDoList,
+        ToDos,
+      });
+    },
   };
 
-  const createToDo = ({
-    text,
-    calendar: {
-      year, month, day
-    },
-  }) => {
-    to_do
-      .setPosition(year, month, day)
-      .createToDo(text)
-      .addNewToDoOnDay()
-      .update(update);
+  const toggleMenu = () => htmlMenu.classList.toggle("on");
+
+  const renderMenu = (date) => {
+    fullDate.innerHTML = date;
+    htmlMenu.querySelector("h2").innerHTML = "Tarefas:";
+  };
+
+  const setDaily = () => {
+    fullDate.innerHTML = "";
+    htmlMenu.querySelector("h2").innerHTML = "Tarefas diárias:";
+  };
+
+  const update = (day, week_day, month) => {
+    const newFullDate = `${DAY_NAME[week_day]}, ${day} de ${MONTH_NAME[month]}`;
+    const actualFullDate = fullDate.textContent;
+
+    if (actualFullDate === newFullDate) return setDaily();
+    renderMenu(newFullDate);
+  };
+
+  const createToDo = (text, { year, month, day }) => {
+    to_do.setPosition(year, month, day);
+    if (day === 0) {
+      to_do.createToDo(text).addOnDaily().update(ToDoList.setToDos);
+    } else {
+      to_do.createToDo(text).addOnDay().update(ToDoList.setToDos);
+    }
   };
 
   return {
+    toggleMenu,
     createToDo,
     update,
   };

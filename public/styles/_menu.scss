@@ -1,26 +1,16 @@
 .todo__menu {
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   padding: $secondary-spacing;
 
   background-color: #fff;
-  box-shadow: 2px 2px 6px $neutral-color;
   transform: translateX(-120%);
+  transition: linear 0.4s;
 
-  .box-shadow {
-    background: $background-color;
-    border: 1px solid rgb(200, 200, 200);
-    box-shadow: 2px 2px 8px rgba(200, 200, 200, 0.5);
-  }
-
-  .menu__date {
-    font-size: 1.4rem;
-    padding: $primary-spacing;
-
-    h1 {
-      font-size: 1.8rem;
-    }
+  .selected__day {
+    font-size: 1.6rem;
+    color: $text-title;
   }
 
   .listing__todo {
@@ -42,9 +32,9 @@
       width: 100%;
       max-width: 100%;
       min-width: 100%;
-      min-height: 150px;
-      max-height: 200px;
-      
+      min-height: 100px;
+      max-height: 120px;
+
       padding: 1rem;
       font-size: 2.4rem;
       margin-bottom: $secondary-spacing;
@@ -57,18 +47,15 @@
     }
 
     button {
-      height: 4rem;
-      border-radius: 4px;
-      border: none;
-      margin-top: 10px;
-
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: white;
-
-      background: $primary-color;
+      @extend .button;
       cursor: pointer;
-      transition: linear 0.3s;
+      margin-top: 10px;
+      transition: button 0.3s;
+
+      &:hover {
+        background: #6b7897;
+        opacity: 0.8;
+      }
     }
 
     #todo,

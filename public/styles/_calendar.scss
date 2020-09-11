@@ -49,6 +49,14 @@
       color: whitesmoke;
     }
 
+    .this__month {
+      transition: linear 0.4s;
+      &:hover {
+        background-color: $primary-color;
+        color: #fff;
+      }
+    }
+
     .last__month {
       color: $neutral-color;
     }

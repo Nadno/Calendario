@@ -12,8 +12,7 @@ class ToDo {
       month: 0,
       day: 0,
     };
-  
-  }
+  };
 
   setPosition(year, month, day) {
     Object.assign(this.position, {
@@ -21,10 +20,17 @@ class ToDo {
     });
     return this;
   };
-
-  addNewToDoOnDay() {
+  
+  createNewDay() {
     const { year, month, day } = this.position;
-    this.checkIfYearExists(year);
+    Object.assign(this.calendar[year][month].days, {
+      [day]: [],
+    });
+  };
+
+  addOnDay() {
+    const { year, month, day } = this.position;
+    this.checkIfYearExists();
 
     if (!this.calendar[year][month].days[day]) {
       this.createNewDay({
@@ -39,19 +45,18 @@ class ToDo {
     return this;
   }
 
-  createNewDay() {
-    const { year, month, day } = this.position;
-    Object.assign(this.calendar[year][month].days, {
-      [day]: [],
+
+  addOnDaily() {
+    const { text, checked } = this.ToDo;
+    this.calendar.daily.push({
+      text,
+      checked,
     });
-  }
-
-  addNewToDoOnDaily() {
-    this.calendar.Daily.push(this.ToDo);
     return this;
-  }
+  };
 
-  checkIfYearExists(year) {
+  checkIfYearExists() {
+    const { year } = this.position;
     if (this.calendar[year]) return this;
     const days = {};
 
@@ -99,7 +104,7 @@ class ToDo {
   }
 
   createToDo(text) {
-    this.ToDo = text;
+    this.ToDo.text = text;
     return this;
   }
 
@@ -108,8 +113,7 @@ class ToDo {
   }
 
   update(functionToUpdate) {
-    const { year, month } = this.position;
-    functionToUpdate(this.calendar[year][month].days);
+    functionToUpdate(this.calendar);
     return this;
   }
 }

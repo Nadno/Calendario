@@ -7,7 +7,9 @@ const parseJson = (save) => {
 };
 
 const Storage = () => {
-  let calendarData = {};
+  let calendarData = {
+    daily: [],
+  };
 
   const getCalendarDataOnStorage = () => {
     const save = localStorage.getItem("Cronos");
@@ -22,7 +24,7 @@ const Storage = () => {
   };
 
   const getCalendarData = () => {
-    return Object.create(calendarData);
+    return calendarData;
   };
 
   const saveCalendarData = () => {
