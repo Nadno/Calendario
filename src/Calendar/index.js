@@ -1,4 +1,4 @@
-import ElementRender from "./elementRender";
+import ElementRender from "../elementRender";
 import calendarGenerator, { monthTotalDays } from "./date";
 
 const HTML_CALENDAR = "ul.days";

@@ -14,6 +14,8 @@
     <article class="menu__selected__day">
       <div class="menu__date">
         <h1>Tarefas diárias</h1>
+        <strong id="full__date"></strong>
+        <hr/>
         <span>Tarefas:</span>
       </div>
 
@@ -21,26 +23,36 @@
     </article>
     
     <section class="create__todo">
-      <textarea id="create-todo-input" cols="30" rows="10" autofocus></textarea>
+      <textarea
+        id="create-todo-input"
+        cols="30"
+        rows="10"
+        placeholder="Digite uma tarefa aqui"
+        autofocus></textarea>
       <button id="create-todo-button" type="button">Criar</button>
     </section>
   </section>
 
-  <section class="calendar">
-    <div class="month__name"></div>
-    <div class="days__container">
-      <ol class="week__days">
-        <li>Dom</li>
-        <li>Seg</li>
-        <li>Ter</li>
-        <li>Quar</li>
-        <li>Quin</li>
-        <li>Sex</li>
-        <li>Sáb</li>
-      </ol>
-      <ul class="days"></ul>
-    </div>
-  </section>
+  <main>
+    <section class="mobile__menu">
+      
+    </section>
+    <article class="calendar">
+      <div class="month__name"></div>
+      <div class="days__container">
+        <ol class="week__days">
+          <li>Dom</li>
+          <li>Seg</li>
+          <li>Ter</li>
+          <li>Quar</li>
+          <li>Quin</li>
+          <li>Sex</li>
+          <li>Sáb</li>
+        </ol>
+        <ul class="days"></ul>
+      </div>
+    </article>
+  </main>
   
   <script src="../src/index.js"></script>
 </body>

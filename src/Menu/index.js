@@ -1,10 +1,9 @@
-import { getActualDate } from "../date";
 import ToDo from "../to-do";
 import ElementRender from "../elementRender";
 
 const HTML_LISTING_TODO = "form.listing__todo";
 
-const todos = new ToDo();
+const to_do = new ToDo();
 const ListingToDo = new ElementRender(HTML_LISTING_TODO);
 
 const renderToDo = (item) => {
@@ -15,38 +14,54 @@ const renderToDo = (item) => {
 };
 
 const Menu = () => {
-  const { year, month } = getActualDate();
-  const State = {
-    day: 0,
-    month,
-    year,
-    ToDoOnThisMonth: {},
+  const MONTH_NAME = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+  ];
+  const DAY_NAME = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",    
+    "Sexta-feira",
+    "Sábado",
+  ];
+  const htmlMenu = document.querySelector('.todo__menu')
+  const title = document.querySelector('.menu__date>h1');
+  const fullDate = document.getElementById('full__date');
+
+  const toggleMenu = () => htmlMenu.classList.toggle('on');
+
+  const update = (day, week_day, month) => {
+    const newFullDate = `${DAY_NAME[week_day]}, dia ${day} de ${MONTH_NAME[month]}`;
+    const actualFullDate = fullDate.textContent;
+
+    if (actualFullDate === newFullDate) {
+      toggleMenu();
+      return fullDate.innerHTML = '';
+    };
+    toggleMenu();
+    fullDate.innerHTML = newFullDate;
   };
 
-  const setState = (name, value) => {
-    if (State.day === value) value = 0;
-    Object.assign(State, {
-      ...State,
-      [name]: value,
-    });
-    
-  };
-
-  const render = () => {
-    ListingToDo.clear();
-
-    State.ToDoOnThisMonth[State.day].forEach(renderToDo);
-  };
-
-  const update = (data) => {
-    setState("ToDoOnThisMonth", data);
-    render();
-  };
-
-  const createToDo = (text) => {
-    const { year, month, day } = State;
-    
-    todos
+  const createToDo = ({
+    text,
+    calendar: {
+      year, month, day
+    },
+  }) => {
+    to_do
       .setPosition(year, month, day)
       .createToDo(text)
       .addNewToDoOnDay()
@@ -54,9 +69,8 @@ const Menu = () => {
   };
 
   return {
-    setState,
-    render,
     createToDo,
+    update,
   };
 };
 
