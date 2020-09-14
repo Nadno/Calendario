@@ -1,31 +1,39 @@
 import Menu from "./index";
 
-const HTML_CREATE_TODO_INPUT = "create-todo-input";
-const HTML_CREATE_TODO_BUTTON = "create-todo-button";
-const HTML_MOBILE_MENU_BUTTON = "mobile-menu";
-
 const menu = Menu();
 
-export const CreateToDoOnClick = ({ day, month, year }) => {
-  const ToDo = document.getElementById(HTML_CREATE_TODO_INPUT);
-  const create = document.getElementById(HTML_CREATE_TODO_BUTTON);
-  return (create.onclick = () => {
-    if (!ToDo.value) return;
-    menu.createToDo(ToDo.value, {
-      day,
-      month,
-      year,
-    });
+const createButton = document.getElementById('create-todo-button');
+const mobileButton = document.getElementById('mobile-menu');
+
+export const CreateToDoOnClick = (date) => {
+  return (createButton.onclick = () => {
+    const toDoText = document.getElementById('create-todo-input').value;
+    if (!toDoText) return;
+    menu.createToDo(toDoText, date);
   });
 };
 
-export const MobileMenu = (date) => {
-  const button = document.getElementById(HTML_MOBILE_MENU_BUTTON);
-  let active = false;
+let activeMenu = false;
 
-  return (button.onclick = () => {
-    button.style.backgroundColor = active ? "#60cdff" : "red";
-    menu.toggleMenu(date.day);
-    active = !active;
+export const MobileMenu = (date) => {
+  return (mobileButton.onclick = () => {
+    const PRIMARY_COLOR = "#60cdff";
+    const RED_COLOR = "red";
+    
+    activeMenu = !activeMenu;
+    mobileButton.style.backgroundColor = activeMenu ? RED_COLOR : PRIMARY_COLOR ;
+    menu.toggleMenu(activeMenu);
   });
+};
+
+export const CloseMenu = () => {
+  const button = document.getElementById('close-menu');
+  
+  return button.onclick = () => {
+    const PRIMARY_COLOR = "#60cdff";
+    activeMenu = false;
+
+    mobileButton.style.backgroundColor = PRIMARY_COLOR ;
+    menu.toggleMenu(activeMenu);
+  };
 };

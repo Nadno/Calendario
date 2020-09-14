@@ -13,13 +13,6 @@
     color: $text-title;
   }
 
-  .listing__todo {
-    @extend .box-shadow;
-    width: 100%;
-    height: 35vh;
-    margin-bottom: $secondary-spacing;
-  }
-
   .create__todo {
     display: flex;
     flex-direction: column;
@@ -69,4 +62,37 @@
 .todo__menu.on {
   transform: translateX(0);
   left: 0;
+}
+
+.mobile__menu {
+  @extend .box-shadow;
+  position: fixed;
+  width: 100%;
+  height: 10vh;
+  padding: $primary-spacing;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+
+  bottom: 0;
+  button {
+    @extend .button;
+    width: 60%;
+  }
+}
+
+@media (min-width: 700px) {
+  .todo__menu {
+    transform: translateX(0);
+    position: relative;
+    height: 100vh;
+    width: 500px;
+
+    border: 1px solid rgb(200, 200, 200);
+    box-shadow: 2px 2px 8px rgba(200, 200, 200, 0.5);
+  }
+
+  .mobile__menu {
+    display: none;
+  }
 }

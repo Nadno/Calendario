@@ -1,17 +1,10 @@
 import ToDo from "../to-do";
-import ElementRender from "../elementRender";
+import ElementRender from "../render";
+import renderElement from "../render";
 
 const HTML_LISTING_TODO = "form.listing__todo";
 
 const to_do = new ToDo();
-const ListingToDo = new ElementRender(HTML_LISTING_TODO);
-
-const renderToDo = (item) => {
-  ListingToDo.create({
-    name: "li",
-    content: item.text,
-  }).render();
-};
 
 const Menu = () => {
   const MONTH_NAME = [
@@ -40,18 +33,28 @@ const Menu = () => {
   const htmlMenu = document.querySelector(".todo__menu");
   const fullDate = document.getElementById("full__date");
 
-  const ToDoList = {
-    setToDos: function (ToDos) {
-      Object.assign(ToDoList, {
-        ...ToDoList,
-        ToDos,
-      });
-    },
+  const showToDo = (list) => {
+    const todoList = renderElement('.listing__todo');
+    todoList.clear();
+    list.forEach(({ text, checked }, position) => {
+      todoList.renderForInnerHTML(`
+        <li class="to-do">
+          <input class="input" type="checkbox" id="${position}" ${checked ? 'checked' : null} />
+          <label class="content" for="${position}">
+            <span class="text" >${text}</span>
+            <button class="delete" type="button">X</button>
+          </label>
+        </li>
+      `);
+    });
   };
 
-  const toggleMenu = () => htmlMenu.classList.toggle("on");
+  const toggleMenu = (toggle) => {
+    if (toggle) return htmlMenu.classList.add('on');
+    return htmlMenu.classList.remove('on');
+  };
 
-  const renderMenu = (date) => {
+  const setDay = (date) => {
     fullDate.innerHTML = date;
     htmlMenu.querySelector("h2").innerHTML = "Tarefas:";
   };
@@ -66,15 +69,15 @@ const Menu = () => {
     const actualFullDate = fullDate.textContent;
 
     if (actualFullDate === newFullDate) return setDaily();
-    renderMenu(newFullDate);
+    setDay(newFullDate);
   };
 
   const createToDo = (text, { year, month, day }) => {
     to_do.setPosition(year, month, day);
     if (day === 0) {
-      to_do.createToDo(text).addOnDaily().update(ToDoList.setToDos);
+      to_do.createToDo(text).addOnDaily().updateDaily(showToDo);
     } else {
-      to_do.createToDo(text).addOnDay().update(ToDoList.setToDos);
+      to_do.createToDo(text).addOnDay().updateDay(showToDo, year);
     }
   };
 

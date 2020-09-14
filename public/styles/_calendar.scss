@@ -1,4 +1,5 @@
 .calendar {
+  width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -34,10 +35,12 @@
   }
 
   .days {
-    li {
+    .last__month,
+    .this__month {
+      width: 100%;
       height: 8vh;
       font-size: 1.6rem;
-
+      border: none;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -45,20 +48,30 @@
     }
 
     .today {
-      background-color: $primary-color;
+      background-color: rgb(223, 53, 53);
       color: whitesmoke;
     }
 
     .this__month {
       transition: linear 0.4s;
-      &:hover {
-        background-color: $primary-color;
+      
+      &:hover,
+      &:focus {
         color: #fff;
+        outline: none;
+        background-color: $primary-color;
       }
     }
 
     .last__month {
       color: $neutral-color;
     }
+  }
+}
+
+
+@media (min-width: 700px) {
+  .calendar {
+   
   }
 }

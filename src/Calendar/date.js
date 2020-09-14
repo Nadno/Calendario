@@ -1,19 +1,27 @@
-export const selectDate = (year, month) => {
-  const FIRST_DAY = 1;
+export const initialSelectedDate = (year, month) => {
+  const HTML_month = document.getElementById('month');
+  const HTML_year = document.getElementById('year');
 
-  const selectedDate = new Date(year, month, FIRST_DAY);
-  const selected = {
+  HTML_month.value = month;
+  HTML_year.value = year;
+};
+
+export const selectDate = () => {
+  const month = document.getElementById('month');
+  const year = document.getElementById('year');
+
+  const FIRST_DAY = 1;
+  const selectedDate = new Date(year.value, month.value, FIRST_DAY);
+  return {
     day: selectedDate.getDate(),
     week_day: selectedDate.getDay(),
     month: selectedDate.getMonth(),
     year: selectedDate.getUTCFullYear(),
   };
-  return selected;
 };
 
 export const getActualDate = () => {
   const actualDate = new Date();
-
   return {
     day: actualDate.getDate(),
     month: actualDate.getMonth(),
@@ -21,13 +29,14 @@ export const getActualDate = () => {
   };
 };
 
-const initialCalendar = () => {
+const calendar = (initial) => {
   const actual = getActualDate();
-  const selected = selectDate(
+  if (initial) initialSelectedDate(
     actual.year,
     actual.month,
   );
 
+  const selected = selectDate();
   return {
     actual,
     selected,
@@ -46,4 +55,4 @@ export const monthTotalDays = (year, month) => {
   return 31;
 };
 
-export default initialCalendar;
+export default calendar;

@@ -1,0 +1,92 @@
+.listing__todo {
+  @extend .box-shadow;
+  height: 35vh;
+  list-style: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-bottom: $secondary-spacing;
+
+  .to-do {
+    position: relative;
+
+    .content {
+      display: grid;
+      grid-template-columns: 32px 1fr 32px;
+      grid-template-areas: "check text_content delete";
+    }
+
+    .text {
+      display: block;
+      max-width: 100%;
+      padding: 0 1rem;
+      word-break: break-word;
+      grid-area: text_content;
+    }
+
+    .input {
+      display: none;
+      grid-area: check;
+    }
+
+    .delete {
+      grid-area: delete;
+    }
+
+    &:hover {
+      background: #60cdff50;
+    }
+
+    transition: 0.2s;
+  }
+
+  .input + label {
+    margin: 0 0.2rem;
+    margin-bottom: 0.8rem;
+    padding: 4px 0;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .input + label:before {
+    content: "\2714";
+    border: 2px solid #60cdff;
+    display: inline-block;
+    width: 1em;
+    min-width: 18px;
+    height: 1em;
+
+    padding-left: 0.2rem;
+    padding-bottom: 0.3em;
+    margin-right: 0.2em;
+
+    vertical-align: middle;
+    color: transparent;
+    transition: 0.3s;
+  }
+
+  .input + label:active:before {
+    transform: scale(0.1);
+  }
+
+  .input:checked + label:before {
+    background: #60cdff;
+    border-color: #60cdff;
+    color: #fff;
+  }
+
+  .input:disabled + label:before {
+    transform: scale(1);
+    border-color: #aaa;
+  }
+
+  .input:checked + label:before {
+    transform: scale(1);
+    background-color: #60cdff;
+    border-color: #60cdff;
+  }
+
+  .input:checked ~ label span {
+    color: gray;
+    text-decoration: line-through;
+  }
+}

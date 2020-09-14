@@ -41,7 +41,7 @@ class ToDo {
     Object.assign(this.calendar[year][month].days, {
       [day]: [...this.calendar[year][month].days[day], { text: this.ToDo, checked: false }],
     });
-
+  
     return this;
   }
 
@@ -52,6 +52,7 @@ class ToDo {
       text,
       checked,
     });
+
     return this;
   };
 
@@ -112,10 +113,16 @@ class ToDo {
     return this;
   }
 
-  update(functionToUpdate) {
-    functionToUpdate(this.calendar);
+  updateDay(functionToUpdate) {
+    const { day, month, year } = this.position;
+    functionToUpdate(this.calendar[year][month].days[day]);
     return this;
   }
+
+  updateDaily(functionToUpdate) {
+    functionToUpdate(this.calendar.daily);
+    return this;
+  };
 }
 
 export default ToDo;
