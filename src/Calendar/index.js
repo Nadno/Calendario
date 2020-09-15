@@ -1,6 +1,8 @@
 import renderElement from "../render";
 import menuUpdate from "./actions";
+
 import { monthTotalDays } from "./date";
+import { setDate } from "..";
 
 const HTML_CALENDAR_MONTH_NAME = "div.month__name";
 
@@ -67,6 +69,9 @@ const calendarGenerator = ({ actual, selected }) => {
     "Novembro",
     "Dezembro",
   ];
+  setDate("month", selected.month);
+  setDate("year", selected.year);
+
   calendarElement.clear();
 
   const lastMonthTotalDays = monthTotalDays(selected.year, selected.month - 1);

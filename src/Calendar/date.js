@@ -7,11 +7,11 @@ export const initialSelectedDate = (year, month) => {
 };
 
 export const selectDate = () => {
-  const month = document.getElementById('month');
-  const year = document.getElementById('year');
+  const month = document.getElementById('month').value;
+  const year = document.getElementById('year').value;
 
   const FIRST_DAY = 1;
-  const selectedDate = new Date(year.value, month.value, FIRST_DAY);
+  const selectedDate = new Date(year, month, FIRST_DAY);
   return {
     day: selectedDate.getDate(),
     week_day: selectedDate.getDay(),

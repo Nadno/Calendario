@@ -12,39 +12,51 @@ class ToDo {
       month: 0,
       day: 0,
     };
-  };
+  }
 
   setPosition(year, month, day) {
     Object.assign(this.position, {
-      year, month, day,
+      year,
+      month,
+      day,
     });
     return this;
-  };
-  
+  }
+
+  create(text) {
+    if(text.trim() === "") return;
+    this.ToDo.text = text;
+    return this;
+  }
+
   createNewDay() {
     const { year, month, day } = this.position;
     Object.assign(this.calendar[year][month].days, {
       [day]: [],
     });
-  };
+  }
 
   addOnDay() {
     const { year, month, day } = this.position;
-    this.checkIfYearExists();
-
+    this.checkIfYearExists(year);
     if (!this.calendar[year][month].days[day]) {
       this.createNewDay({
-        year, month, day,
+        year,
+        month,
+        day,
       });
     };
-
+    
+    const { text, checked } = this.ToDo;
     Object.assign(this.calendar[year][month].days, {
-      [day]: [...this.calendar[year][month].days[day], { text: this.ToDo, checked: false }],
+      [day]: [
+        ...this.calendar[year][month].days[day],
+        { text, checked },
+      ],
     });
-  
+
     return this;
   }
-
 
   addOnDaily() {
     const { text, checked } = this.ToDo;
@@ -54,10 +66,9 @@ class ToDo {
     });
 
     return this;
-  };
+  }
 
-  checkIfYearExists() {
-    const { year } = this.position;
+  checkIfYearExists(year) {
     if (this.calendar[year]) return this;
     const days = {};
 
@@ -104,25 +115,29 @@ class ToDo {
     return this;
   }
 
-  createToDo(text) {
-    this.ToDo.text = text;
+  updateDaily(to_do, checked) {
+    this.calendar.daily[to_do].checked = checked;
     return this;
   }
-
-  deleteToDo() {
-    return this;
-  }
-
-  updateDay(functionToUpdate) {
+  
+  updateDay(to_do, checked) {
     const { day, month, year } = this.position;
-    functionToUpdate(this.calendar[year][month].days[day]);
+    this.calendar[year][month].days[day][to_do].checked = checked;
     return this;
   }
 
-  updateDaily(functionToUpdate) {
-    functionToUpdate(this.calendar.daily);
+  delete() {
     return this;
-  };
+  }
+
+  getDay(callback) {
+    const { day, month, year } = this.position;
+    return callback(this.calendar[year]?.[month]?.days?.[day] || []);
+  }
+
+  getDaily(callback) {
+    return callback(this.calendar?.daily);
+  }
 }
 
 export default ToDo;
