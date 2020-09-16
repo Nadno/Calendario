@@ -44,6 +44,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      background-color: $background-color;
       cursor: pointer;
     }
 
@@ -54,11 +55,21 @@
 
     .this__month {
       transition: linear 0.4s;
-      
-      &:hover,
+
+      &:focus {
+        color: $primary-color;
+        outline: none;
+        border: 1px solid $primary-color;
+        box-shadow: 2px 2px 6px $primary-color;
+        background-color: $background-color;
+      }
+    }
+
+    .selected {
+      color: #fff;
+      background-color: $primary-color;
       &:focus {
         color: #fff;
-        outline: none;
         background-color: $primary-color;
       }
     }
@@ -69,9 +80,7 @@
   }
 }
 
-
 @media (min-width: 700px) {
   .calendar {
-   
   }
 }

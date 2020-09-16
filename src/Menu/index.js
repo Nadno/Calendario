@@ -63,6 +63,7 @@ const Menu = () => {
 
   const setDaily = () => {
     const { month, year } = getDate();
+
     fullDate.innerHTML = "";
     htmlMenu.querySelector("h2").innerHTML = "Tarefas diárias:";
     to_do.setPosition(year, month, 0).getDaily(showToDo);
