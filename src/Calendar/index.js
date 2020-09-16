@@ -2,9 +2,7 @@ import renderElement from "../render";
 import menuUpdate from "./actions";
 
 import { monthTotalDays } from "./date";
-import { setDate } from "..";
-
-const HTML_CALENDAR_MONTH_NAME = "div.month__name";
+import { getDate, setDate } from "..";
 
 const calendarElement = renderElement("ul.days");
 
@@ -55,25 +53,14 @@ const actualDate = (isToday, day) => {
 };
 
 const calendarGenerator = ({ actual, selected }) => {
-  const MONTH_NAME = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-  ];
+  const MONTH_NAME = getDate("MONTH_NAME")[selected.month];
   setDate("month", selected.month);
   setDate("year", selected.year);
 
-  calendarElement.clear();
+  const monthName = document.querySelector("div.month__name");
+  monthName.innerHTML = `${MONTH_NAME}`;
 
+  calendarElement.clear();
   const lastMonthTotalDays = monthTotalDays(selected.year, selected.month - 1);
   renderLastMonth(lastMonthTotalDays, selected.week_day);
 

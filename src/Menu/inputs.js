@@ -1,19 +1,17 @@
 import Menu from "./index";
 
-const menu = Menu();
-
 const createButton = document.getElementById("create-todo-button");
 createButton.onclick = () => {
   const toDoText = document.getElementById("create-todo-input").value;
   if (!toDoText) return;
-  menu.createToDo(toDoText);
+  Menu.createToDo(toDoText);
 };
 
 const todoList = document.querySelector(".listing__todo");
 todoList.addEventListener("change", ({ target }) => {
   const position = Number(target.id);
   const checked = target.checked;
-  menu.updateToDo(position, checked);
+  Menu.updateToDo(position, checked);
 });
 
 const mobileButton = document.getElementById("mobile-menu");
@@ -26,5 +24,5 @@ mobileButton.onclick = () => {
   activeMenu = !activeMenu;
   mobileButton.style.backgroundColor = activeMenu ? RED_COLOR : PRIMARY_COLOR;
   mobileButton.innerHTML = activeMenu ? "Fechar" : "Abrir";
-  menu.toggleMenu(activeMenu);
+  Menu.toggleMenu(activeMenu);
 };

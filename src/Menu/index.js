@@ -1,35 +1,10 @@
-import ToDo from "../to-do";
+import CalendarData from "../CalendarData";
 import renderElement from "../render";
 import ToDoItem from "../elements";
 
 import { getDate } from "..";
 
-const to_do = new ToDo();
-
 const Menu = () => {
-  const MONTH_NAME = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-  ];
-  const DAY_NAME = [
-    "Domingo",
-    "Segunda-feira",
-    "Terça-feira",
-    "Quarta-feira",
-    "Quinta-feira",
-    "Sexta-feira",
-    "Sábado",
-  ];
   const htmlMenu = document.querySelector(".todo__menu");
   const fullDate = document.getElementById("full__date");
 
@@ -54,11 +29,13 @@ const Menu = () => {
 
   const setDay = () => {
     const { day, week_day, month, year } = getDate();
-    const newFullDate = `${DAY_NAME[week_day]}, ${day} de ${MONTH_NAME[month]}`;
+    const DAY_NAME = getDate("DAY_NAME")[week_day];
+    const MONTH_NAME = getDate("MONTH_NAME")[month];
+    const newFullDate = `${DAY_NAME}, ${day} de ${MONTH_NAME}`;
 
     fullDate.innerHTML = newFullDate;
     htmlMenu.querySelector("h2").innerHTML = "Tarefas:";
-    to_do.setPosition(year, month, day).getDay(showToDo);
+    CalendarData.setPosition(year, month, day).getDay(showToDo);
   };
 
   const setDaily = () => {
@@ -66,23 +43,31 @@ const Menu = () => {
 
     fullDate.innerHTML = "";
     htmlMenu.querySelector("h2").innerHTML = "Tarefas diárias:";
-    to_do.setPosition(year, month, 0).getDaily(showToDo);
+    CalendarData.setPosition(year, month, 0).getDaily(showToDo);
   };
 
   const createToDo = (text) => {
     const day = getDate("day");
     if (day === 0) {
-      to_do.create(text).addOnDaily().getDaily(showToDo);
+      CalendarData
+        .create(text)
+        .addOnDaily()
+        .save()
+        .getDaily(showToDo);
     } else {
-      to_do.create(text).addOnDay().getDay(showToDo);
+      CalendarData
+        .create(text)
+        .addOnDay()
+        .save()
+        .getDay(showToDo);
     }
   };
 
   const updateToDo = (position, checked) => {
     const day = getDate("day");
     day
-      ? to_do.updateDay(position, checked)
-      : to_do.updateDaily(position, checked);
+      ? CalendarData.updateDay(position, checked).save()
+      : CalendarData.updateDaily(position, checked).save();
   };
 
   return {
@@ -94,4 +79,4 @@ const Menu = () => {
   };
 };
 
-export default Menu;
+export default Menu();

@@ -1,12 +1,11 @@
 import Storage from "./storage";
 
-const storage = Storage();
-storage.getCalendarDataOnStorage();
+const CALENDAR = "cronos";
 
-class ToDo {
+class CalendarData {
   constructor() {
     this.ToDo = { text: "", checked: false };
-    this.calendar = storage.getCalendarData();
+    this.calendar = Storage.get(CALENDAR).getData();
     this.position = {
       year: 0,
       month: 0,
@@ -14,17 +13,13 @@ class ToDo {
     };
   }
 
-  setPosition(year, month, day) {
-    Object.assign(this.position, {
-      year,
-      month,
-      day,
-    });
+  save() {
+    Storage.set(this.calendar).save();
     return this;
   }
 
   create(text) {
-    if(text.trim() === "") return;
+    if (text.trim() === "") return;
     this.ToDo.text = text;
     return this;
   }
@@ -45,14 +40,11 @@ class ToDo {
         month,
         day,
       });
-    };
-    
+    }
+
     const { text, checked } = this.ToDo;
     Object.assign(this.calendar[year][month].days, {
-      [day]: [
-        ...this.calendar[year][month].days[day],
-        { text, checked },
-      ],
+      [day]: [...this.calendar[year][month].days[day], { text, checked }],
     });
 
     return this;
@@ -119,7 +111,7 @@ class ToDo {
     this.calendar.daily[to_do].checked = checked;
     return this;
   }
-  
+
   updateDay(to_do, checked) {
     const { day, month, year } = this.position;
     this.calendar[year][month].days[day][to_do].checked = checked;
@@ -127,6 +119,8 @@ class ToDo {
   }
 
   delete() {
+    const { day, month, year } = this.position;
+
     return this;
   }
 
@@ -138,6 +132,16 @@ class ToDo {
   getDaily(callback) {
     return callback(this.calendar?.daily);
   }
+
+  setPosition(year, month, day) {
+    Object.assign(this.position, {
+      year,
+      month,
+      day,
+    });
+    console.log(this.position);
+    return this;
+  }
 }
 
-export default ToDo;
+export default new CalendarData;

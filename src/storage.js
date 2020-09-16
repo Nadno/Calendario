@@ -1,4 +1,5 @@
 const parseJson = (save) => {
+  console.log();
   try {
     return JSON.parse(save);
   } catch {
@@ -6,37 +7,45 @@ const parseJson = (save) => {
   }
 };
 
-const Storage = () => {
-  let calendarData = {
-    daily: [],
-  };
-
-  const getCalendarDataOnStorage = () => {
-    const save = localStorage.getItem("Cronos");
-    if (save) {
-      data = parseJson(save);
-      if (data) calendarData = data;
-    }
-  };
-
-  const setCalendarData = (data) => {
-    data ? (calendarData = data) : null;
-  };
-
-  const getCalendarData = () => {
-    return calendarData;
-  };
-
-  const saveCalendarData = () => {
-    localStorage.setItem("Cronos", calendarData);
-  };
-
-  return {
-    getCalendarDataOnStorage,
-    setCalendarData,
-    getCalendarData,
-    saveCalendarData,
-  };
+const stringifyObject = (data) => {
+  console.log();
+  try {
+    return JSON.stringify(data);
+  } catch {
+    return null;
+  }
 };
 
-export default Storage;
+class Storage {
+  constructor() {
+    this.calendarData = {
+      daily: [],
+    };
+  }
+
+  get(NAME) {
+    const save = localStorage.getItem(NAME);
+    if (save) {
+      const data = parseJson(save);
+      console.log(data);
+      if (data) this.calendarData = data;
+    }
+    return this;
+  }
+
+  set(data) {
+    data ? (this.calendarData = data) : null;
+    return this;
+  }
+
+  getData() {
+    return this.calendarData;
+  }
+
+  save() {
+    localStorage.setItem("cronos", stringifyObject(this.calendarData));
+    return this;
+  }
+}
+
+export default new Storage();
