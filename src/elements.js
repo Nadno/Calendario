@@ -1,28 +1,36 @@
 import menuUpdate from "./Calendar/actions";
 
-export const ToDo = ({ position, checked, text }) => {
+export const ToDo = ({ position, checked, text, deleteToDo }) => {
   const li = document.createElement("li");
   const input = document.createElement("input");
   const label = document.createElement("label");
   const span = document.createElement("span");
   const button = document.createElement("button");
 
-  span.className = "text";
-  input.className = "input";
-  label.className = "content";
-  button.className = "delete";
+  const id = `to-do__${position}`;
 
-  button.type = "button";
-  input.type = "checkbox";
+  Object.assign(input, {
+    className: "input",
+    type: "checkbox",
+    id,
+    checked,
+  });
+  Object.assign(label, {
+    htmlFor: id,
+    className: "content",
+  });
+  Object.assign(span, {
+    textContent: text,
+    className: "text",
+  });
+  Object.assign(button, {
+    className: "delete",
+    type: "button",
+    textContent: "X",
+  });
 
-  button.textContent = "X";
   li.className = "to-do";
-
-  input.id = position;
-  input.checked = checked;
-
-  label.htmlFor = position;
-  span.textContent = text;
+  button.addEventListener("click", deleteToDo(position));
 
   label.appendChild(span);
   label.appendChild(button);
@@ -32,9 +40,7 @@ export const ToDo = ({ position, checked, text }) => {
   return li;
 };
 
-export const Day = ({
-  day, month, week_day,
-}) => {
+export const Day = ({ day, month, week_day }) => {
   const li = document.createElement("li");
   const button = document.createElement("button");
 
@@ -52,7 +58,7 @@ export const Day = ({
 };
 
 export const YearOption = (value) => {
-  const op = document.createElement('option');
+  const op = document.createElement("option");
   Object.assign(op, {
     value,
     innerText: value,

@@ -7,9 +7,10 @@ createButton.onclick = () => {
   Menu.createToDo(toDoText);
 };
 
+const getPosition = ({ id }) => Number(id.slice(7,8));
 const todoList = document.querySelector(".listing__todo");
 todoList.addEventListener("change", ({ target }) => {
-  const position = Number(target.id);
+  const position = getPosition(target);
   const checked = target.checked;
   Menu.updateToDo(position, checked);
 });

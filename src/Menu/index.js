@@ -17,6 +17,7 @@ const Menu = () => {
         text,
         checked,
         position,
+        deleteToDo,
       });
       todoList.renderForAppendChild(to_do);
     });
@@ -35,7 +36,7 @@ const Menu = () => {
 
     fullDate.innerHTML = newFullDate;
     htmlMenu.querySelector("h2").innerHTML = "Tarefas:";
-    CalendarData.setPosition(year, month, day).getDay(showToDo);
+    CalendarData.setPosition(year, month, day).get(showToDo);
   };
 
   const setDaily = () => {
@@ -43,31 +44,22 @@ const Menu = () => {
 
     fullDate.innerHTML = "";
     htmlMenu.querySelector("h2").innerHTML = "Tarefas diárias:";
-    CalendarData.setPosition(year, month, 0).getDaily(showToDo);
+    CalendarData.setPosition(year, month, 0).get(showToDo);
   };
 
-  const createToDo = (text) => {
-    const day = getDate("day");
-    if (day === 0) {
-      CalendarData
-        .create(text)
-        .addOnDaily()
-        .save()
-        .getDaily(showToDo);
-    } else {
-      CalendarData
-        .create(text)
-        .addOnDay()
-        .save()
-        .getDay(showToDo);
-    }
+  function createToDo(text) {
+    CalendarData.create(text).add().save().get(showToDo);
   };
 
-  const updateToDo = (position, checked) => {
-    const day = getDate("day");
-    day
-      ? CalendarData.updateDay(position, checked).save()
-      : CalendarData.updateDaily(position, checked).save();
+  function updateToDo(position, checked) {
+    CalendarData.update(position, checked).save();
+  };
+
+  function deleteToDo(from) {
+    return function() {
+      const position = { from, to: 1, };
+      CalendarData.delete(position).get(showToDo);
+    };
   };
 
   return {

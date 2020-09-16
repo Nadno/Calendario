@@ -4,17 +4,45 @@ const CALENDAR = "cronos";
 
 class CalendarData {
   constructor() {
-    this.ToDo = { text: "", checked: false };
     this.calendar = Storage.get(CALENDAR).getData();
     this.position = {
       year: 0,
       month: 0,
       day: 0,
     };
+    this.dayExist = false;
+
+    this.ToDo = { text: "", checked: false };
+    this.selected;
   }
 
   save() {
     Storage.set(this.calendar).save();
+    return this;
+  }
+
+  get(callback) {
+    const { day, month, year } = this.position;
+    this.checkIfYearExists(year);
+
+    this.selected = day
+      ? this.calendar?.[year]?.[month]?.days?.[day] || []
+      : this.calendar.daily;
+  
+    if (callback) return callback(this.selected || []);
+    return this;
+  }
+
+  add() {
+    if (this.position.day !== 0) this.checkIfDayExists().get();
+    const { text, checked } = this.ToDo;
+
+    this.selected.push({ text, checked });
+    return this;
+  }
+
+  update(position, checked) {
+    this.selected[position].checked = checked;
     return this;
   }
 
@@ -24,39 +52,28 @@ class CalendarData {
     return this;
   }
 
-  createNewDay() {
-    const { year, month, day } = this.position;
-    Object.assign(this.calendar[year][month].days, {
-      [day]: [],
-    });
-  }
-
-  addOnDay() {
-    const { year, month, day } = this.position;
-    this.checkIfYearExists(year);
-    if (!this.calendar[year][month].days[day]) {
-      this.createNewDay({
-        year,
-        month,
-        day,
-      });
-    }
-
-    const { text, checked } = this.ToDo;
-    Object.assign(this.calendar[year][month].days, {
-      [day]: [...this.calendar[year][month].days[day], { text, checked }],
-    });
-
+  delete({ from, to }) {
+    this.selected.splice(from, to);
     return this;
   }
 
-  addOnDaily() {
-    const { text, checked } = this.ToDo;
-    this.calendar.daily.push({
-      text,
-      checked,
+  setPosition(year, month, day) {
+    Object.assign(this.position, {
+      year,
+      month,
+      day,
     });
+    console.log(this.position);
+    return this;
+  }
 
+  checkIfDayExists() {
+    const { year, month, day } = this.position;
+    if (this.calendar[year][month].days?.[day]) return this;
+
+    Object.assign(this.calendar[year][month].days, {
+      [day]: [],
+    });
     return this;
   }
 
@@ -106,42 +123,7 @@ class CalendarData {
     });
     return this;
   }
-
-  updateDaily(to_do, checked) {
-    this.calendar.daily[to_do].checked = checked;
-    return this;
-  }
-
-  updateDay(to_do, checked) {
-    const { day, month, year } = this.position;
-    this.calendar[year][month].days[day][to_do].checked = checked;
-    return this;
-  }
-
-  delete() {
-    const { day, month, year } = this.position;
-
-    return this;
-  }
-
-  getDay(callback) {
-    const { day, month, year } = this.position;
-    return callback(this.calendar[year]?.[month]?.days?.[day] || []);
-  }
-
-  getDaily(callback) {
-    return callback(this.calendar?.daily);
-  }
-
-  setPosition(year, month, day) {
-    Object.assign(this.position, {
-      year,
-      month,
-      day,
-    });
-    console.log(this.position);
-    return this;
-  }
+  
 }
 
-export default new CalendarData;
+export default new CalendarData();
