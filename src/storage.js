@@ -1,5 +1,4 @@
 const parseJson = (save) => {
-  console.log();
   try {
     return JSON.parse(save);
   } catch {
@@ -8,7 +7,6 @@ const parseJson = (save) => {
 };
 
 const stringifyObject = (data) => {
-  console.log();
   try {
     return JSON.stringify(data);
   } catch {

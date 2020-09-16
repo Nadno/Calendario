@@ -1,6 +1,6 @@
 import CalendarData from "../CalendarData";
 import renderElement from "../render";
-import ToDoItem from "../elements";
+import { ToDo } from "../elements";
 
 import { getDate } from "..";
 
@@ -13,7 +13,7 @@ const Menu = () => {
     todoList.clear();
 
     list.forEach(({ text, checked }, position) => {
-      const to_do = ToDoItem({
+      const to_do = ToDo({
         text,
         checked,
         position,

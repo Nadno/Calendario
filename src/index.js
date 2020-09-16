@@ -51,8 +51,3 @@ export const getDate = (name) => {
 
 const initial = true;
 calendarGenerator(calendar(initial));
-
-
-export const updateCalendar = () => {
-  calendar();
-};
