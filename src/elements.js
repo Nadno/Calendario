@@ -1,6 +1,6 @@
 import menuUpdate from "./Calendar/actions";
 
-export const ToDo = ({ position, checked, text, deleteToDo }) => {
+export function task({ text, checked, position, deleteToDo }) {
   const li = document.createElement("li");
   const input = document.createElement("input");
   const label = document.createElement("label");
@@ -38,9 +38,9 @@ export const ToDo = ({ position, checked, text, deleteToDo }) => {
   li.appendChild(input);
   li.appendChild(label);
   return li;
-};
+}
 
-export const Day = ({ day, month, week_day }) => {
+export function Day({ day, month, week_day }) {
   const li = document.createElement("li");
   const button = document.createElement("button");
 
@@ -50,18 +50,17 @@ export const Day = ({ day, month, week_day }) => {
     innerText: day,
     className: month,
   });
-  button.dataset.week_day = week_day;
-  button.addEventListener("click", menuUpdate);
+  button.addEventListener("click", menuUpdate(day, week_day));
   li.appendChild(button);
 
   return li;
-};
+}
 
-export const YearOption = (value) => {
+export function YearOption(value) {
   const op = document.createElement("option");
   Object.assign(op, {
     value,
     innerText: value,
   });
   return op;
-};
+}

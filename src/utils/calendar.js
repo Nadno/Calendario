@@ -2,7 +2,7 @@ import Storage from "./storage";
 
 const CALENDAR = "cronos";
 
-class CalendarData {
+class Calendar {
   constructor() {
     this.calendar = Storage.get(CALENDAR).getData();
     this.position = {
@@ -10,54 +10,11 @@ class CalendarData {
       month: 0,
       day: 0,
     };
-    this.dayExist = false;
-
     this.ToDo = { text: "", checked: false };
     this.selected;
   }
 
-  save() {
-    Storage.set(this.calendar).save();
-    return this;
-  }
-
-  get(callback) {
-    const { day, month, year } = this.position;
-    this.checkIfYearExists(year);
-
-    this.selected = day
-      ? this.calendar?.[year]?.[month]?.days?.[day] || []
-      : this.calendar.daily;
-  
-    if (callback) return callback(this.selected || []);
-    return this;
-  }
-
-  add() {
-    if (this.position.day !== 0) this.checkIfDayExists().get();
-    const { text, checked } = this.ToDo;
-
-    this.selected.push({ text, checked });
-    return this;
-  }
-
-  update(position, checked) {
-    this.selected[position].checked = checked;
-    return this;
-  }
-
-  create(text) {
-    if (text.trim() === "") return;
-    this.ToDo.text = text;
-    return this;
-  }
-
-  delete({ from, to }) {
-    this.selected.splice(from, to);
-    return this;
-  }
-
-  setPosition(year, month, day) {
+  selectDate({ year, month, day }) {
     Object.assign(this.position, {
       year,
       month,
@@ -123,7 +80,12 @@ class CalendarData {
     });
     return this;
   }
+
+  save() {
+    Storage.set(this.calendar).save();
+    return this;
+  }
   
 }
 
-export default new CalendarData();
+export default Calendar;

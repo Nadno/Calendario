@@ -1,13 +1,13 @@
-import Menu from "./index";
+import Menu from "./menu";
 
 const createButton = document.getElementById("create-todo-button");
 createButton.onclick = () => {
-  const toDoText = document.getElementById("create-todo-input").value;
-  if (!toDoText) return;
-  Menu.createToDo(toDoText);
+  const to_do = document.getElementById("create-todo-input").value;
+  if (!to_do) return;
+  Menu.createToDo(to_do);
 };
 
-const getPosition = ({ id }) => Number(id.slice(7,8));
+const getPosition = ({ id }) => Number(id.slice(7,11).trim());
 const todoList = document.querySelector(".listing__todo");
 todoList.addEventListener("change", ({ target }) => {
   const position = getPosition(target);

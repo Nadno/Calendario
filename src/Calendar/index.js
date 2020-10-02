@@ -1,8 +1,7 @@
 import renderElement from "../render";
-import menuUpdate from "./actions";
 
-import { monthTotalDays } from "./date";
-import { getDate, setDate } from "..";
+import { monthTotalDays } from "../utils/date";
+import { getDate, setDate } from "../date";
 import { Day } from "../elements";
 
 const calendarElement = renderElement("ul.days");
@@ -29,26 +28,23 @@ const renderThisMonth = (totalDays, week_day) => {
   let indexWeekDay = week_day;
 
   for (let day = 1; day <= totalDays; day++) {
-    const li = Day({ day, month: THIS_MONTH, week_day: indexWeekDay });
-    calendarElement.renderForAppendChild(li);
+    calendarElement.renderForAppendChild(
+      Day({ day, month: THIS_MONTH, week_day: indexWeekDay })
+    );
     indexWeekDay = nextWeekDay(indexWeekDay);
   }
 };
 
-const actualDate = (isToday, day) => {
-  if (isToday) {
-    const today = document.getElementById(day);
-    return today.classList.add("today");
-  }
-};
+const setMonth = (month) =>
+  (document.querySelector("div.month__name").innerHTML = month);
+const setToday = (day) => document.getElementById(day).classList.add("today");
 
 const calendarGenerator = ({ actual, selected }) => {
-  const MONTH_NAME = getDate("MONTH_NAME")[selected.month];
+  const month = getDate("MONTH_NAME")[selected.month];
   setDate("month", selected.month);
   setDate("year", selected.year);
 
-  const monthName = document.querySelector("div.month__name");
-  monthName.innerHTML = `${MONTH_NAME}`;
+  setMonth(month);
 
   calendarElement.clear();
   const lastMonthTotalDays = monthTotalDays(selected.year, selected.month - 1);
@@ -57,10 +53,10 @@ const calendarGenerator = ({ actual, selected }) => {
   const selectedMonthTotalDays = monthTotalDays(selected.year, selected.month);
   renderThisMonth(selectedMonthTotalDays, selected.week_day);
 
-  actualDate(
-    actual.month === selected.month && actual.year === selected.year,
-    actual.day
-  );
+  const isToday =
+    actual.month === selected.month && actual.year === selected.year;
+
+  if (isToday) setToday(actual.day);
 };
 
 export default calendarGenerator;
