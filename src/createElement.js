@@ -1,6 +1,6 @@
 import menuUpdate from "./Calendar/actions";
 
-export function task({ text, checked, position, deleteToDo }) {
+export function createTask({ text, checked, position, deleteToDo }) {
   const li = document.createElement("li");
   const input = document.createElement("input");
   const label = document.createElement("label");
@@ -40,7 +40,7 @@ export function task({ text, checked, position, deleteToDo }) {
   return li;
 }
 
-export function Day({ day, month, week_day }) {
+export function createDay({ day, month, week_day }) {
   const li = document.createElement("li");
   const button = document.createElement("button");
 
@@ -56,7 +56,7 @@ export function Day({ day, month, week_day }) {
   return li;
 }
 
-export function YearOption(value) {
+export function createYearOption(value) {
   const op = document.createElement("option");
   Object.assign(op, {
     value,

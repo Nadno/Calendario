@@ -1,38 +1,33 @@
 import renderElement from "../render";
+import { createDay } from "../createElement";
 
 import { monthTotalDays } from "../utils/date";
-import { getDate, setDate } from "../date";
-import { Day } from "../elements";
+import { getDate } from "../date";
 
 const calendarElement = renderElement("ul.days");
 
-const renderLastMonth = (total_days, week_day) => {
-  if (week_day === 0) return;
+const lastMonth = (day) => {
   const LAST_MONTH = "last__month";
-  const firstWeekDay = total_days - week_day + 1;
+  calendarElement.renderForInnerHTML(`<li class="${LAST_MONTH}">${day}</li>`);
+};
 
-  for (let day = firstWeekDay; day <= total_days; day++) {
-    const li = `<li class="${LAST_MONTH}">${day}</li>`;
-    calendarElement.renderForInnerHTML(li);
+const render = ({ from, to }, renderDay) => {
+  for (let day = from; day <= to; day++) {
+    renderDay(day);
   }
 };
 
-const nextWeekDay = (indexWeekDay) => {
-  let week_day = indexWeekDay + 1;
-  if (week_day === 7) week_day = 0;
-  return week_day;
+const weekDay = (year, month) => {
+  return (day) => new Date(year, month, day).getDay();
 };
 
-const renderThisMonth = (totalDays, week_day) => {
+const thisMonth = (getWeekDay) => {
   const THIS_MONTH = "this__month";
-  let indexWeekDay = week_day;
 
-  for (let day = 1; day <= totalDays; day++) {
+  return (day) =>
     calendarElement.renderForAppendChild(
-      Day({ day, month: THIS_MONTH, week_day: indexWeekDay })
+      createDay({ day, month: THIS_MONTH, week_day: getWeekDay(day) })
     );
-    indexWeekDay = nextWeekDay(indexWeekDay);
-  }
 };
 
 const setMonth = (month) =>
@@ -40,22 +35,37 @@ const setMonth = (month) =>
 const setToday = (day) => document.getElementById(day).classList.add("today");
 
 const calendarGenerator = ({ actual, selected }) => {
-  const month = getDate("MONTH_NAME")[selected.month];
-  setDate("month", selected.month);
-  setDate("year", selected.year);
+  calendarElement.clear();
 
+  const month = getDate("MONTH_NAME")[selected.month];
   setMonth(month);
 
-  calendarElement.clear();
-  const lastMonthTotalDays = monthTotalDays(selected.year, selected.month - 1);
-  renderLastMonth(lastMonthTotalDays, selected.week_day);
+  if (selected.week_day > 0) {
+    const lastMonthTotalDays = monthTotalDays(
+      selected.year,
+      selected.month - 1
+    );
+    const lastMonthRest = lastMonthTotalDays - selected.week_day + 1;
+    render(
+      {
+        from: lastMonthRest,
+        to: lastMonthTotalDays,
+      },
+      lastMonth
+    );
+  }
 
   const selectedMonthTotalDays = monthTotalDays(selected.year, selected.month);
-  renderThisMonth(selectedMonthTotalDays, selected.week_day);
+  render(
+    {
+      from: 1,
+      to: selectedMonthTotalDays,
+    },
+    thisMonth(weekDay(selected.year, selected.month))
+  );
 
   const isToday =
     actual.month === selected.month && actual.year === selected.year;
-
   if (isToday) setToday(actual.day);
 };
 

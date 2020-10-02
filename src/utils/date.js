@@ -1,16 +1,20 @@
-import { YearOption } from "../elements";
+import { setDate } from "../date";
+import { createYearOption } from "../createElement";
 
 export const initialSelectedDate = (year, month) => {
-  const HTML_month = document.getElementById('month');
-  const HTML_year = document.getElementById('year');
+  const HTML_month = document.getElementById("month");
+  const HTML_year = document.getElementById("year");
 
   HTML_month.value = month;
   HTML_year.value = year;
 };
 
 export const selectDate = () => {
-  const month = document.getElementById('month').value;
-  const year = document.getElementById('year').value;
+  const month = Number(document.getElementById("month").value);
+  const year = Number(document.getElementById("year").value);
+
+  setDate("month", month);
+  setDate("year", year);
 
   const FIRST_DAY = 1;
   const selectedDate = new Date(year, month, FIRST_DAY);
@@ -33,10 +37,7 @@ export const getActualDate = () => {
 
 const calendar = (initial) => {
   const actual = getActualDate();
-  if (initial) initialSelectedDate(
-    actual.year,
-    actual.month,
-  );
+  if (initial) initialSelectedDate(actual.year, actual.month);
 
   const selected = selectDate();
   return {
@@ -45,16 +46,15 @@ const calendar = (initial) => {
   };
 };
 
-(function setYearsInSelect(){
-  const yearElement = document.getElementById('year');
+(function setYearsInSelect() {
+  const yearElement = document.getElementById("year");
   const calendar = getActualDate();
   const totalNextYear = calendar.year + 10;
 
   for (let year = calendar.year; year <= totalNextYear; year++) {
-    const option = YearOption(year);
-    yearElement.appendChild(option);
-  };
-}());
+    yearElement.appendChild(createYearOption(year));
+  }
+})();
 
 export const monthTotalDays = (year, month) => {
   const monthWithThirtyDays = [3, 5, 8, 10];

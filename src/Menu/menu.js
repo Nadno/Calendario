@@ -1,7 +1,7 @@
-import { task } from "../elements";
-
 import Task from "../utils/task";
+
 import renderElement from "../render";
+import { createTask } from "../createElement";
 
 import { getDate } from "../date";
 
@@ -52,12 +52,12 @@ function deleteToDo(from, to = 1) {
   };
 }
 
-function showToDo(list) {
+function showToDo(tasks) {
   element.menuList.clear();
 
-  list.forEach(({ text, checked }, position) => {
+  tasks.forEach(({ text, checked }, position) => {
     element.menuList.renderForAppendChild(
-      task({
+      createTask({
         text,
         checked,
         position,
