@@ -1,50 +1,42 @@
+import element from "./elements";
+
 import Menu from "../Menu/menu";
-import calendarGenerator from "./index";
-import calendar from "../utils/date";
+import calendarGenerator from "./calendar";
 
-import { getDate, setDate } from "../date";
+import { selected } from "../date";
+import { setSelectedDate } from "../utils/date";
 
-const HTML_Month = document.getElementById("month");
-const HTML_Year = document.getElementById("year");
-
-const resetMenu = () => {
+const changeSelect = () => {
+  setSelectedDate(
+    element.calendar.year.value,
+    element.calendar.month.value
+  );
+  calendarGenerator();
   Menu.setDaily();
-  setDate("day", 0);
-  setDate("week_day", 0);
 };
 
-const changeSelect = (DATE_NAME) => {
-  return function ({ target }) {
-    const date = calendar();
-    calendarGenerator(date);
-    setDate(DATE_NAME, Number(target.value));
-    resetMenu();
-  };
-};
-const changeMonth = changeSelect("month");
-const changeYear = changeSelect("year");
-
-HTML_Month.addEventListener("change", changeMonth);
-HTML_Year.addEventListener("change", changeYear);
+element.calendar.month.addEventListener("change", changeSelect);
+element.calendar.year.addEventListener("change", changeSelect);
 
 const menuUpdate = (day, week_day) => {
   if (day < 0 || day > 31) return;
 
+  const sameDay = () => selected.get("day") === day;
+
   return function () {
     const dayElement = document.getElementById(day);
-    const selectedDay = getDate("day");
-
-    if (selectedDay) {
-      document.getElementById(selectedDay).classList.remove("selected");
+    if (selected.get("day")) {
+      document.getElementById(selected.get("day")).classList.remove("selected");
     }
 
-    if (selectedDay === day) {
-      resetMenu();
+    if (sameDay()) {
+      Menu.setDaily();
       dayElement.classList.remove("selected");
+      selected.set("day", 0);
     } else {
       dayElement.classList.add("selected");
-      setDate("day", day);
-      setDate("week_day", week_day);
+      selected.set("day", day);
+      selected.set("week_day", week_day);
       Menu.setDay();
     }
   };

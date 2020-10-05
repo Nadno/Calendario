@@ -1,8 +1,15 @@
 const date = {
-  day: 0,
-  month: 0,
-  year: 0,
-  week_day: 0,
+  selected: {
+    day: 0,
+    month: 0,
+    year: 0,
+    week_day: 0,
+  },
+  actual: {
+    day: 0,
+    month: 0,
+    year: 0,
+  },
   MONTH_NAME: [
     "Janeiro",
     "Fevereiro",
@@ -28,15 +35,24 @@ const date = {
   ],
 };
 
-export function setDate(name, value) {
+function setDate(type, name, value) {
   if (value < 0) return;
-  Object.assign(date, {
-    ...date,
+  Object.assign(date[type], {
+    ...date[type],
     [name]: value,
   });
+}
+
+export function getDate(type, name) {
+  return !name ? date[type] : date[type][name];
+}
+
+export const selected = {
+  get: (name) => getDate("selected", name),
+  set: (name, value) => setDate("selected", name, value),
 };
 
-export function getDate(name) {
-  const { day, month, year, week_day } = date;
-  return name ? date[name] : { day, month, year, week_day };
+export const actual = {
+  get: (name) => getDate("actual", name),
+  set: (name, value) => setDate("actual", name, value),
 };

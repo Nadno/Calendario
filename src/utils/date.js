@@ -1,71 +1,55 @@
-import { setDate } from "../date";
+import element from "../Calendar/elements";
+
+import { selected, actual } from "../date";
 import { createYearOption } from "../createElement";
+import calendarGenerator from "../Calendar/calendar";
 
-export const initialSelectedDate = (year, month) => {
-  const HTML_month = document.getElementById("month");
-  const HTML_year = document.getElementById("year");
-
-  HTML_month.value = month;
-  HTML_year.value = year;
+export const setInitialYearAndMonth = (year, month) => {
+  element.calendar.month.value = month;
+  element.calendar.year.value = year;
 };
 
-export const selectDate = () => {
-  const month = Number(document.getElementById("month").value);
-  const year = Number(document.getElementById("year").value);
-
-  setDate("month", month);
-  setDate("year", year);
-
+export const setSelectedDate = (year, month) => {
   const FIRST_DAY = 1;
   const selectedDate = new Date(year, month, FIRST_DAY);
-  return {
-    day: selectedDate.getDate(),
-    week_day: selectedDate.getDay(),
-    month: selectedDate.getMonth(),
-    year: selectedDate.getUTCFullYear(),
-  };
+
+  selected.set("day", 0);
+  selected.set("week_day", selectedDate.getDay())
+  selected.set("month", selectedDate.getMonth());
+  selected.set("year", selectedDate.getFullYear());
 };
 
-export const getActualDate = () => {
+export const setActualDate = () => {
   const actualDate = new Date();
-  return {
-    day: actualDate.getDate(),
-    month: actualDate.getMonth(),
-    year: actualDate.getUTCFullYear(),
-  };
+  actual.set("day", actualDate.getDate());
+  actual.set("month", actualDate.getMonth());
+  actual.set("year", actualDate.getUTCFullYear());
 };
 
-const calendar = (initial) => {
-  const actual = getActualDate();
-  if (initial) initialSelectedDate(actual.year, actual.month);
+export default function initialConfig() {
+  setActualDate();
+  setSelectedDate(actual.get("year"), actual.get("month"));
 
-  const selected = selectDate();
-  return {
-    actual,
-    selected,
-  };
-};
-
-(function setYearsInSelect() {
-  const yearElement = document.getElementById("year");
-  const calendar = getActualDate();
-  const totalNextYear = calendar.year + 10;
-
-  for (let year = calendar.year; year <= totalNextYear; year++) {
-    yearElement.appendChild(createYearOption(year));
+  const totalNextYear = actual.get("year") + 10;
+  for (let nextYear = actual.get("year"); nextYear <= totalNextYear; nextYear++) {
+    element.calendar.year.appendChild(createYearOption(nextYear));
   }
-})();
+
+  setInitialYearAndMonth(actual.get("year"), actual.get("month"));
+  calendarGenerator();
+};
 
 export const monthTotalDays = (year, month) => {
-  const monthWithThirtyDays = [3, 5, 8, 10];
+  const LEAP_YEAR = year % 4 === 0;
+  const FEBRUARY = month === 1;
 
-  if (month === 1) {
-    if (year % 4 === 0) return 29;
+  if (FEBRUARY) {
+    if (LEAP_YEAR) return 29;
     return 28;
   }
-  if (monthWithThirtyDays.indexOf(month) !== -1) return 30;
+
+  const monthWithThirtyDays = [3, 5, 8, 10];
+  if (monthWithThirtyDays.includes(month)) return 30;
 
   return 31;
 };
-
-export default calendar;

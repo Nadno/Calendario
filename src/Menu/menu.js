@@ -1,43 +1,59 @@
+import element from "../Calendar/elements";
 import Task from "../utils/task";
+import "../utils/updateDate";
 
-import renderElement from "../render";
-import { createTask } from "../createElement";
+import { createNotify, createTask } from "../createElement";
 
 import { getDate } from "../date";
+import Notify from "../utils/notify";
 
-const element = {
-  menu: document.querySelector(".todo__menu"),
-  menuTitle: document.getElementById("full__date"),
-  menuList: renderElement(".listing__todo"),
-};
+function showNotifications(notifications) {
+  element.notifications.innerHTML = "";
+  console.log(notifications);
+  notifications.forEach((notify, position) => {
+    element.notifications.appendChild(
+      createNotify(notify, deleteNotify(position), position));
+  });
+}
+
+function deleteNotify(position) {
+  return () => {
+    console.log(position);
+    Notify
+    .delete(position, 1)
+    .get(showNotifications);
+  }
+}
 
 const Menu = {
-  toggleMenu: function (toggle) {
-    if (toggle) return htmlMenu.classList.add("on");
-    return htmlMenu.classList.remove("on");
+  active: function (toggle) {
+    if (toggle) return element.menu.self.classList.add("on");
+    return element.menu.self.classList.remove("on");
   },
 
   setDay: function () {
-    const { day, week_day, month, year } = getDate();
-    const DAY_NAME = getDate("DAY_NAME")[week_day];
-    const MONTH_NAME = getDate("MONTH_NAME")[month];
-    const newFullDate = `${DAY_NAME}, ${day} de ${MONTH_NAME}`;
+    const { day, week_day, month, year } = getDate("selected");
+    const newFullDate = `${getDate("DAY_NAME")[week_day]}, ${day} de ${
+      getDate("MONTH_NAME")[month]
+    }`;
 
-    element.menuTitle.innerHTML = newFullDate;
-    element.menu.querySelector("h2").innerHTML = "Tarefas:";
+    element.menu.title.innerHTML = newFullDate;
+    element.menu.taskTitle.innerHTML = "Tarefas:";
     Task.selectDate({ year, month, day }).get(showToDo);
   },
 
   setDaily: function () {
-    const { month, year } = getDate();
+    const { month, year } = getDate("selected");
 
-    element.menuTitle.innerHTML = "";
-    element.menu.querySelector("h2").innerHTML = "Tarefas diárias:";
+    element.menu.title.innerHTML = "";
+    element.menu.taskTitle.innerHTML = "Tarefas diárias:";
     Task.selectDate({ year, month, day: 0 }).get(showToDo);
   },
 
   createToDo: function (text) {
-    Task.create(text).add().save().get(showToDo);
+    Task.create(text).save().get(showToDo);
+
+    Notify.createError(text).get(showNotifications);
   },
 
   updateToDo: function (position, checked) {
@@ -47,16 +63,14 @@ const Menu = {
 
 function deleteToDo(from, to = 1) {
   return function () {
-    const position = { from, to };
-    Task.delete(position).save().get(showToDo);
+    Task.delete(from, to).save().get(showToDo);
   };
 }
 
 function showToDo(tasks) {
-  element.menuList.clear();
-
+  element.menu.list.innerHTML = "";
   tasks.forEach(({ text, checked }, position) => {
-    element.menuList.renderForAppendChild(
+    element.menu.list.appendChild(
       createTask({
         text,
         checked,

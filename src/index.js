@@ -1,12 +1,11 @@
 "use strict";
 
-import calendarGenerator from "./Calendar/index";
-import calendar from "./utils/date";
+import "./Calendar/elements";
 import "./Calendar/actions";
 import "./Menu/inputs";
 
+import initialConfig from "./utils/date";
+
 import "../public/styles/style.scss";
 
-
-const initialDate = true;
-calendarGenerator(calendar(initialDate));
+initialConfig();

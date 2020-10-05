@@ -13,26 +13,20 @@ class Task extends CalendarData {
     return this;
   }
 
-  add() {
-    if (this.position.day !== 0) this.checkIfDayExists().get();
-    const { text, checked } = this.ToDo;
-
-    this.selected.push({ text, checked });
-    return this;
-  }
-
   update(position, checked) {
     this.selected[position].checked = checked;
     return this;
   }
 
   create(text) {
+    if (this.position.day) this.checkIfDayExists().get();
     if (text.trim() === "") return;
-    this.ToDo.text = text;
+
+    this.selected.push({ text, checked: false });
     return this;
   }
 
-  delete({ from, to }) {
+  delete(from, to) {
     this.selected.splice(from, to);
     return this;
   }

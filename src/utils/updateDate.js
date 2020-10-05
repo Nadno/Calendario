@@ -1,0 +1,1 @@
+// setInterval(() => console.log(new Date().getDate()), 1000);

@@ -2,7 +2,7 @@ import Storage from "./storage";
 
 const CALENDAR = "cronos";
 
-class Calendar {
+class CalendarData {
   constructor() {
     this.calendar = Storage.get(CALENDAR).getData();
     this.position = {
@@ -10,7 +10,6 @@ class Calendar {
       month: 0,
       day: 0,
     };
-    this.ToDo = { text: "", checked: false };
     this.selected;
   }
 
@@ -20,7 +19,6 @@ class Calendar {
       month,
       day,
     });
-    console.log(this.position);
     return this;
   }
 
@@ -88,4 +86,4 @@ class Calendar {
   
 }
 
-export default Calendar;
+export default CalendarData;

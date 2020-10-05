@@ -11,14 +11,11 @@
   </head>
   <body>
     <section class="todo__menu">
-      <header class="menu__header">
-        <button id="close-menu" type="button">Exit</button>
-      </header>
       <div class="menu__selected__day">
         <article class="selected__day">
           <strong id="full__date"></strong>
         </article>
-        <h2>Tarefas diárias:</h2>
+        <h2 id="task-title">Tarefas diárias:</h2>
 
         <form class="listing__todo"></form>
       </div>
@@ -51,9 +48,7 @@
           <option value="10">Novembro</option>
           <option value="11">Dezembro</option>
         </select>
-        <select name="year" id="year">
-          
-        </select>
+        <select name="year" id="year"></select>
       </div>
       <div class="month__name"></div>
       <div class="days__container">
@@ -76,5 +71,8 @@
         <strong id="mobile__full__date"></strong>
       </article>
     </section>
+
+    <ol class="notifications">
+    </ol>
   </body>
 </html>

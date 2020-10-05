@@ -22,12 +22,13 @@ $secondary-spacing: 2rem;
 body {
   display: flex;
   background-color: $background-color;
+  height: 100vh;
 }
 
 .box-shadow {
   background: $background-color;
   border: 1px solid rgb(200, 200, 200);
-  box-shadow: 2px 2px 8px rgba(200, 200, 200, 0.5);
+  box-shadow: 2px 2px 8px rgba(92, 92, 92, 0.2);
 }
 
 .button {
@@ -45,3 +46,4 @@ body {
 @import "menu";
 @import "calendar";
 @import "todoList";
+@import "notifications";

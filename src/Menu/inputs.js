@@ -1,29 +1,24 @@
+import element from "../Calendar/elements";
 import Menu from "./menu";
 
-const createButton = document.getElementById("create-todo-button");
-createButton.onclick = () => {
-  const to_do = document.getElementById("create-todo-input").value;
-  if (!to_do) return;
-  Menu.createToDo(to_do);
-};
-
-const getPosition = ({ id }) => Number(id.slice(7,11).trim());
-const todoList = document.querySelector(".listing__todo");
-todoList.addEventListener("change", ({ target }) => {
-  const position = getPosition(target);
-  const checked = target.checked;
-  Menu.updateToDo(position, checked);
+element.task.create.addEventListener("click", () => {
+  if (!element.task.content.value) return;
+  Menu.createToDo(element.task.content.value);
 });
 
-const mobileButton = document.getElementById("mobile-menu");
-let activeMenu = false;
+const getPosition = ({ id }) => Number(id.slice(7,11).trim());
 
-mobileButton.onclick = () => {
+element.menu.list.addEventListener("change", ({ target }) => {
+  Menu.updateToDo(getPosition(target), target.checked);
+});
+
+let active = false;
+element.mobile.addEventListener("click", () => {
   const PRIMARY_COLOR = "#60cdff";
   const RED_COLOR = "red";
 
-  activeMenu = !activeMenu;
-  mobileButton.style.backgroundColor = activeMenu ? RED_COLOR : PRIMARY_COLOR;
-  mobileButton.innerHTML = activeMenu ? "Fechar" : "Abrir";
-  Menu.toggleMenu(activeMenu);
-};
+  active = !active;
+  element.mobile.style.backgroundColor = active ? RED_COLOR : PRIMARY_COLOR;
+  element.mobile.innerHTML = active ? "Fechar" : "Abrir";
+  Menu.active(active);
+});

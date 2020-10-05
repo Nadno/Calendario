@@ -4,6 +4,10 @@
   height: 90vh;
   padding: $secondary-spacing;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   background-color: #fff;
   transform: translateX(-120%);
   transition: linear 0.4s;
