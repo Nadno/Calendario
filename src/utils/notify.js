@@ -29,6 +29,7 @@ class Notify extends CalendarData {
       },
       time,
     });
+    return this;
   }
 
   createError(body, title = "Ocorreu um erro") {

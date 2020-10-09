@@ -21,14 +21,28 @@
       </div>
 
       <section class="create__todo">
+        <div class="create__event">
+          <label for="event">Criar evento?</label>
+          <input type="checkbox" id="event" />
+          <div class="event__config">
+            <input type="text" id="title" placeholder="Titulo do evento" />
+            <select name="first-alert" id="first-alert">
+              <option value="1">Um dia antes</option>
+              <option value="2">Dois dias antes</option>
+              <option value="3">Três dias antes</option>
+              <option value="4">Quatro dias antes</option>
+              <option value="5">Cinco dias antes</option>
+            </select>
+          </div>
+        </div>
         <textarea
-          id="create-todo-input"
+          id="content"
           cols="30"
           rows="10"
           placeholder="Digite uma tarefa aqui"
           autofocus
         ></textarea>
-        <button id="create-todo-button" type="button">Criar</button>
+        <button id="create" type="button">Criar</button>
       </section>
     </section>
 
@@ -72,7 +86,6 @@
       </article>
     </section>
 
-    <ol class="notifications">
-    </ol>
+    <ol class="notifications"></ol>
   </body>
 </html>

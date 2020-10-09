@@ -23,7 +23,7 @@
     justify-content: center;
     align-items: center;
 
-    #create-todo-input {
+    #content{
       @extend .box-shadow;
 
       width: 100%;
@@ -59,6 +59,31 @@
     button {
       width: 100%;
       max-width: 100%;
+    }
+  }
+
+  .create__event {
+    width: 100%;
+
+    label {
+      font-size: 1.4rem;
+    }
+  }
+
+  .event__config {
+    transform: scale(0);
+    transition: transform 0.4s;
+  }
+
+  .event__config.active {
+    transform: scale(1);
+    #title,
+    #first-alert {
+      @extend .box-shadow;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.4rem;
+      margin-bottom: $primary-spacing;
     }
   }
 }

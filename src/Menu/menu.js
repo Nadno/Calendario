@@ -9,20 +9,17 @@ import Notify from "../utils/notify";
 
 function showNotifications(notifications) {
   element.notifications.innerHTML = "";
-  console.log(notifications);
+
   notifications.forEach((notify, position) => {
     element.notifications.appendChild(
-      createNotify(notify, deleteNotify(position), position));
+      createNotify(notify, deleteNotify(position)));
   });
 }
 
 function deleteNotify(position) {
-  return () => {
-    console.log(position);
-    Notify
+  return () => Notify
     .delete(position, 1)
     .get(showNotifications);
-  }
 }
 
 const Menu = {
@@ -50,10 +47,9 @@ const Menu = {
     Task.selectDate({ year, month, day: 0 }).get(showToDo);
   },
 
-  createToDo: function (text) {
-    Task.create(text).save().get(showToDo);
-
-    Notify.createError(text).get(showNotifications);
+  create:  {
+    todo: (content) => Task.create(content.body()).save().get(showToDo),
+    event: (content) => console.log(content.title()),
   },
 
   updateToDo: function (position, checked) {

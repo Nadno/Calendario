@@ -65,37 +65,31 @@ export function createYearOption(value) {
   return op;
 }
 
-export function createNotify({
-  type, title, body, alert, time
-}, deleteNotify) {
+export function createNotify({ type, title, body, alert, time }, deleteNotify) {
   const notify = document.createElement("li");
   const head = document.createElement("div");
   const button = document.createElement("button");
 
-  notify.className = "notify"
-  type
-    ? notify.classList.add(type)
-    : null;
-  console.log(deleteNotify);
+  notify.className = "notify";
+  type ? notify.classList.add(type) : null;
+
   button.innerText = "X";
-  button.addEventListener("click", deleteNotify);
-  
+  button.addEventListener("click",  deleteNotify);
+
   head.className = "notify__header";
   head.innerHTML = `<strong>${title}</strong>`;
   head.appendChild(button);
-  
 
   const INFO = `
     <div>${time}, dia ${alert.to}, quinta-feira de outubro</div>
   `;
   const BODY = `
     <div class="notify__body">${body}</div>
-  `
+  `;
+
   notify.appendChild(head);
   notify.insertAdjacentHTML("beforeend", INFO);
   notify.insertAdjacentHTML("beforeend", BODY);
 
-  if (type === 'error') setTimeout(deleteNotify, 7000);
-  
   return notify;
 }

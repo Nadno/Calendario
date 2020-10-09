@@ -11,9 +11,13 @@ const element = {
     year: document.querySelector(`#year`),
     month: document.querySelector(`#month`),
   },
-  task: {
-    create: document.querySelector("#create-todo-button"),
-    content: document.querySelector("#create-todo-input"),
+  create: {
+    submit: document.querySelector("#create"),
+    content: {
+      title: () => document.querySelector("#title").value,
+      body: () => document.querySelector("#content").value,
+    },
+    eventActive: document.querySelector("#event"),
   },
   mobile: document.querySelector("#mobile-menu"),
   notifications:  document.querySelector(".notifications"),
