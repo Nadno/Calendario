@@ -22,14 +22,15 @@ $secondary-spacing: 2rem;
 
 body {
   display: flex;
-  background-color: $background-color;
   height: 100vh;
+  background-color: $background-color;
 }
+
 
 .box-shadow {
   background: $background-color;
   border: 1px solid rgb(200, 200, 200);
-  box-shadow: 2px 2px 8px rgba(92, 92, 92, 0.2);
+  box-shadow: 2px 2px 8px rgba(190, 190, 190, 0.2);
 }
 
 .button {

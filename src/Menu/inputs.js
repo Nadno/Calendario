@@ -4,6 +4,7 @@ import Menu from "./menu";
 let creatType = "todo";
 
 element.create.submit.addEventListener("click", () => {
+  console.log(element.create.content.body());
   if (!element.create.content.body()) return;
   Menu.create[creatType](element.create.content);
 });

@@ -1,11 +1,22 @@
 .calendar {
   width: 100%;
   max-height: 900px;
-  align-self: center;
-
-  padding: 2rem;
   font-weight: 700;
+  
+  padding: 2rem;
+  align-self: center;
   color: $secondary-color;
+
+  .select__date {
+    margin-bottom: 2rem;
+  }
+
+  #year,
+  #month {
+    @extend .box-shadow;
+    height: 3.2rem;
+    font-size: 1.6rem;
+  }
 
   .month__name {
     font-size: 2rem;

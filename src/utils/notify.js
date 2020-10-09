@@ -19,16 +19,19 @@ class Notify extends CalendarData {
     return this;
   }
 
-  createEvent({ body, time, from, to }) {
+  createEvent(content) {
+    const { day } = this.position;
+    if (!day) return;
     this.selected.push({
       type: "event",
-      body,
+      body: content.body(),
       alert: {
-        from,
-        to,
+        from: day - Number(content.firstAlert()),
+        to: day,
       },
-      time,
+      time: "10:00",
     });
+    console.log(this.selected);
     return this;
   }
 

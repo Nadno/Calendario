@@ -22,11 +22,13 @@
 
       <section class="create__todo">
         <div class="create__event">
-          <label for="event">Criar evento?</label>
           <input type="checkbox" id="event" />
+          <label for="event">Criar evento?</label>
+
           <div class="event__config">
             <input type="text" id="title" placeholder="Titulo do evento" />
             <select name="first-alert" id="first-alert">
+              <option label="Selecione quando quer ser avisado" hidden></option>
               <option value="1">Um dia antes</option>
               <option value="2">Dois dias antes</option>
               <option value="3">Três dias antes</option>
@@ -36,7 +38,7 @@
           </div>
         </div>
         <textarea
-          id="content"
+          id="body"
           cols="30"
           rows="10"
           placeholder="Digite uma tarefa aqui"

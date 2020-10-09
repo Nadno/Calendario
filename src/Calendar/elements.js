@@ -15,7 +15,8 @@ const element = {
     submit: document.querySelector("#create"),
     content: {
       title: () => document.querySelector("#title").value,
-      body: () => document.querySelector("#content").value,
+      body: () => document.querySelector("#body").value,
+      firstAlert: () => document.querySelector("#first-alert").value,
     },
     eventActive: document.querySelector("#event"),
   },

@@ -1,11 +1,11 @@
 import element from "../Calendar/elements";
 import Task from "../utils/task";
-import "../utils/updateDate";
+import Notify from "../utils/notify";
 
 import { createNotify, createTask } from "../createElement";
-
 import { getDate } from "../date";
-import Notify from "../utils/notify";
+
+import "../utils/updateDate";
 
 function showNotifications(notifications) {
   element.notifications.innerHTML = "";
@@ -36,6 +36,7 @@ const Menu = {
     element.menu.title.innerHTML = newFullDate;
     element.menu.taskTitle.innerHTML = "Tarefas:";
     Task.selectDate({ year, month, day }).get(showToDo);
+    Notify.selectDate({ year, month, day });
   },
 
   setDaily: function () {
@@ -44,11 +45,12 @@ const Menu = {
     element.menu.title.innerHTML = "";
     element.menu.taskTitle.innerHTML = "Tarefas diárias:";
     Task.selectDate({ year, month, day: 0 }).get(showToDo);
+    Notify.selectDate({ year, month, day: 0 });
   },
 
   create: {
-    todo: (content) => Task.create(content.body()).save().get(showToDo),
-    event: (content) => console.log(content.title()),
+    todo: ({ body }) => Task.create(body()).save().get(showToDo),
+    event: (content) => Notify.get().createEvent(content),
   },
 
   updateToDo: function (position, item, value) {
@@ -62,9 +64,10 @@ const Menu = {
 
 function changeContent(position) {
   return function ({ target }) {
-    if (String(target.textContent).trim() === "")
+    const text = String(target.textContent).trim();
+    if (text === "")
       return Menu.deleteToDo(position);
-    Menu.updateToDo(position, "text", target.textContent);
+    Menu.updateToDo(position, "text", text);
   };
 }
 
