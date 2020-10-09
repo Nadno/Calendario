@@ -1,42 +1,34 @@
 import menuUpdate from "./Calendar/actions";
 
-export function createTask({ text, checked, position, deleteToDo }) {
+export function createTask({ text, checked, position, changeContent }) {
   const li = document.createElement("li");
-  const input = document.createElement("input");
+  const checkbox = document.createElement("input");
+  const content = document.createElement("div");
   const label = document.createElement("label");
-  const span = document.createElement("span");
-  const button = document.createElement("button");
 
   const id = `to-do__${position}`;
+  label.htmlFor = id;
+  li.className = "to-do";
 
-  Object.assign(input, {
+  Object.assign(checkbox, {
     className: "input",
     type: "checkbox",
     id,
     checked,
   });
-  Object.assign(label, {
-    htmlFor: id,
+
+  Object.assign(content, {
+    id: "content",
     className: "content",
-  });
-  Object.assign(span, {
-    textContent: text,
-    className: "text",
-  });
-  Object.assign(button, {
-    className: "delete",
-    type: "button",
-    textContent: "X",
+    contentEditable: true,
+    innerText: text,
   });
 
-  li.className = "to-do";
-  button.addEventListener("click", deleteToDo(position));
-
-  label.appendChild(span);
-  label.appendChild(button);
-
-  li.appendChild(input);
+  content.addEventListener("blur", changeContent);
+  li.appendChild(checkbox);
   li.appendChild(label);
+  li.appendChild(content);
+
   return li;
 }
 
@@ -74,7 +66,7 @@ export function createNotify({ type, title, body, alert, time }, deleteNotify) {
   type ? notify.classList.add(type) : null;
 
   button.innerText = "X";
-  button.addEventListener("click",  deleteNotify);
+  button.addEventListener("click", deleteNotify);
 
   head.className = "notify__header";
   head.innerHTML = `<strong>${title}</strong>`;

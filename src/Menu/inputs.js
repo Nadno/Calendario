@@ -23,7 +23,7 @@ element.create.eventActive.addEventListener("change", setCreateEvent);
 const getPosition = ({ id }) => Number(id.slice(7, 11).trim());
 
 element.menu.list.addEventListener("change", ({ target }) => {
-  Menu.updateToDo(getPosition(target), target.checked);
+  Menu.updateToDo(getPosition(target), "checked", target.checked);
 });
 
 let active = false;

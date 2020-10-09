@@ -12,14 +12,13 @@ function showNotifications(notifications) {
 
   notifications.forEach((notify, position) => {
     element.notifications.appendChild(
-      createNotify(notify, deleteNotify(position)));
+      createNotify(notify, deleteNotify(position))
+    );
   });
 }
 
 function deleteNotify(position) {
-  return () => Notify
-    .delete(position, 1)
-    .get(showNotifications);
+  return () => Notify.delete(position, 1).get(showNotifications);
 }
 
 const Menu = {
@@ -47,19 +46,25 @@ const Menu = {
     Task.selectDate({ year, month, day: 0 }).get(showToDo);
   },
 
-  create:  {
+  create: {
     todo: (content) => Task.create(content.body()).save().get(showToDo),
     event: (content) => console.log(content.title()),
   },
 
-  updateToDo: function (position, checked) {
-    Task.update(position, checked).save();
+  updateToDo: function (position, item, value) {
+    Task.update(position, item, value).save();
+  },
+
+  deleteToDo: function (from, to = 1) {
+    Task.delete(from, to).save().get(showToDo);
   },
 };
 
-function deleteToDo(from, to = 1) {
-  return function () {
-    Task.delete(from, to).save().get(showToDo);
+function changeContent(position) {
+  return function ({ target }) {
+    if (String(target.textContent).trim() === "")
+      return Menu.deleteToDo(position);
+    Menu.updateToDo(position, "text", target.textContent);
   };
 }
 
@@ -71,7 +76,7 @@ function showToDo(tasks) {
         text,
         checked,
         position,
-        deleteToDo,
+        changeContent: changeContent(position),
       })
     );
   });

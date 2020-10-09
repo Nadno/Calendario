@@ -115,7 +115,7 @@
     transform: translateX(0);
     position: relative;
     height: 100vh;
-    width: 500px;
+    max-width: 400px;
 
     border: 1px solid rgb(200, 200, 200);
     box-shadow: 2px 2px 8px rgba(200, 200, 200, 0.5);

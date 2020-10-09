@@ -4,19 +4,29 @@
   list-style: none;
   overflow-y: scroll;
   overflow-x: hidden;
+  padding: 0.5rem;
   margin-bottom: $secondary-spacing;
+
 
   .to-do {
     position: relative;
-
+    margin: 1rem 0;
+    display: flex;
     .content {
-      display: grid;
-      grid-template-columns: 32px 1fr 32px;
-      grid-template-areas: "check text_content delete";
+      width: 100%;
+      height: 100%;
+      padding: 0 0.6rem;
+      min-height: 3.2rem;
+      font-size: 1.6rem;  
+      overflow: hidden;
+      
+      &:focus {
+        outline: none;
+        background: #60cdff50;
+      }
     }
 
     .text {
-      display: block;
       max-width: 100%;
       padding: 0 1rem;
       word-break: break-word;
@@ -29,7 +39,20 @@
     }
 
     .delete {
-      grid-area: delete;
+      height: 3.2rem;
+      border: none;
+      background-color: transparent;
+
+      font-size: 1.6rem;
+      color: $primary-color;
+
+      cursor: pointer;
+      align-self: center;
+      transition: color 0.6s;
+
+      &:hover {
+        color: $third-color;
+      }
     }
 
     &:hover {
@@ -42,7 +65,6 @@
   .input + label {
     margin: 0 0.2rem;
     margin-bottom: 0.8rem;
-    padding: 4px 0;
     font-size: 1.5rem;
     cursor: pointer;
   }
@@ -51,17 +73,15 @@
     content: "\2714";
     border: 2px solid #60cdff;
     display: inline-block;
-    width: 1em;
-    min-width: 18px;
-    height: 1em;
+    width: 2rem;
+    height: 2.4rem;
 
-    padding-left: 0.2rem;
-    padding-bottom: 0.3em;
-    margin-right: 0.2em;
+    padding-left: 0.8rem;
+    padding-top: 0.2rem;
 
     vertical-align: middle;
     color: transparent;
-    transition: 0.3s;
+    transition: 0.4s;
   }
 
   .input + label:active:before {

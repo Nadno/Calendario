@@ -13,8 +13,9 @@ class Task extends CalendarData {
     return this;
   }
 
-  update(position, checked) {
-    this.selected[position].checked = checked;
+  update(position, item, value) {
+    if (this.selected[position])
+      this.selected[position][item] = value;
     return this;
   }
 
