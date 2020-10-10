@@ -4,27 +4,28 @@ import Menu from "./menu";
 let creatType = "todo";
 
 element.create.submit.addEventListener("click", () => {
-  console.log(element.create.content.body());
   if (!element.create.content.body()) return;
   Menu.create[creatType](element.create.content);
 });
 
-const setCreateEvent = ({ target }) => {
+const setEvents = ({ target }) => {
   if (target.checked) {
+    Menu.setEvents();
     creatType = "event";
     document.querySelector(".event__config").classList.add("active");
   } else {
+    Menu.setDaily();
     creatType = "todo";
     document.querySelector(".event__config").classList.remove("active");
   }
 };
 
-element.create.eventActive.addEventListener("change", setCreateEvent);
+element.create.eventActive.addEventListener("change", setEvents);
 
 const getPosition = ({ id }) => Number(id.slice(7, 11).trim());
 
 element.menu.list.addEventListener("change", ({ target }) => {
-  Menu.updateToDo(getPosition(target), "checked", target.checked);
+  Menu.task.update(getPosition(target), "checked", target.checked);
 });
 
 let active = false;

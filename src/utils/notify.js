@@ -8,35 +8,36 @@ class Notify extends CalendarData {
 
   get(callback) {
     const { month, year } = this.position;
-    this.checkIfYearExists(year);
+    const TYPE = "notify"
 
+    this.checkIfYearExists(year);
     if (!this.calendar?.[year]?.[month]?.events)
       this.calendar[year][month].events = [];
 
     this.selected = this.calendar[year][month].events;
 
-    if (callback) return callback(this.notifications);
+    if (callback) return callback(Object.assign([], this.selected), TYPE);
     return this;
   }
 
   createEvent(content) {
     const { day } = this.position;
-    if (!day) return;
+    if (!day) return this;
+
     this.selected.push({
-      type: "event",
+      title: content.title(),
       body: content.body(),
       alert: {
         from: day - Number(content.firstAlert()),
         to: day,
       },
-      time: "10:00",
+      type: "event",
     });
-    console.log(this.selected);
+
     return this;
   }
 
   createError(body, title = "Ocorreu um erro") {
-    const date = new Date();
     this.notifications.push({
       type: "error",
       title,
@@ -51,7 +52,7 @@ class Notify extends CalendarData {
   }
 
   delete(from, to) {
-    this.notifications.splice(from, to);
+    this.selected.splice(from, to);
     return this;
   }
 }

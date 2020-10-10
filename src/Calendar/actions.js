@@ -20,8 +20,8 @@ element.calendar.year.addEventListener("change", changeSelect);
 
 const menuUpdate = (day, week_day) => {
   if (day < 0 || day > 31) return;
-
   const sameDay = () => selected.get("day") === day;
+  const isEvent = () => element.create.eventActive.checked;
 
   return function () {
     const dayElement = document.getElementById(day);
@@ -30,13 +30,17 @@ const menuUpdate = (day, week_day) => {
     }
 
     if (sameDay()) {
-      Menu.setDaily();
       dayElement.classList.remove("selected");
       selected.set("day", 0);
+
+      if (isEvent()) return Menu.setEvents();
+      Menu.setDaily();
     } else {
       dayElement.classList.add("selected");
       selected.set("day", day);
       selected.set("week_day", week_day);
+
+      if (isEvent()) return Menu.setEvents();
       Menu.setDay();
     }
   };

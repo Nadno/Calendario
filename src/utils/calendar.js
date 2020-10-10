@@ -19,7 +19,6 @@ class CalendarData {
       month,
       day,
     });
-    console.log(this.position);
     return this;
   }
 

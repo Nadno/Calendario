@@ -25,7 +25,6 @@ class Storage {
     const save = localStorage.getItem(NAME);
     if (save) {
       const data = parseJson(save);
-      console.log(data);
       if (data) this.calendarData = data;
     }
     return this;
@@ -37,7 +36,7 @@ class Storage {
   }
 
   getData() {
-    return this.calendarData;
+    return Object.assign({}, this.calendarData);
   }
 
   save() {

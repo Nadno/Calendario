@@ -1,6 +1,6 @@
 import menuUpdate from "./Calendar/actions";
 
-export function createTask({ text, checked, position, changeContent }) {
+export function createTask({ text, checked }, changeContent, position) {
   const li = document.createElement("li");
   const checkbox = document.createElement("input");
   const content = document.createElement("div");
@@ -63,9 +63,11 @@ export function createNotify({ type, title, body, alert, time }, deleteNotify) {
   const button = document.createElement("button");
 
   notify.className = "notify";
-  type ? notify.classList.add(type) : null;
+  if (type) notify.classList.add(type);
 
+  button.type = "button";
   button.innerText = "X";
+  button.className = "delete";
   button.addEventListener("click", deleteNotify);
 
   head.className = "notify__header";
@@ -73,7 +75,10 @@ export function createNotify({ type, title, body, alert, time }, deleteNotify) {
   head.appendChild(button);
 
   const INFO = `
-    <div>${time}, dia ${alert.to}, quinta-feira de outubro</div>
+    <div>
+      <div>${time ? `Às ${time},`: "Para"} quinta-feira, dia ${alert.to} de outubro</div>
+      ${alert.from ? `<div>Dia de alerta: ${alert.from}</div>` : null}
+    </div>
   `;
   const BODY = `
     <div class="notify__body">${body}</div>

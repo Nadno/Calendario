@@ -62,8 +62,24 @@
   .create__event {
     width: 100%;
 
+    #event {
+      display: none;
+    }
+
     label {
+      @extend .box-shadow;
+      display: inline-block;
+      width: 8rem;
+
+      text-align: center;
       font-size: 1.4rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    #event:checked ~ label {
+      color: white;
+      background-color: $third-color;
     }
   }
 
@@ -110,7 +126,6 @@
     background-color: $primary-color;
   }
 }
-
 
 @media (min-width: 700px) {
   .todo__menu {

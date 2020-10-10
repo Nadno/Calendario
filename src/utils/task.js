@@ -3,13 +3,14 @@ import CalendarData from "./calendar";
 class Task extends CalendarData {
   get(callback) {
     const { day, month, year } = this.position;
-    this.checkIfYearExists(year);
+    const TYPE = "task";
 
+    this.checkIfYearExists(year);
     this.selected = day
       ? this.calendar?.[year]?.[month]?.days?.[day]
       : this.calendar.daily;
 
-    if (callback) return callback(this.selected || []);
+    if (callback) return callback(Object.assign([], this.selected), TYPE);
     return this;
   }
 
