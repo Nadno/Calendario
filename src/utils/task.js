@@ -6,10 +6,12 @@ class Task extends CalendarData {
     const TYPE = "task";
 
     this.checkIfYearExists(year);
+    this.checkIfDayExists();
+    
     this.selected = day
-      ? this.calendar?.[year]?.[month]?.days?.[day]
+      ? this.calendar?.[year]?.[month]?.[day]
       : this.calendar.daily;
-
+    
     if (callback) return callback(Object.assign([], this.selected), TYPE);
     return this;
   }
@@ -21,9 +23,6 @@ class Task extends CalendarData {
   }
 
   create(text) {
-    if (this.position.day) this.checkIfDayExists().get();
-    if (text.trim() === "") return;
-
     this.selected.push({ text, checked: false });
     return this;
   }

@@ -1,89 +1,63 @@
+import { actual } from "../date";
 import Storage from "./storage";
 
 const CALENDAR = "cronos";
 
 class CalendarData {
   constructor() {
-    this.calendar = Storage.get(CALENDAR).getData();
+    this.calendar = Storage.get(CALENDAR);
     this.position = {
-      year: 0,
-      month: 0,
+      year: actual.get('year'),
+      month: actual.get('month'),
       day: 0,
     };
     this.selected;
   }
 
   selectDate({ year, month, day }) {
-    Object.assign(this.position, {
-      year,
-      month,
-      day,
-    });
+    if (year) this.position.year = year;
+    if (month >= 0 && month <= 11) this.position.month = month;
+    if (day >= 0) this.position.day = day;
+
     return this;
   }
 
   checkIfDayExists() {
     const { year, month, day } = this.position;
-    if (this.calendar[year][month].days?.[day]) return this;
+    if (this.calendar[year][month]?.[day]) return this;
 
-    Object.assign(this.calendar[year][month].days, {
+    Object.assign(this.calendar[year][month], {
       [day]: [],
     });
     return this;
   }
 
-  checkIfYearExists(year) {
-    if (this.calendar[year]) return this;
-    const days = {};
+  checkIfYearExists() {
+    if (this.calendar[this.position.year]) return this;
 
     Object.assign(this.calendar, {
-      [year]: {
-        0: {
-          days,
-        },
-        1: {
-          days,
-        },
-        2: {
-          days,
-        },
-        3: {
-          days,
-        },
-        4: {
-          days,
-        },
-        5: {
-          days,
-        },
-        6: {
-          days,
-        },
-        7: {
-          days,
-        },
-        8: {
-          days,
-        },
-        9: {
-          days,
-        },
-        10: {
-          days,
-        },
-        11: {
-          days,
-        },
+      [this.position.year]: {
+        0: {},
+        1: {},
+        2: {},
+        3: {},
+        4: {},
+        5: {},
+        6: {},
+        7: {},
+        8: {},
+        9: {},
+        10: {},
+        11: {},
       },
     });
     return this;
   }
 
   save() {
-    Storage.set(this.calendar).save();
+    Storage.set(this.calendar);
     return this;
   }
-  
 }
 
 export default CalendarData;

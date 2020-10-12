@@ -1,3 +1,6 @@
+const SELECTED = "selected";
+const ACTUAL = "actual";
+
 const date = {
   selected: {
     day: 0,
@@ -48,11 +51,11 @@ export function getDate(type, name) {
 }
 
 export const selected = {
-  get: (name) => getDate("selected", name),
-  set: (name, value) => setDate("selected", name, value),
+  get: (name) => getDate(SELECTED, name),
+  set: (name, value) => setDate(SELECTED, name, value),
 };
 
 export const actual = {
-  get: (name) => getDate("actual", name),
-  set: (name, value) => setDate("actual", name, value),
+  get: (name) => getDate(ACTUAL, name),
+  set: (name, value) => setDate(ACTUAL, name, value),
 };

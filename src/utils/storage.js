@@ -15,32 +15,29 @@ const stringifyObject = (data) => {
 };
 
 class Storage {
-  constructor() {
-    this.calendarData = {
+  get(name) {
+    const save = localStorage.getItem(name);
+    return Object.assign({
       daily: [],
-    };
-  }
-
-  get(NAME) {
-    const save = localStorage.getItem(NAME);
-    if (save) {
-      const data = parseJson(save);
-      if (data) this.calendarData = data;
-    }
-    return this;
+      events: {
+        0: [],
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        7: [],
+        8: [],
+        9: [],
+        10: [],
+        11: [],
+      },
+    }, save ? parseJson(save) : {});
   }
 
   set(data) {
-    data ? (this.calendarData = data) : null;
-    return this;
-  }
-
-  getData() {
-    return Object.assign({}, this.calendarData);
-  }
-
-  save() {
-    localStorage.setItem("cronos", stringifyObject(this.calendarData));
+    localStorage.setItem("cronos", stringifyObject(data));
     return this;
   }
 }

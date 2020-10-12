@@ -1,4 +1,5 @@
-import menuUpdate from "./Calendar/actions";
+import menuUpdate from './utils/updateMenu';
+import { getDate } from "./date";
 
 export function createTask({ text, checked }, changeContent, position) {
   const li = document.createElement("li");
@@ -32,7 +33,7 @@ export function createTask({ text, checked }, changeContent, position) {
   return li;
 }
 
-export function createDay({ day, month, week_day }) {
+export function createDay({ day, month, week_day }, Menu) {
   const li = document.createElement("li");
   const button = document.createElement("button");
 
@@ -42,6 +43,7 @@ export function createDay({ day, month, week_day }) {
     innerText: day,
     className: month,
   });
+
   button.addEventListener("click", menuUpdate(day, week_day));
   li.appendChild(button);
 
@@ -57,7 +59,10 @@ export function createYearOption(value) {
   return op;
 }
 
-export function createNotify({ type, title, body, alert, time }, deleteNotify) {
+export function createNotify(
+  { type, title, body, alert, from, to, time },
+  deleteNotify
+) {
   const notify = document.createElement("li");
   const head = document.createElement("div");
   const button = document.createElement("button");
@@ -68,7 +73,10 @@ export function createNotify({ type, title, body, alert, time }, deleteNotify) {
   button.type = "button";
   button.innerText = "X";
   button.className = "delete";
-  button.addEventListener("click", deleteNotify);
+  button.addEventListener(
+    "click",
+    deleteNotify ? deleteNotify : () => notify.remove()
+  );
 
   head.className = "notify__header";
   head.innerHTML = `<strong>${title}</strong>`;
@@ -76,8 +84,15 @@ export function createNotify({ type, title, body, alert, time }, deleteNotify) {
 
   const INFO = `
     <div>
-      <div>${time ? `Às ${time},`: "Para"} quinta-feira, dia ${alert.to} de outubro</div>
-      ${alert.from ? `<div>Dia de alerta: ${alert.from}</div>` : null}
+      ${
+        alert
+          ? `<div>Alerta para: 
+              Dia ${from.day} de ${getDate("MONTH_NAME")[from.month]} de ${
+              from.year
+            }</div>
+             </div>`
+          : "Evento Finalizado"
+      }
     </div>
   `;
   const BODY = `
