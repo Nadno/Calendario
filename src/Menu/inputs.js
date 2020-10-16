@@ -1,4 +1,5 @@
 import element from "../Calendar/elements";
+import { selected, DAY } from "../date";
 
 export default function (Menu) {
   let creatType = "todo";
@@ -9,13 +10,18 @@ export default function (Menu) {
   });
 
   const setEvents = ({ target }) => {
+    if (selected.get(DAY)) {
+      document.getElementById(selected.get(DAY)).classList.remove("selected");
+      selected.set(DAY, 0);
+    }
+
     if (target.checked) {
-      Menu.exitDay("Notify");
       creatType = "event";
+      Menu.exitDay({ for: "Notify", title: "Eventos do mês: " });
       document.querySelector(".event__config").classList.add("active");
     } else {
-      Menu.exitDay("Task");
       creatType = "todo";
+      Menu.exitDay({ for: "Task", title: "Tarefas diárias: " });
       document.querySelector(".event__config").classList.remove("active");
     }
   };

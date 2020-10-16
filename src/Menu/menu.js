@@ -6,35 +6,39 @@ import Notify from "../utils/notify";
 import Task from "../utils/task";
 
 import { createNotify, createTask } from "../createElement";
-import { getDate, nameOf } from "../date";
+import { getDate, nameOf, selected, DAY, MONTH, WEEK_DAY } from "../date";
 
 import "../utils/updateDate";
 
 export default function () {
   setInitialDate(Notify, Task);
   checkEvents(Notify);
-
   function renderOnMenu(items, type) {
     element.menu.list.innerHTML = items.length
       ? ""
       : '<div class="alert">Nada encontrado!</div>';
 
     const createElement = {
-      tasks: createTask,
-      events: createNotify,
+      tasks: (item, position) =>  createTask(item, Menu.task.changeContent(position), position),
+      events: (item, position) => createNotify(item, Menu.notify.delete(position)),
     };
 
-    const change = {
-      tasks: Menu.task.changeContent,
-      events: Menu.notify.delete,
-    };
 
     items.forEach((item, position) => {
-      element.menu.list.appendChild(
-        createElement[type](item, change[type](position), position)
-      );
+      element.menu.list.appendChild(createElement[type](item, position));
     });
   }
+
+  const SET = {
+    Task: (title) => {
+      Menu.setTitle(title);
+      Task.selectDate(getDate("selected")).get(renderOnMenu);
+    },
+    Notify: (title) => {
+      Menu.setTitle(title);
+      Notify.selectDate(getDate("selected")).get(renderOnMenu);
+    },
+  };
 
   const Menu = {
     active: function (toggle) {
@@ -45,45 +49,24 @@ export default function () {
     setDateTitle: (title) => element.menu.title.innerHTML = title,
     setTitle: (title) =>  element.menu.taskTitle.innerHTML = title,
 
-    setDay: function (forType) {
-      const { day, week_day, month, year } = getDate("selected");
-      const SET = {
-        Task: () => {
-          Menu.setTitle("Tarefas: ");
-          Task.selectDate({ day, month, year }).get(renderOnMenu);
-          console.log("exit Task");
-        },
-        Notify: () => {
-          Menu.setTitle("Eventos: ");
-          Notify.selectDate({ day, month, year }).get(renderOnMenu);
-          console.log("exit Notify");
-        },
-      };
-      
-      Menu.setDateTitle(`${nameOf.day(week_day)}, ${day} de ${nameOf.month(month)}`);
-      SET[forType]();
+    setDay: function (type) {
+      Menu.setDateTitle(
+       `${nameOf.day(selected.get(WEEK_DAY))}, 
+        ${selected.get(DAY)} de 
+        ${nameOf.month(selected.get(MONTH))}
+      `);
+      SET[type.for](type.title);
     },
 
-    exitDay: function (forType) {
-      const SET = {
-        Task: () => {
-          Menu.setTitle("Tarefas diárias: ");
-          Task.selectDate(getDate("selected")).get(renderOnMenu);
-        },
-        Notify: () => {
-          Menu.setTitle("Eventos do mês: ");
-          Notify.selectDate(getDate("selected")).get(renderOnMenu);
-        },
-      };
-
+    exitDay: function (type) {
       Menu.setDateTitle("");
-      SET[forType]();
+      SET[type.for](type.title);
     },
     
     create: {
       todo: ({ body }) => Task.create(body()).save().get(renderOnMenu),
       event: (content) =>
-        Notify.createEvent(content).save().get(renderOnMenu),
+        Notify.createEvent(content, selected.get(WEEK_DAY)).save().get(renderOnMenu),
     },
 
     task: {

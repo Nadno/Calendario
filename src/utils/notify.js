@@ -1,5 +1,4 @@
 import CalendarData from "./calendar";
-import { monthTotalDays } from "./date";
 
 class Notify extends CalendarData {
   get(callback) {
@@ -7,30 +6,32 @@ class Notify extends CalendarData {
     const TYPE = "events";
 
     this.checkIfYearExists();
-    this.checkIfDayExists();
-
-    this.selected = day
-      ? this.calendar?.[year]?.[month]?.[day][TYPE]
-      : this.getAllEvents();
-  
+    if (day) {
+      this.checkIfDayExists();
+      this.selected = this.calendar[year][month][day][TYPE];
+    } else {
+      this.selected = this.getAllEvents();
+    }
+    
     if (callback) return callback(Object.assign([], this.selected), TYPE);
     return this;
   }
 
   finalize(position) {
-    this.selected[position].status = false;
+    this.selected[position].alert = false;
     return this;
   }
 
-  createEvent(content) {
-    const month = this.position.month + 1;
+  createEvent(content, week_day) {
     const { day } = this.position;
-    if (!day || !month) return this;
+    if (!day) return this;
 
     this.selected.push({
       title: content.title(),
       body: content.body(),
       day,
+      week_day,
+      month,
       alert: true,
       type: "event",
     });

@@ -1,4 +1,4 @@
-import { actual } from "../date";
+import { actual, DAY, MONTH, YEAR } from "../date";
 import Storage from "./storage";
 
 const CALENDAR = "cronos";
@@ -7,28 +7,26 @@ class CalendarData {
   constructor() {
     this.calendar = Storage.get(CALENDAR);
     this.position = {
-      year: actual.get("year"),
-      month: actual.get("month"),
+      year: actual.get(YEAR),
+      month: actual.get(MONTH),
       day: 0,
     };
 
     this.selected;
   }
 
-  setConnection(year, month, day) {
-    this.calendar.lastConnection.year = year;
-    this.calendar.lastConnection.month = month;
-    this.calendar.lastConnection.day = day;
-    console.log(this.calendar.lastConnection);
+  setLastConnection() {
+    this.calendar.lastConnection.year = actual.get(YEAR);
+    this.calendar.lastConnection.month = actual.get(MONTH);
+    this.calendar.lastConnection.day = actual.get(DAY);
+
     return this;
   }
 
-  isNewDay(year, month, day) {
-    return (
-      year > this.calendar.lastConnection.year ||
-      month > this.calendar.lastConnection.month ||
-      day > this.calendar.lastConnection.day
-    );
+  isNewDay() {
+    const IS_NEW_DAY = this.calendar.lastConnection.day >= actual.get(DAY);
+    const IS_NEW_MONTH = this.calendar.lastConnection.month !== actual.get(MONTH);
+    return IS_NEW_DAY || IS_NEW_MONTH;
   }
 
   selectDate({ year, month, day }) {

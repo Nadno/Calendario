@@ -1,5 +1,5 @@
 import menuUpdate from "./utils/updateMenu";
-import { getDate } from "./date";
+import { actual, DAY, getDate, nameOf, selected } from "./date";
 
 export function createTask({ text, checked }, changeContent, position) {
   const li = document.createElement("li");
@@ -59,29 +59,41 @@ export function createYearOption(value) {
   return op;
 }
 
-export function createNotify({ type, title, body, alert, day }, deleteNotify) {
-  const notify = document.createElement("li");
-  const head = document.createElement("div");
+function deleteNotifyButton(head, deleteNotify) {
   const button = document.createElement("button");
-
-  notify.className = "notify";
-  if (type) notify.classList.add(type);
-
   button.type = "button";
   button.innerText = "X";
   button.className = "delete";
   button.addEventListener(
     "click",
-    deleteNotify ? deleteNotify : () => notify.remove()
+    deleteNotify ? deleteNotify : () => head.parentNode.remove()
   );
+  head.appendChild(button);
+}
+
+export function createNotify(
+  { type, title, body, alert, day, week_day },
+  deleteNotify
+) {
+  const notify = document.createElement("li");
+  const head = document.createElement("div");
+
+  notify.className = "notify";
+  if (type) notify.classList.add(type);
 
   head.className = "notify__header";
   head.innerHTML = `<strong>${title}</strong>`;
-  head.appendChild(button);
+
+  if (selected.get(DAY) === day || actual.get(DAY) === day)
+    deleteNotifyButton(head, deleteNotify);
 
   const INFO = `
     <div>
-      ${day}
+      ${
+        alert
+          ? `Evento para ${nameOf.day(week_day)}, dia ${day}`
+          : "Evento finalizado!"
+      }
     </div>
   `;
   const BODY = `
