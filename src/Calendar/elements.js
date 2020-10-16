@@ -16,7 +16,6 @@ const element = {
     content: {
       title: () => document.querySelector("#title").value,
       body: () => document.querySelector("#body").value,
-      alertDays: () => document.querySelector("#first-alert").value,
     },
     eventActive: document.querySelector("#event"),
   },

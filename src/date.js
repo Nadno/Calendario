@@ -1,5 +1,10 @@
 const SELECTED = "selected";
 const ACTUAL = "actual";
+export const DAY = "day",
+  MONTH = "month",
+  YEAR = "year",
+  WEEK_DAY = "week_day",
+  TOTAL_DAYS = "total_days";
 
 const date = {
   selected: {
@@ -7,6 +12,7 @@ const date = {
     month: 0,
     year: 0,
     week_day: 0,
+    total_days: 0,
   },
   actual: {
     day: 0,
@@ -47,7 +53,7 @@ function setDate(type, name, value) {
 }
 
 export function getDate(type, name) {
-  return !name ? date[type] : date[type][name];
+  return name === undefined ? date[type] : date[type][name];
 }
 
 export const selected = {
@@ -58,4 +64,9 @@ export const selected = {
 export const actual = {
   get: (name) => getDate(ACTUAL, name),
   set: (name, value) => setDate(ACTUAL, name, value),
+};
+
+export const nameOf = {
+  month: (month) => getDate("MONTH_NAME", month),
+  day: (day) => getDate("DAY_NAME", day),
 };

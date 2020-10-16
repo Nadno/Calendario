@@ -18,21 +18,9 @@ class Storage {
   get(name) {
     const save = localStorage.getItem(name);
     return Object.assign({
+      lastConnection: { year: 0, month: 0, day: 0 },
       daily: [],
-      events: {
-        0: [],
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-        6: [],
-        7: [],
-        8: [],
-        9: [],
-        10: [],
-        11: [],
-      },
+      events: [],
     }, save ? parseJson(save) : {});
   }
 

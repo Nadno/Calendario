@@ -1,104 +1,89 @@
-import { getDate } from "../date";
 import element from "../Calendar/elements";
+import setInitialDate from "../utils/date";
+import checkEvents from "../utils/updateDate";
+
+import Notify from "../utils/notify";
+import Task from "../utils/task";
 
 import { createNotify, createTask } from "../createElement";
+import { getDate, nameOf } from "../date";
 
 import "../utils/updateDate";
 
-// export default function (Notify, Task) {
-//   Task.get(renderOnMenu);
+export default function () {
+  setInitialDate(Notify, Task);
+  checkEvents(Notify);
 
-//   const Menu = {
-    
+  function renderOnMenu(items, type) {
+    element.menu.list.innerHTML = items.length
+      ? ""
+      : '<div class="alert">Nada encontrado!</div>';
 
-//     create: {
-//       todo: ({ body }) => Task.create(body()).save().get(renderOnMenu),
-//       event: (content) =>
-//         Notify.get().createEvent(content).save().get(renderOnMenu),
-//     },
+    const createElement = {
+      tasks: createTask,
+      events: createNotify,
+    };
 
-//     task: {
-//       update: function (position, item, value) {
-//         Task.update(position, item, value).save();
-//       },
+    const change = {
+      tasks: Menu.task.changeContent,
+      events: Menu.notify.delete,
+    };
 
-//       delete: function (from, to = 1) {
-//         Task.delete(from, to).save().get(renderOnMenu);
-//       },
+    items.forEach((item, position) => {
+      element.menu.list.appendChild(
+        createElement[type](item, change[type](position), position)
+      );
+    });
+  }
 
-//       changeContent: function (position) {
-//         return function ({ target }) {
-//           const text = String(target.textContent).trim();
-//           if (!text) return Menu.task.delete(position);
-//           Menu.task.update(position, "text", text);
-//         };
-//       },
-//     },
-
-//     notify: {
-//       delete: function (position) {
-//         return () => Notify.delete(position, 1).save().get(renderOnMenu);
-//       },
-//     },
-//   };
-
-//   function renderOnMenu(items, type) {
-//     element.menu.list.innerHTML = items.length
-//       ? ""
-//       : '<div class="alert">Nada encontrado!</div>';
-  
-//     const createElement = {
-//       task: createTask,
-//       notify: createNotify,
-//     };
-//     const change = {
-//       task: Menu.task.changeContent,
-//       notify: Menu.notify.delete,
-//     };
-  
-//     items.forEach((item, position) => {
-//       element.menu.list.appendChild(
-//         createElement[type](item, change[type](position), position)
-//       );
-//     });
-//   }
-
-//   return Menu;
-// }
-
-export default function (Notify, Task) {
   const Menu = {
     active: function (toggle) {
       if (toggle) return element.menu.self.classList.add("on");
       return element.menu.self.classList.remove("on");
     },
 
-    setEvents: function () {
-      element.menu.title.innerHTML = "";
-      element.menu.taskTitle.innerHTML = "Eventos:";
-      Notify.selectDate(getDate("selected")).get(console.log);
-    },
+    setDateTitle: (title) => element.menu.title.innerHTML = title,
+    setTitle: (title) =>  element.menu.taskTitle.innerHTML = title,
 
-    setDay: function () {
+    setDay: function (forType) {
       const { day, week_day, month, year } = getDate("selected");
-      const newFullDate = `${getDate("DAY_NAME")[week_day]}, ${day} de ${
-        getDate("MONTH_NAME")[month]
-      }`;
-
-      element.menu.title.innerHTML = newFullDate;
-      element.menu.taskTitle.innerHTML = "Tarefas:";
-      Task.selectDate({ day, month, year }).get(renderOnMenu);
+      const SET = {
+        Task: () => {
+          Menu.setTitle("Tarefas: ");
+          Task.selectDate({ day, month, year }).get(renderOnMenu);
+          console.log("exit Task");
+        },
+        Notify: () => {
+          Menu.setTitle("Eventos: ");
+          Notify.selectDate({ day, month, year }).get(renderOnMenu);
+          console.log("exit Notify");
+        },
+      };
+      
+      Menu.setDateTitle(`${nameOf.day(week_day)}, ${day} de ${nameOf.month(month)}`);
+      SET[forType]();
     },
 
-    setDaily: function () {
-      element.menu.title.innerHTML = "";
-      element.menu.taskTitle.innerHTML = "Tarefas diárias:";
-      Task.selectDate(getDate("selected")).get(renderOnMenu);
+    exitDay: function (forType) {
+      const SET = {
+        Task: () => {
+          Menu.setTitle("Tarefas diárias: ");
+          Task.selectDate(getDate("selected")).get(renderOnMenu);
+        },
+        Notify: () => {
+          Menu.setTitle("Eventos do mês: ");
+          Notify.selectDate(getDate("selected")).get(renderOnMenu);
+        },
+      };
+
+      Menu.setDateTitle("");
+      SET[forType]();
     },
+    
     create: {
       todo: ({ body }) => Task.create(body()).save().get(renderOnMenu),
       event: (content) =>
-        Notify.get().createEvent(content).save().get(renderOnMenu),
+        Notify.createEvent(content).save().get(renderOnMenu),
     },
 
     task: {
@@ -126,27 +111,6 @@ export default function (Notify, Task) {
     },
   };
 
-  function renderOnMenu(items, type) {
-    element.menu.list.innerHTML = items.length
-      ? ""
-      : '<div class="alert">Nada encontrado!</div>';
-  
-    const createElement = {
-      task: createTask,
-      notify: createNotify,
-    };
-    const change = {
-      task: Menu.task.changeContent,
-      notify: Menu.notify.delete,
-    };
-  
-    items.forEach((item, position) => {
-      element.menu.list.appendChild(
-        createElement[type](item, change[type](position), position)
-      );
-    });
-  }
-  
   Task.get(renderOnMenu);
   return Menu;
 }

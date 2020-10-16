@@ -10,11 +10,11 @@ export default function (Menu) {
 
   const setEvents = ({ target }) => {
     if (target.checked) {
-      Menu.setEvents();
+      Menu.exitDay("Notify");
       creatType = "event";
       document.querySelector(".event__config").classList.add("active");
     } else {
-      Menu.setDaily();
+      Menu.exitDay("Task");
       creatType = "todo";
       document.querySelector(".event__config").classList.remove("active");
     }

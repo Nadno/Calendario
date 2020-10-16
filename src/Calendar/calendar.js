@@ -2,7 +2,7 @@ import element from "./elements";
 
 import { createDay } from "../createElement";
 import { monthTotalDays } from "../utils/date";
-import { actual, selected, getDate } from "../date";
+import { actual, selected, nameOf, DAY, MONTH, YEAR, WEEK_DAY, TOTAL_DAYS } from "../date";
 
 const render = ({ from, to }, renderDay) => {
   for (let day = from; day <= to; day++) {
@@ -10,48 +10,41 @@ const render = ({ from, to }, renderDay) => {
   }
 };
 
-const weekDay = (year, month) =>
-  function getWeekDay(day) {
-    return new Date(year, month, day).getDay();
-  };
+function getWeekDay(year, month, day) {
+  return new Date(year, month, day).getDay();
+}
 
 const lastMonth = (day) => {
-  const LAST_MONTH = "last__month";
-  element.calendar.self.innerHTML += `<li class="${LAST_MONTH}">${day}</li>`;
+  element.calendar.self.innerHTML += `<li class="last__month">${day}</li>`;
+};
+const thisMonth = (day) => {
+  element.calendar.self.appendChild(
+    createDay({
+      day,
+      month: "this__month",
+      week_day: getWeekDay(selected.get(YEAR), selected.get(MONTH), day),
+    })
+  );
 };
 
-const thisMonth = (getWeekDay) => {
-  const THIS_MONTH = "this__month";
-  return (day) =>
-    element.calendar.self.appendChild(
-      createDay({
-        day,
-        month: THIS_MONTH,
-        week_day: getWeekDay(day),
-      })
-    );
-};
-
-const setMonth = (month) => (element.calendar.title.innerHTML = month);
+const setMonth = () =>
+  (element.calendar.title.innerHTML = nameOf.month(selected.get(MONTH)));
 const setToday = (day) => document.getElementById(day).classList.add("today");
+const backOneMonth = (month) => (month === 0 ? 11 : month - 1);
 
-const YEAR = "year";
-const MONTH = "month";
-
-const calendarGenerator = () => {
+export default function () {
   element.calendar.self.innerHTML = "";
 
-  setMonth(getDate("MONTH_NAME")[selected.get(MONTH)]);
-
-  if (selected.get("week_day") > 0) {
+  setMonth();
+  if (selected.get(WEEK_DAY) > 0) {
     const lastMonthTotalDays = monthTotalDays(
       selected.get(YEAR),
-      selected.get(MONTH) - 1
+      backOneMonth(selected.get(MONTH))
     );
-    const lastMonthRest = lastMonthTotalDays - selected.get("week_day") + 1;
+    
     render(
       {
-        from: lastMonthRest,
+        from: lastMonthTotalDays - selected.get(WEEK_DAY) + 1,
         to: lastMonthTotalDays,
       },
       lastMonth
@@ -61,14 +54,13 @@ const calendarGenerator = () => {
   render(
     {
       from: 1,
-      to: monthTotalDays(selected.get(YEAR), selected.get(MONTH)),
+      to: selected.get(TOTAL_DAYS),
     },
-    thisMonth(weekDay(selected.get(YEAR), selected.get(MONTH)))
+    thisMonth
   );
 
   const isToday =
-    actual.get(MONTH) === selected.get(MONTH) && actual.get(YEAR) === selected.get(YEAR);
-  if (isToday) setToday(actual.get("day"));
-};
-
-export default calendarGenerator;
+    actual.get(MONTH) === selected.get(MONTH) &&
+    actual.get(YEAR) === selected.get(YEAR);
+  if (isToday) setToday(actual.get(DAY));
+}

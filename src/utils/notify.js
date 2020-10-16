@@ -2,36 +2,36 @@ import CalendarData from "./calendar";
 import { monthTotalDays } from "./date";
 
 class Notify extends CalendarData {
-  constructor() {
-    super();
-    this.notifications = [];
-  }
-
   get(callback) {
-    const TYPE = "notify";
+    const { day, month, year } = this.position;
+    const TYPE = "events";
 
-    this.selected = this.calendar.events[this.position.month];
-    
+    this.checkIfYearExists();
+    this.checkIfDayExists();
+
+    this.selected = day
+      ? this.calendar?.[year]?.[month]?.[day][TYPE]
+      : this.getAllEvents();
+  
     if (callback) return callback(Object.assign([], this.selected), TYPE);
     return this;
   }
 
   finalize(position) {
-    this.selected[position].alert = false;
+    this.selected[position].status = false;
     return this;
   }
 
   createEvent(content) {
-    const { day, month, year } = this.position;
-    if (!day) return this;
+    const month = this.position.month + 1;
+    const { day } = this.position;
+    if (!day || !month) return this;
 
     this.selected.push({
       title: content.title(),
       body: content.body(),
-      notDay: [],
-      from: this.checkFrom(day - Number(content.alertDays())),
-      to: `${year}-${month}-${day}`,
-      status: true,
+      day,
+      alert: true,
       type: "event",
     });
 
@@ -39,7 +39,7 @@ class Notify extends CalendarData {
   }
 
   createError(body, title = "Ocorreu um erro") {
-    this.notifications.push({
+    return {
       type: "error",
       title,
       body,
@@ -47,40 +47,23 @@ class Notify extends CalendarData {
         to: date.getDate(),
       },
       time: `${date.getHours()}:${date.getMinutes()}`,
-    });
+    };
+  }
 
-    return this;
+  getAllEvents() {
+    const { year, month } = this.position;
+    let events = [];
+
+    Object.keys(this.calendar[year][month]).filter((day) => {
+      events = [...events, ...this.calendar[year][month][day].events];
+    });
+    
+    return events;
   }
 
   delete(from, to) {
     this.selected.splice(from, to);
     return this;
-  }
-
-  backOneMonth(year, month, day) {
-    const totalDays = monthTotalDays(from.year, from.month);
-    let from;
-    if (month === 0) {
-      from = `${year - 1}-${month}-${day === 0 ? totalDays : totalDays + day}`;
-      // {
-      //   year: year - 1,
-      //   month: 11,
-      // };
-    } else {
-      from = `${year}-${month - 1}-${day === 0 ? totalDays : totalDays + day}`;
-      // from = {
-      //   year,
-      //   month: month - 1,
-      // };
-    }
-
-    return from;
-  }
-
-  checkFrom(day) {
-    const { year, month } = this.position;
-    if (day > 0) return `${year}-${month}-${day}`;
-    return this.backOneMonth(year, month, day);
   }
 }
 

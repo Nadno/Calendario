@@ -1,4 +1,4 @@
-import menuUpdate from './utils/updateMenu';
+import menuUpdate from "./utils/updateMenu";
 import { getDate } from "./date";
 
 export function createTask({ text, checked }, changeContent, position) {
@@ -33,7 +33,7 @@ export function createTask({ text, checked }, changeContent, position) {
   return li;
 }
 
-export function createDay({ day, month, week_day }, Menu) {
+export function createDay({ day, month, week_day }) {
   const li = document.createElement("li");
   const button = document.createElement("button");
 
@@ -59,10 +59,7 @@ export function createYearOption(value) {
   return op;
 }
 
-export function createNotify(
-  { type, title, body, alert, from, to, time },
-  deleteNotify
-) {
+export function createNotify({ type, title, body, alert, day }, deleteNotify) {
   const notify = document.createElement("li");
   const head = document.createElement("div");
   const button = document.createElement("button");
@@ -84,15 +81,7 @@ export function createNotify(
 
   const INFO = `
     <div>
-      ${
-        alert
-          ? `<div>Alerta para: 
-              Dia ${from.day} de ${getDate("MONTH_NAME")[from.month]} de ${
-              from.year
-            }</div>
-             </div>`
-          : "Evento Finalizado"
-      }
+      ${day}
     </div>
   `;
   const BODY = `

@@ -1,12 +1,7 @@
 import element from "../Calendar/elements";
 
-import { selected, actual, getDate } from "../date";
+import { selected, actual, getDate, DAY, MONTH, YEAR, WEEK_DAY, TOTAL_DAYS } from "../date";
 import { createYearOption } from "../createElement";
-
-const DAY = "day",
-  MONTH = "month",
-  YEAR = "year",
-  WEEK_DAY = "week_day";
 
 export const setInitialYearAndMonth = (year, month) => {
   element.calendar.month.value = month;
@@ -18,19 +13,23 @@ export const setSelectedDate = (year, month) => {
   const selectedDate = new Date(year, month, FIRST_DAY);
 
   selected.set(DAY, 0);
-  selected.set(WEEK_DAY, selectedDate.getDay());
-  selected.set(MONTH, selectedDate.getMonth());
-  selected.set(YEAR, selectedDate.getFullYear());
+  selected.set(WEEK_DAY, selectedDate.getUTCDay());
+  selected.set(MONTH, selectedDate.getUTCMonth());
+  selected.set(YEAR, selectedDate.getUTCFullYear());
+  selected.set(
+    TOTAL_DAYS,
+    monthTotalDays(selectedDate.getFullYear(), selectedDate.getMonth())
+  );
 };
 
 export const setActualDate = () => {
   const actualDate = new Date();
-  actual.set(DAY, actualDate.getDate());
-  actual.set(MONTH, actualDate.getMonth());
-  actual.set(YEAR, actualDate.getFullYear());
+  actual.set(DAY, 18);
+  actual.set(MONTH, actualDate.getUTCMonth());
+  actual.set(YEAR, actualDate.getUTCFullYear());
 };
 
-export default function initialConfig(Notify, Task) {
+export default function setInitialDate(Notify, Task) {
   setActualDate();
   setSelectedDate(actual.get(YEAR), actual.get(MONTH));
 
@@ -40,11 +39,12 @@ export default function initialConfig(Notify, Task) {
   }
 
   setInitialYearAndMonth(actual.get(YEAR), actual.get(MONTH));
+
   Notify.selectDate(getDate("selected"));
   Task.selectDate(getDate("selected"));
 }
 
-export const monthTotalDays = (year, month) => {
+export function monthTotalDays(year, month) {
   const FEBRUARY = month === 1;
 
   if (FEBRUARY) {
@@ -57,4 +57,4 @@ export const monthTotalDays = (year, month) => {
   if (monthWithThirtyDays.includes(month)) return 30;
 
   return 31;
-};
+}

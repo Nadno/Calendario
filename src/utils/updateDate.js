@@ -5,23 +5,24 @@ import { createNotify } from "../createElement";
 
 const FIVE_MINUTES = 60000 * 5;
 
-setInterval(updateDate, FIVE_MINUTES);
-
-function updateDate() {
-  const day = new Date().getDate();
-
-  if (day === actual.get("day")) return;
-  checkEvents();
-}
+setInterval(checkEvents, FIVE_MINUTES);
 
 export default function checkEvents(Notify) {
-  Notify.selectDate(actual.get("year"), actual.get("month"));
+  if (
+    !Notify.isNewDay(actual.get("year"), actual.get("month"), actual.get("day"))
+  )
+    return;
+
+  Notify.selectDate(actual.get("year"), actual.get("month"))
+    .setConnection(actual.get("year"), actual.get("month"), actual.get("day"))
+    .save();
+
   if (Notify.get(hasEvent)) {
     Notify.get((events) => {
       events.forEach((notify, position) => {
-        if (isEventDay(notify)) {
+        if (finalizeEvent(notify.to)) Notify.finalize(position);
+        if (notify.status && validDate(notify)) {
           element.notifications.appendChild(createNotify(notify));
-          // Notify.finalize(position);
         }
       });
     });
@@ -32,15 +33,30 @@ function hasEvent(events) {
   return events.length ? true : false;
 }
 
-function isEventDay({ alert, from, to }) {
-  return (
-    alert &&
-    from.year >= actual.get("year") &&
-    from.month >= actual.get("month") &&
-    validDay(from, to)
-  );
+function validDate({ from, to }) {
+  const fromDate = new Date(from);
+  const toDate = new Date(to);
+
+  const BIGGER_THAN_FROM_DATE =
+    actual.get("year") >= fromDate.getUTCFullYear() &&
+    actual.get("month") >= fromDate.getUTCMonth() &&
+    actual.get("day") >= fromDate.getUTCDate();
+
+  const LESS_THAN_TO_DATE =
+    actual.get("year") <= toDate.getUTCFullYear() &&
+    actual.get("month") <= toDate.getUTCMonth() &&
+    actual.get("day") <= toDate.getUTCDate();
+
+  return BIGGER_THAN_FROM_DATE && LESS_THAN_TO_DATE;
 }
 
-function validDay(from, to) {
-  return actual.get("day") >= from.day && actual.get("day") <= to;
+function finalizeEvent(to) {
+  const toDate = new Date(to);
+
+  const FINALIZE_EVENT =
+    actual.get("year") >= toDate.getUTCFullYear() &&
+    actual.get("month") >= toDate.getUTCMonth() &&
+    actual.get("day") > toDate.getUTCDate();
+
+  return FINALIZE_EVENT;
 }
