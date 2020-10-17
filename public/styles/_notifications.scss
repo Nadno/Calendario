@@ -7,6 +7,9 @@
 
   background-color: #fff;
 
+  transform: scale(0);
+  transition: transform 0.4s;
+
   .notify__header {
     width: 100%;
     display: flex;
@@ -46,6 +49,10 @@
       color: $third-color;
     }
   }
+}
+
+.on-screen {
+  transform: scale(1);
 }
 
 .notifications {

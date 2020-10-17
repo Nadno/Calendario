@@ -10,23 +10,41 @@ import { getDate, nameOf, selected, DAY, MONTH, WEEK_DAY } from "../date";
 
 import "../utils/updateDate";
 
+function isOnScreen(el) {
+  let rect = el.getBoundingClientRect();
+  return (
+    rect.top > 0 &&
+    rect.bottom <
+      document.querySelector(".listing__todo").getBoundingClientRect().bottom
+  );
+}
+
+function renderItemOnMenu(item) {
+  if (isOnScreen(item)) return item.classList.add("on-screen");
+}
+
 export default function () {
   setInitialDate(Notify, Task);
   checkEvents(Notify);
+
   function renderOnMenu(items, type) {
     element.menu.list.innerHTML = items.length
       ? ""
       : '<div class="alert">Nada encontrado!</div>';
 
-    const createElement = {
-      tasks: (item, position) =>  createTask(item, Menu.task.changeContent(position), position),
-      events: (item, position) => createNotify(item, Menu.notify.delete(position)),
-    };
+    function addItemOnMenu(item, position) {
+      element.menu.list.appendChild(Menu.createElement[type](item, position));
+    }
 
+    items.forEach(addItemOnMenu);
 
-    items.forEach((item, position) => {
-      element.menu.list.appendChild(createElement[type](item, position));
-    });
+    const itemsElements = Array.from(
+      document.querySelector(".listing__todo").childNodes
+    );
+    const render = () => itemsElements.forEach(renderItemOnMenu);
+    render();
+
+    element.menu.list.addEventListener("scroll", render);
   }
 
   const SET = {
@@ -46,15 +64,16 @@ export default function () {
       return element.menu.self.classList.remove("on");
     },
 
-    setDateTitle: (title) => element.menu.title.innerHTML = title,
-    setTitle: (title) =>  element.menu.taskTitle.innerHTML = title,
+    setDateTitle: (title) => (element.menu.title.innerHTML = title),
+    setTitle: (title) => (element.menu.taskTitle.innerHTML = title),
 
     setDay: function (type) {
       Menu.setDateTitle(
-       `${nameOf.day(selected.get(WEEK_DAY))}, 
+        `${nameOf.day(selected.get(WEEK_DAY))}, 
         ${selected.get(DAY)} de 
         ${nameOf.month(selected.get(MONTH))}
-      `);
+      `
+      );
       SET[type.for](type.title);
     },
 
@@ -62,11 +81,13 @@ export default function () {
       Menu.setDateTitle("");
       SET[type.for](type.title);
     },
-    
+
     create: {
       todo: ({ body }) => Task.create(body()).save().get(renderOnMenu),
       event: (content) =>
-        Notify.createEvent(content, selected.get(WEEK_DAY)).save().get(renderOnMenu),
+        Notify.createEvent(content, selected.get(WEEK_DAY))
+          .save()
+          .get(renderOnMenu),
     },
 
     task: {
@@ -90,6 +111,15 @@ export default function () {
     notify: {
       delete: function (position) {
         return () => Notify.delete(position, 1).save().get(renderOnMenu);
+      },
+    },
+
+    createElement: {
+      tasks: (item, position) =>
+        createTask(item, Menu.task.changeContent(position), position),
+      events: (item, position) => {
+        if (selected.get(DAY)) return createNotify(item, Menu.notify.delete(position));
+        return createNotify(item);
       },
     },
   };

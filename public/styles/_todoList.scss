@@ -16,6 +16,9 @@
     display: flex;
     min-height: 2.8rem;
 
+    transform: scale(0);
+    transition: transform 0.4s;
+
     .content {
       width: 100%;
       height: 100%;
@@ -35,6 +38,10 @@
       display: none;
       grid-area: check;
     }
+  }
+
+  .on-screen {
+    transform: scale(1);
   }
 
   .alert {

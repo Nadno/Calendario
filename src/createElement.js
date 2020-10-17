@@ -64,10 +64,7 @@ function deleteNotifyButton(head, deleteNotify) {
   button.type = "button";
   button.innerText = "X";
   button.className = "delete";
-  button.addEventListener(
-    "click",
-    deleteNotify ? deleteNotify : () => head.parentNode.remove()
-  );
+  button.addEventListener("click", deleteNotify);
   head.appendChild(button);
 }
 
@@ -84,8 +81,7 @@ export function createNotify(
   head.className = "notify__header";
   head.innerHTML = `<strong>${title}</strong>`;
 
-  if (selected.get(DAY) === day || actual.get(DAY) === day)
-    deleteNotifyButton(head, deleteNotify);
+  if (deleteNotify) deleteNotifyButton(head, deleteNotify);
 
   const INFO = `
     <div>

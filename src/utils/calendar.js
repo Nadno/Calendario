@@ -15,20 +15,6 @@ class CalendarData {
     this.selected;
   }
 
-  setLastConnection() {
-    this.calendar.lastConnection.year = actual.get(YEAR);
-    this.calendar.lastConnection.month = actual.get(MONTH);
-    this.calendar.lastConnection.day = actual.get(DAY);
-
-    return this;
-  }
-
-  isNewDay() {
-    const IS_NEW_DAY = this.calendar.lastConnection.day >= actual.get(DAY);
-    const IS_NEW_MONTH = this.calendar.lastConnection.month !== actual.get(MONTH);
-    return IS_NEW_DAY || IS_NEW_MONTH;
-  }
-
   selectDate({ year, month, day }) {
     if (year) this.position.year = year;
     if (month >= 0 && month <= 11) this.position.month = month;

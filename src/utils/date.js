@@ -13,9 +13,9 @@ export const setSelectedDate = (year, month) => {
   const selectedDate = new Date(year, month, FIRST_DAY);
 
   selected.set(DAY, 0);
-  selected.set(WEEK_DAY, selectedDate.getUTCDay());
-  selected.set(MONTH, selectedDate.getUTCMonth());
-  selected.set(YEAR, selectedDate.getUTCFullYear());
+  selected.set(WEEK_DAY, selectedDate.getDay());
+  selected.set(MONTH, selectedDate.getMonth());
+  selected.set(YEAR, selectedDate.getFullYear());
   selected.set(
     TOTAL_DAYS,
     monthTotalDays(selectedDate.getFullYear(), selectedDate.getMonth())
@@ -24,9 +24,9 @@ export const setSelectedDate = (year, month) => {
 
 export const setActualDate = () => {
   const actualDate = new Date();
-  actual.set(DAY, 18);
-  actual.set(MONTH, actualDate.getUTCMonth());
-  actual.set(YEAR, actualDate.getUTCFullYear());
+  actual.set(DAY, actualDate.getDate());
+  actual.set(MONTH, actualDate.getMonth());
+  actual.set(YEAR, actualDate.getFullYear());
 };
 
 export default function setInitialDate(Notify, Task) {

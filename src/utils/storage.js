@@ -18,7 +18,6 @@ class Storage {
   get(name) {
     const save = localStorage.getItem(name);
     return Object.assign({
-      lastConnection: { year: 0, month: 0, day: 0 },
       daily: [],
       events: [],
     }, save ? parseJson(save) : {});
