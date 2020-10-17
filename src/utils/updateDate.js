@@ -1,34 +1,35 @@
+import CalendarData from "./calendar";
 import element from "../Calendar/elements";
+
 import { createNotify } from "../createElement";
-import { actual, DAY, MONTH, YEAR } from "../date";
+import { actual, getDate } from "../date";
 
 const FIVE_MINUTES = 60000 * 5;
 
-setInterval(() => {
-  console.log("OK")
-}, FIVE_MINUTES);
+const isDifferentDay = () => {
+  const day = new Date().getDate();
+  const DIFFERENT_DAY = day !== actual.get("day");
+  if (DIFFERENT_DAY) location.reload();
+};
+
+setInterval(isDifferentDay, FIVE_MINUTES);
 
 export default function checkEvents(Notify) {
-  Notify.selectDate({
-    year: actual.get(YEAR),
-    month: actual.get(MONTH),
-    day: actual.get(DAY),
-  });
+  CalendarData.selectDate(getDate("actual"));
 
   function showNotification(event, position) {
-    console.log(event);
     if (event.alert) {
       const deleteNotify = ({ target }) => {
         target.parentNode.parentNode.remove();
-        Notify.finalize(position).save();
+        Notify.finalize(position);
       };
       const eventEl = createNotify(event, deleteNotify);
       eventEl.classList.add("on-screen");
       element.notifications.appendChild(eventEl);
-    };
+    }
   }
 
-  Notify.get(events => {
+  Notify.get((events) => {
     if (events.length) events.forEach(showNotification);
   });
 }

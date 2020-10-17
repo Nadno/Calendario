@@ -1,30 +1,43 @@
 import CalendarData from "./calendar";
 
-class Notify extends CalendarData {
+class Notify {
   get(callback) {
-    const { day, month, year } = this.position;
+    const { day, month, year } = CalendarData.position;
     const TYPE = "events";
 
-    this.checkIfYearExists();
     if (day) {
-      this.checkIfDayExists();
-      this.selected = this.calendar[year][month][day][TYPE];
+      CalendarData.checkIfDayExists();
+      this.selected = CalendarData.calendar[year][month][day][TYPE];
     } else {
       this.selected = this.getAllEvents();
     }
-    
+
     if (callback) return callback(Object.assign([], this.selected), TYPE);
     return this;
   }
 
   finalize(position) {
     this.selected[position].alert = false;
+    CalendarData.save();
     return this;
   }
 
   createEvent(content, week_day) {
-    const { day } = this.position;
+    const { day } = CalendarData.position;
     if (!day) return this;
+    if (!this.selected.length) {
+      this.selected.push({
+        title: content.title(),
+        body: content.body(),
+        day,
+        week_day,
+        month,
+        alert: true,
+        type: "event",
+      });
+      CalendarData.removeMarkFromDays().setDayWithItems();
+      return this;
+    }
 
     this.selected.push({
       title: content.title(),
@@ -35,7 +48,8 @@ class Notify extends CalendarData {
       alert: true,
       type: "event",
     });
-
+    
+    CalendarData.save();
     return this;
   }
 
@@ -52,18 +66,22 @@ class Notify extends CalendarData {
   }
 
   getAllEvents() {
-    const { year, month } = this.position;
+    const { year, month } = CalendarData.position;
     let events = [];
 
-    Object.keys(this.calendar[year][month]).filter((day) => {
-      events = [...events, ...this.calendar[year][month][day].events];
+    Object.keys(CalendarData.calendar[year][month]).filter((day) => {
+      events = [...events, ...CalendarData.calendar[year][month][day].events];
     });
-    
+
     return events;
   }
 
   delete(from, to) {
     this.selected.splice(from, to);
+    if (!this.selected.length)
+      CalendarData.removeMarkFromDays().setDayWithItems();
+
+    CalendarData.save();
     return this;
   }
 }

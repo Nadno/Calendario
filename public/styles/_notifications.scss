@@ -28,8 +28,15 @@
   }
 
   .notify__body {
-    font-size: 1.6rem;
-    margin-top: 1rem;
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .notify__info {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid $secondary-color;
   }
 
   .delete {

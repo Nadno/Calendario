@@ -2,7 +2,16 @@ import element from "./elements";
 
 import { createDay } from "../createElement";
 import { monthTotalDays } from "../utils/date";
-import { actual, selected, nameOf, DAY, MONTH, YEAR, WEEK_DAY, TOTAL_DAYS } from "../date";
+import {
+  actual,
+  selected,
+  nameOf,
+  DAY,
+  MONTH,
+  YEAR,
+  WEEK_DAY,
+  TOTAL_DAYS,
+} from "../date";
 
 const render = ({ from, to }, renderDay) => {
   for (let day = from; day <= to; day++) {
@@ -41,7 +50,7 @@ export default function () {
       selected.get(YEAR),
       backOneMonth(selected.get(MONTH))
     );
-    
+
     render(
       {
         from: lastMonthTotalDays - selected.get(WEEK_DAY) + 1,

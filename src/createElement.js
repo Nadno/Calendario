@@ -1,5 +1,5 @@
-import menuUpdate from "./utils/updateMenu";
-import { actual, DAY, getDate, nameOf, selected } from "./date";
+import { menuUpdate } from "./Menu/menu";
+import { nameOf } from "./date";
 
 export function createTask({ text, checked }, changeContent, position) {
   const li = document.createElement("li");
@@ -84,12 +84,9 @@ export function createNotify(
   if (deleteNotify) deleteNotifyButton(head, deleteNotify);
 
   const INFO = `
-    <div>
-      ${
-        alert
-          ? `Evento para ${nameOf.day(week_day)}, dia ${day}`
-          : "Evento finalizado!"
-      }
+    <div class="notify__info">
+      ${`Evento para ${nameOf.day(week_day)}, dia ${day}`} </br>
+      ${alert ? "" : "Finalizado!"}
     </div>
   `;
   const BODY = `

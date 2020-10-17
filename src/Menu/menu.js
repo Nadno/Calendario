@@ -1,14 +1,13 @@
+import CalendarData from "../utils/calendar";
 import element from "../Calendar/elements";
-import setInitialDate from "../utils/date";
-import checkEvents from "../utils/updateDate";
-
-import Notify from "../utils/notify";
-import Task from "../utils/task";
+import menuInputs from "./inputs";
 
 import { createNotify, createTask } from "../createElement";
-import { getDate, nameOf, selected, DAY, MONTH, WEEK_DAY } from "../date";
+import { getDate, nameOf, selected, DAY, MONTH, WEEK_DAY, TOTAL_DAYS } from "../date";
 
 import "../utils/updateDate";
+
+let Menu = {};
 
 function isOnScreen(el) {
   let rect = el.getBoundingClientRect();
@@ -23,10 +22,7 @@ function renderItemOnMenu(item) {
   if (isOnScreen(item)) return item.classList.add("on-screen");
 }
 
-export default function () {
-  setInitialDate(Notify, Task);
-  checkEvents(Notify);
-
+export default function (Notify, Task) {
   function renderOnMenu(items, type) {
     element.menu.list.innerHTML = items.length
       ? ""
@@ -49,16 +45,18 @@ export default function () {
 
   const SET = {
     Task: (title) => {
+      CalendarData.selectDate(getDate("selected"));
       Menu.setTitle(title);
-      Task.selectDate(getDate("selected")).get(renderOnMenu);
+      Task.get(renderOnMenu);
     },
     Notify: (title) => {
+      CalendarData.selectDate(getDate("selected"));
       Menu.setTitle(title);
-      Notify.selectDate(getDate("selected")).get(renderOnMenu);
+      Notify.get(renderOnMenu);
     },
   };
 
-  const Menu = {
+  Menu = {
     active: function (toggle) {
       if (toggle) return element.menu.self.classList.add("on");
       return element.menu.self.classList.remove("on");
@@ -83,20 +81,19 @@ export default function () {
     },
 
     create: {
-      todo: ({ body }) => Task.create(body()).save().get(renderOnMenu),
+      todo: ({ body }) => Task.create(body()).get(renderOnMenu),
       event: (content) =>
         Notify.createEvent(content, selected.get(WEEK_DAY))
-          .save()
           .get(renderOnMenu),
     },
 
     task: {
       update: function (position, item, value) {
-        Task.update(position, item, value).save();
+        Task.update(position, item, value);
       },
 
       delete: function (from, to = 1) {
-        Task.delete(from, to).save().get(renderOnMenu);
+        Task.delete(from, to).get(renderOnMenu);
       },
 
       changeContent: function (position) {
@@ -110,7 +107,7 @@ export default function () {
 
     notify: {
       delete: function (position) {
-        return () => Notify.delete(position, 1).save().get(renderOnMenu);
+        return () => Notify.delete(position, 1).get(renderOnMenu);
       },
     },
 
@@ -125,5 +122,46 @@ export default function () {
   };
 
   Task.get(renderOnMenu);
+  menuInputs(Menu);
   return Menu;
+}
+
+export function menuUpdate(day, week_day) {
+  if (day < 0 || day > selected.get(TOTAL_DAYS)) return;
+  const DAY_OR_SAME_DAY = () => selected.get(DAY) === day ? "SAME_DAY" : "DAY";
+  const eventActive = () => element.create.eventActive.checked;
+  const dayElement = () => document.getElementById(day);
+
+  const set = {
+    SAME_DAY: () => {
+      dayElement().classList.remove("selected");
+      selected.set(DAY, 0);
+
+      Menu.exitDay(
+        eventActive()
+        ? { for: "Notify", title: "Eventos do mês: " }
+        : { for: "Task", title: "Tarefas diárias: " }
+      );
+    },
+    
+    DAY: () => {
+      dayElement().classList.add("selected");
+      selected.set(DAY, day);
+      selected.set(WEEK_DAY, week_day);
+
+      Menu.setDay(
+        eventActive()
+        ? { for: "Notify", title: "Eventos: " }
+        : { for: "Task", title: "Tarefas: " }
+      );
+    },
+  };
+
+  return function () {
+    if (selected.get(DAY)) {
+      document.getElementById(selected.get(DAY)).classList.remove("selected");
+    }
+
+    set[DAY_OR_SAME_DAY()]();
+  };
 }

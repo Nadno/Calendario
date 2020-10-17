@@ -1,3 +1,4 @@
+import CalendarData from "./calendar";
 import element from "../Calendar/elements";
 
 import { selected, actual, getDate, DAY, MONTH, YEAR, WEEK_DAY, TOTAL_DAYS } from "../date";
@@ -29,7 +30,7 @@ export const setActualDate = () => {
   actual.set(YEAR, actualDate.getFullYear());
 };
 
-export default function setInitialDate(Notify, Task) {
+export default function setInitialDate() {
   setActualDate();
   setSelectedDate(actual.get(YEAR), actual.get(MONTH));
 
@@ -40,8 +41,7 @@ export default function setInitialDate(Notify, Task) {
 
   setInitialYearAndMonth(actual.get(YEAR), actual.get(MONTH));
 
-  Notify.selectDate(getDate("selected"));
-  Task.selectDate(getDate("selected"));
+  CalendarData.selectDate(getDate("selected"));
 }
 
 export function monthTotalDays(year, month) {

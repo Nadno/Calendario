@@ -66,6 +66,7 @@
     }
 
     .this__month {
+      position: relative;
       transition: linear 0.4s;
 
       &:focus {
@@ -89,5 +90,27 @@
     .last__month {
       color: $neutral-color;
     }
+  }
+
+  .has__both,
+  .has__task,
+  .has__event {
+    position: absolute;
+    width: 25%;
+    height: 32%;
+    top: 0;
+    right: 0;
+  }
+
+  .has__both {
+    background-color: rgb(88, 41, 177);
+  }
+  
+  .has__task {
+    background-color: $primary-color;
+  }
+
+  .has__event {
+    background-color: rgb(45, 209, 132);
   }
 }
