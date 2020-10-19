@@ -9,5 +9,18 @@ Funcionalidades:
 - Atualização de Tarefas. No menu é possível alterar o conteúdo textual de uma tarefa já criada.
 - Save. As informações são salvas localmente quando algo é criado no calendário.
 - Adaptabilidade. A aplicação usa o calendário para selecionar o dia, mês e ano, e o menu para criar Eventos e Tarefas. Portando, o uso do menu muda de acordo com o tamanho da tela do usuário. Sendo acessível por meio de um botão quando em telas menores, e sempre visível quando em telas maiores.
+<br/>
 
+<h1 align="center">Visual Normal</h1>
+<p align="center">A aplicação é dividida em duas partes, o menu, e o calendário, onde será selecionado o dia.</p>
+<h1 align="center"><img src="/img/desktop-1.png"></h1>
+<br/>
+
+<h1 align="center">Notificação</h1>
+<p align="center">Os Eventos já passados e atuais são adicionados aa notificações.</p>
+<h1 align="center"><img src="/img/desktop-2.png"></h1>
+<br/>
+
+<h1 align="center">Visual Mobile</h1>
+<h1 align="center"><img src="/img/mobile.png"></h1>
 <br/>
