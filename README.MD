@@ -17,7 +17,7 @@ Funcionalidades:
 <br/>
 
 <h1 align="center">Notificação</h1>
-<p align="center">Os Eventos já passados e atuais são adicionados aa notificações.</p>
+<p align="center">Os Eventos já passados e atuais são adicionados as notificações.</p>
 <h1 align="center"><img src="/img/desktop-2.png"></h1>
 <br/>
 
