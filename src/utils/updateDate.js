@@ -1,8 +1,10 @@
 import CalendarData from "./calendar";
 import element from "../Calendar/elements";
 
+import resetDailyTasks from "./resetDailyTasks";
+
 import { createNotify } from "../createElement";
-import { actual, getDate } from "../date";
+import { actual, getDate, DAY, MONTH } from "../date";
 
 const FIVE_MINUTES = 60000 * 5;
 
@@ -14,22 +16,47 @@ const isDifferentDay = () => {
 
 setInterval(isDifferentDay, FIVE_MINUTES);
 
-export default function checkEvents(Notify) {
+export function isNewDay(Notify) {
+  const { day, month } = CalendarData.getLastConnection();
+  if (day !== actual.get(DAY) || month !== actual.get(MONTH)) {
+    resetDailyTasks(CalendarData);
+    checkEvents(Notify);
+    CalendarData.setLastConnection(getDate("actual")).save();
+  }
+}
+
+function checkEvents(Notify) {
   CalendarData.selectDate(getDate("actual"));
 
-  function showNotification(event, position) {
+  function addPastEventsToNotifications(month) {
+    Object.keys(month).forEach((day) => {
+      if (day < actual.get(DAY) && month?.[day]) 
+        month[day].events.map(addEventsToNotifications);
+    });
+  }
+
+  function addEventsToNotifications(event) {
     if (event.alert) {
-      const deleteNotify = ({ target }) => {
-        target.parentNode.parentNode.remove();
-        Notify.finalize(position);
-      };
-      const eventEl = createNotify(event, deleteNotify);
-      eventEl.classList.add("on-screen");
-      element.notifications.appendChild(eventEl);
+      CalendarData.calendar.notifications.push(event);
+      event.alert = false;
+      return event;
     }
   }
 
   Notify.get((events) => {
-    if (events.length) events.forEach(showNotification);
+    events.forEach(addEventsToNotifications);
   });
+  CalendarData.getMonth(addPastEventsToNotifications);
+
+  CalendarData.selectDate(getDate("selected")).save();
+}
+
+export function showNotification(event, position) {
+  const deleteNotify = ({ target }) => {
+    target.parentNode.parentNode.remove();
+    CalendarData.finalizeNotification(position);
+  };
+  const eventEl = createNotify(event, deleteNotify);
+  eventEl.classList.add("on-screen");
+  element.notifications.appendChild(eventEl);
 }

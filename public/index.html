@@ -27,14 +27,6 @@
 
           <div class="event__config">
             <input type="text" id="title" placeholder="Titulo do evento" />
-            <!-- <select name="first-alert" id="first-alert">
-              <option label="Selecione quando quer ser avisado" hidden></option>
-              <option value="1">Um dia antes</option>
-              <option value="2">Dois dias antes</option>
-              <option value="3">Três dias antes</option>
-              <option value="4">Quatro dias antes</option>
-              <option value="5">Cinco dias antes</option>
-            </select> -->
           </div>
         </div>
 
@@ -51,6 +43,22 @@
     </section>
 
     <article class="calendar">
+      <div class="example">
+
+        <section>
+          <div class="example__event"></div>
+          <span>Dia com eventos</span>
+        </section>
+        <section>
+          <div class="example__task"></div>
+          <span>Dia com tarefas</span>
+        </section>
+        <section>
+          <div class="example__both"></div>
+          <span>Dia com eventos e tarefas</span>
+        </section>
+        
+      </div>
       <div class="select__date">
 
         <select name="month" id="month">
@@ -86,7 +94,7 @@
     </article>
 
     <section class="mobile__menu">
-      <button id="mobile-menu" type="button">Abrir</button>
+      <button id="mobile-menu" type="button">Menu</button>
       <article class="selected__day">
         <strong id="mobile__full__date"></strong>
       </article>

@@ -20,6 +20,8 @@ class Storage {
     return Object.assign({
       daily: [],
       events: [],
+      notifications: [],
+      lastConnection: { month: 0, day: 0, },
     }, save ? parseJson(save) : {});
   }
 

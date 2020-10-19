@@ -40,7 +40,7 @@ export default function (Menu) {
 
     active = !active;
     element.mobile.style.backgroundColor = active ? RED_COLOR : PRIMARY_COLOR;
-    element.mobile.innerHTML = active ? "Fechar" : "Abrir";
+    element.mobile.innerHTML = active ? "Fechar" : "Menu";
     Menu.active(active);
   });
 }

@@ -16,14 +16,8 @@ class Notify {
     return this;
   }
 
-  finalize(position) {
-    this.selected[position].alert = false;
-    CalendarData.save();
-    return this;
-  }
-
   createEvent(content, week_day) {
-    const { day } = CalendarData.position;
+    const { day, month } = CalendarData.position;
     if (!day) return this;
     if (!this.selected.length) {
       this.selected.push({
@@ -35,7 +29,7 @@ class Notify {
         alert: true,
         type: "event",
       });
-      CalendarData.removeMarkFromDays().setDayWithItems();
+      CalendarData.removeMarkFromDays().setDayWithItems().save();
       return this;
     }
 

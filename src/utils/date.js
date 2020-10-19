@@ -1,7 +1,15 @@
-import CalendarData from "./calendar";
 import element from "../Calendar/elements";
 
-import { selected, actual, getDate, DAY, MONTH, YEAR, WEEK_DAY, TOTAL_DAYS } from "../date";
+import {
+  selected,
+  actual,
+  getDate,
+  DAY,
+  MONTH,
+  YEAR,
+  WEEK_DAY,
+  TOTAL_DAYS,
+} from "../date";
 import { createYearOption } from "../createElement";
 
 export const setInitialYearAndMonth = (year, month) => {
@@ -30,7 +38,7 @@ export const setActualDate = () => {
   actual.set(YEAR, actualDate.getFullYear());
 };
 
-export default function setInitialDate() {
+export default function setInitialDate(CalendarData) {
   setActualDate();
   setSelectedDate(actual.get(YEAR), actual.get(MONTH));
 
@@ -40,7 +48,6 @@ export default function setInitialDate() {
   }
 
   setInitialYearAndMonth(actual.get(YEAR), actual.get(MONTH));
-
   CalendarData.selectDate(getDate("selected"));
 }
 

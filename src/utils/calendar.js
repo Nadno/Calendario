@@ -1,4 +1,3 @@
-import { actual, MONTH, YEAR } from "../date";
 import Storage from "./storage";
 
 const CALENDAR = "cronos";
@@ -7,11 +6,25 @@ class CalendarData {
   constructor() {
     this.calendar = Storage.get(CALENDAR);
     this.position = {
-      year: actual.get(YEAR),
-      month: actual.get(MONTH),
+      year: 0,
+      month: 0,
       day: 0,
     };
     this.selected;
+  }
+
+  getNotifications() {
+    return Object.assign([], this.calendar.notifications);
+  }
+
+  finalizeNotification(position) {
+    this.calendar.notifications.splice(position, 1);
+    this.save();
+  }
+
+  getMonth(callback) {
+    const { year, month } =this.position;
+    return callback(this.calendar[year][month]);
   }
 
   getDaysWithItems() {
@@ -59,6 +72,25 @@ class CalendarData {
     hasTask.forEach((mark) => mark.remove());
     hasBoth.forEach((mark) => mark.remove());
     return this;
+  }
+
+  setLastConnection({ day, month }) {
+    const NEW_DAY = day !== this.calendar.lastConnection.day;
+    const NEW_MONTH = month !== this.calendar.lastConnection.month;
+
+    if (NEW_DAY || NEW_MONTH) {
+      this.calendar.lastConnection.month = month;
+      this.calendar.lastConnection.day = day;
+    };
+
+    return this;
+  }
+
+  getLastConnection() {
+    return {
+      day: this.calendar.lastConnection.day,
+      month: this.calendar.lastConnection.month,
+    };
   }
 
   selectDate({ year, month, day }) {

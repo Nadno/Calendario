@@ -1,7 +1,7 @@
 "use strict";
 
 import setInitialDate from "./utils/date";
-import checkEvents from "./utils/updateDate";
+import { isNewDay, showNotification } from "./utils/updateDate";
 import calendarGenerator from "./Calendar/calendar";
 
 import calendarActions from "./Calendar/actions";
@@ -13,10 +13,11 @@ import Task from "./utils/task";
 
 import "../public/styles/style.scss";
 
-setInitialDate();
-checkEvents(Notify);
+setInitialDate(CalendarData);
+isNewDay(Notify);
 createMenu(Notify, Task);
 calendarActions(CalendarData);
 
 calendarGenerator();
 CalendarData.setDayWithItems();
+CalendarData.getNotifications().forEach(showNotification);;
