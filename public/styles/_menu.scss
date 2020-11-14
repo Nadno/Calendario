@@ -1,27 +1,23 @@
-.todo__menu {
+.menu {
+  @include default-flex;
+  @extend .bg-white;
+  
   position: absolute;
   width: 100vw;
   height: 100vh;
   padding: $secondary-spacing;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #fff;
   
   z-index: 5;
   transform: translateX(-120%);
   transition: linear 0.4s;
 
   .selected__day {
-    font-size: 1.6rem;
+    @extend .font-size-secondary;
     color: $text-title;
   }
 
-  .create__todo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .create {
+    @include default-flex;
     align-items: center;
 
     #body {
@@ -48,7 +44,7 @@
       transition: button 0.3s;
 
       &:hover {
-        background: #6b7897;
+        background-color: #6b7897;
         opacity: 0.8;
       }
     }
@@ -68,19 +64,18 @@
     }
 
     label {
-      @extend .box-shadow;
+      @extend .box-shadow, .font-size-primary;
       display: inline-block;
       width: 8rem;
 
       text-align: center;
-      font-size: 1.4rem;
       margin-bottom: 1rem;
       cursor: pointer;
     }
 
     #event:checked ~ label {
       color: white;
-      background-color: $third-color;
+      background-color: $tertiary-color;
     }
   }
 
@@ -93,36 +88,36 @@
     transform: scale(1);
     #title,
     #first-alert {
-      @extend .box-shadow;
+      @extend .box-shadow, .font-size-primary;
       width: 100%;
       padding: 1rem;
-      font-size: 1.4rem;
       margin-bottom: $primary-spacing;
     }
   }
 }
 
-.todo__menu.on {
+.menu.on {
   transform: translateX(0);
   left: 0;
 }
 
 .mobile__menu {
+  @include default-flex;
+
   position: fixed;
-  display: flex;
   width: 8rem;
   height: 10vh;
-  justify-content: center;
+  flex-direction: initial;
+
 
   z-index: 10;
   bottom: 0;
   right: 0;
   button {
+    @extend .font-size-primary;
     width: 100%;
     border: none;
-    
-    font-size: 1.4rem;
-    color: #fff;
+    color: $white-color;
 
     border-radius: 40% 0 0 40%;
     background-color: $primary-color;
@@ -130,7 +125,7 @@
 }
 
 @media (min-width: 700px) {
-  .todo__menu {
+  .menu {
     transform: translateX(0);
     position: relative;
     height: 100vh;

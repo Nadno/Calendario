@@ -2,7 +2,7 @@
   width: 100%;
   max-height: 900px;
   font-weight: 700;
-  
+
   padding: 2rem;
   align-self: center;
   color: $secondary-color;
@@ -13,9 +13,8 @@
 
   #year,
   #month {
-    @extend .box-shadow;
+    @extend .box-shadow, .font-size-secondary;
     height: 3.2rem;
-    font-size: 1.6rem;
   }
 
   .month__name {
@@ -26,19 +25,17 @@
   }
 
   .week__days {
-    font-size: 1.4rem;
+    @extend .font-size-primary;
     border-bottom: 1px solid $secondary-color;
     padding: 0.4rem 0;
   }
 
   .week__days,
   .days {
-    display: grid;
+    @include align-center(grid);
     grid-template-columns: repeat(7, 12%);
-    justify-content: center;
-    align-items: center;
 
-    row-gap: 1.5rem;
+    row-gap: 1.6rem;
     column-gap: 1rem;
     margin-top: 1rem;
 
@@ -49,19 +46,18 @@
   .days {
     .last__month,
     .this__month {
+      @include align-center(flex);
+      @extend .no-bg, .font-size-secondary;
+
       width: 100%;
       height: 8vh;
-      font-size: 1.6rem;
       border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: $background-color;
+
       cursor: pointer;
     }
 
     .today {
-      background-color: $third-color;
+      background-color: $tertiary-color;
       color: whitesmoke;
     }
 
@@ -70,21 +66,17 @@
       transition: linear 0.4s;
 
       &:focus {
-        color: $primary-color;
+        @extend .no-bg;
         outline: none;
+        color: $primary-color;
         border: 1px solid $primary-color;
         box-shadow: 2px 2px 6px $primary-color;
-        background-color: $background-color;
       }
     }
 
     .selected {
-      color: #fff;
+      color: $white-color;
       background-color: $primary-color;
-      &:focus {
-        color: #fff;
-        background-color: $primary-color;
-      }
     }
 
     .last__month {
@@ -93,9 +85,9 @@
   }
 
   .example {
+    @extend .font-size-primary;
     display: flex;
     justify-content: space-evenly;
-    font-size: 1.4rem;
     margin-bottom: 2rem;
   }
 
@@ -121,7 +113,7 @@
   .has__both {
     background-color: rgb(88, 41, 177);
   }
-  
+
   .example__task,
   .has__task {
     background-color: $primary-color;

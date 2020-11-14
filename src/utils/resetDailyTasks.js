@@ -1,5 +1,5 @@
-export default function(CalendarData) {
-  CalendarData.calendar.daily.map(task => {
+export default function(Notify) {
+  Notify.calendar.daily.map(task => {
     task.checked = false;
     return task;
   });

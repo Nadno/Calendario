@@ -1,13 +1,13 @@
 import CalendarData from "./calendar";
 
-class Notify {
+class Notify extends CalendarData {
   get(callback) {
-    const { day, month, year } = CalendarData.position;
+    const { day, month, year } = this.position;
     const TYPE = "events";
 
     if (day) {
-      CalendarData.checkIfDayExists();
-      this.selected = CalendarData.calendar[year][month][day][TYPE];
+      this.checkIfDayExists();
+      this.selected = this.calendar[year][month][day][TYPE];
     } else {
       this.selected = this.getAllEvents();
     }
@@ -17,7 +17,7 @@ class Notify {
   }
 
   createEvent(content, week_day) {
-    const { day, month } = CalendarData.position;
+    const { day, month } = this.position;
     if (!day) return this;
     if (!this.selected.length) {
       this.selected.push({
@@ -29,7 +29,7 @@ class Notify {
         alert: true,
         type: "event",
       });
-      CalendarData.removeMarkFromDays().setDayWithItems().save();
+      this.removeMarkFromDays().setDayWithItems().save();
       return this;
     }
 
@@ -43,7 +43,7 @@ class Notify {
       type: "event",
     });
     
-    CalendarData.save();
+    this.save();
     return this;
   }
 
@@ -60,11 +60,11 @@ class Notify {
   }
 
   getAllEvents() {
-    const { year, month } = CalendarData.position;
+    const { year, month } = this.position;
     let events = [];
 
-    Object.keys(CalendarData.calendar[year][month]).filter((day) => {
-      events = [...events, ...CalendarData.calendar[year][month][day].events];
+    Object.keys(this.calendar[year][month]).filter((day) => {
+      events = [...events, ...this.calendar[year][month][day].events];
     });
 
     return events;
@@ -73,9 +73,9 @@ class Notify {
   delete(from, to) {
     this.selected.splice(from, to);
     if (!this.selected.length)
-      CalendarData.removeMarkFromDays().setDayWithItems();
+      this.removeMarkFromDays().setDayWithItems();
 
-    CalendarData.save();
+    this.save();
     return this;
   }
 }

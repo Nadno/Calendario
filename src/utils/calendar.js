@@ -143,4 +143,4 @@ class CalendarData {
   }
 }
 
-export default new CalendarData();
+export default CalendarData;

@@ -1,8 +1,11 @@
-$background-color: #f5f5f5;
+$white-color: #fff;
+$gray-color: #f5f5f5;
+
 $primary-color: #60cdff;
 $primary-dark-color: #499ABF;
 $secondary-color: #6d7695;
-$third-color: rgb(220, 50, 50);
+$tertiary-color: rgb(220, 50, 50);
+
 $text-title: #3a495e;
 $neutral-color: #959595;
 
@@ -21,25 +24,60 @@ $secondary-spacing: 2rem;
 }
 
 body {
+  @extend .bg-gray;
   display: flex;
   height: 100vh;
-  background-color: $background-color;
 }
 
+@mixin default-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@mixin align-center($display) {
+  display: #{$display};
+  align-items: center;
+  justify-content: center;
+}
+
+.font-size-primary {
+  font-size: 1.4rem;
+}
+
+.font-size-secondary {
+  font-size: 1.6rem;
+}
+
+.font-size-tertiary {
+  font-size: 1.8rem;
+}
+
+.no-bg {
+  background-color: transparent;
+}
+
+.bg-white {
+  background-color: $white-color;
+}
+
+.bg-gray {
+  background-color: $gray-color;
+}
 
 .box-shadow {
-  background: $background-color;
+  @extend .bg-gray;
   border: 1px solid rgb(200, 200, 200);
   box-shadow: 2px 2px 8px rgba(190, 190, 190, 0.2);
 }
 
 .button {
+  @extend .font-size-secondary;
   height: 4rem;
   border: none;
   border-radius: 4px;
   padding: $primary-spacing;
 
-  font-size: 1.6rem;
   font-weight: bold;
   color: white;
   background-color: $primary-color;

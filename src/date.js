@@ -18,6 +18,7 @@ const date = {
     day: 0,
     month: 0,
     year: 0,
+    week_day: 0,
   },
   MONTH_NAME: [
     "Janeiro",

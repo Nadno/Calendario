@@ -1,4 +1,3 @@
-import CalendarData from "./calendar";
 import element from "../Calendar/elements";
 
 import resetDailyTasks from "./resetDailyTasks";
@@ -17,16 +16,16 @@ const isDifferentDay = () => {
 setInterval(isDifferentDay, FIVE_MINUTES);
 
 export function isNewDay(Notify) {
-  const { day, month } = CalendarData.getLastConnection();
+  const { day, month } = Notify.getLastConnection();
   if (day !== actual.get(DAY) || month !== actual.get(MONTH)) {
-    resetDailyTasks(CalendarData);
+    resetDailyTasks(Notify);
     checkEvents(Notify);
-    CalendarData.setLastConnection(getDate("actual")).save();
+    Notify.setLastConnection(getDate("actual")).save();
   }
 }
 
 function checkEvents(Notify) {
-  CalendarData.selectDate(getDate("actual"));
+  Notify.selectDate(getDate("actual"));
 
   function addPastEventsToNotifications(month) {
     Object.keys(month).forEach((day) => {
@@ -37,7 +36,7 @@ function checkEvents(Notify) {
 
   function addEventsToNotifications(event) {
     if (event.alert) {
-      CalendarData.calendar.notifications.push(event);
+      Notify.calendar.notifications.push(event);
       event.alert = false;
       return event;
     }
@@ -46,15 +45,14 @@ function checkEvents(Notify) {
   Notify.get((events) => {
     events.forEach(addEventsToNotifications);
   });
-  CalendarData.getMonth(addPastEventsToNotifications);
-
-  CalendarData.selectDate(getDate("selected")).save();
+  Notify.getMonth(addPastEventsToNotifications);
+  Notify.selectDate(getDate("selected")).save();
 }
 
 export function showNotification(event, position) {
   const deleteNotify = ({ target }) => {
     target.parentNode.parentNode.remove();
-    CalendarData.finalizeNotification(position);
+    Notify.finalizeNotification(position);
   };
   const eventEl = createNotify(event, deleteNotify);
   eventEl.classList.add("on-screen");

@@ -1,15 +1,15 @@
 import CalendarData from "./calendar";
 
-class Task {
+class Task extends CalendarData {
   get(callback) {
-    const { day, month, year } = CalendarData.position;
+    const { day, month, year } = this.position;
     const TYPE = "tasks";
 
     if (day) {
-      CalendarData.checkIfDayExists();
-      this.selected = CalendarData.calendar[year][month][day][TYPE];
+      this.checkIfDayExists();
+      this.selected = this.calendar[year][month][day][TYPE];
     } else {
-      this.selected = CalendarData.calendar.daily;
+      this.selected = this.calendar.daily;
     }
   
     if (callback) return callback(Object.assign([], this.selected), TYPE);
@@ -19,7 +19,7 @@ class Task {
   update(position, item, value) {
     if (this.selected[position]) this.selected[position][item] = value;
 
-    CalendarData.save();
+    this.save();
     return this;
   }
 
@@ -27,22 +27,22 @@ class Task {
     if (!this.selected.length) {
       this.selected.push({ text, checked: false });
 
-      CalendarData.removeMarkFromDays().setDayWithItems();
-      CalendarData.save();
+      this.removeMarkFromDays().setDayWithItems();
+      this.save();
       return this;
     }
     this.selected.push({ text, checked: false });
 
-    CalendarData.save();
+    this.save();
     return this;
   }
 
   delete(from, to) {
     this.selected.splice(from, to);
     if (!this.selected.length)
-      CalendarData.removeMarkFromDays().setDayWithItems();
+      this.removeMarkFromDays().setDayWithItems();
 
-    CalendarData.save();
+    this.save();
     return this;
   }
 }

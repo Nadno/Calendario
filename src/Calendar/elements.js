@@ -1,8 +1,8 @@
 const element = {
   menu: {
-    self: document.querySelector(".todo__menu"),
-    title: document.querySelector("#full__date"),
-    list: document.querySelector(".listing__todo"),
+    self: document.querySelector(".menu"),
+    date: document.querySelector(".selected__day"),
+    list: document.querySelector(".todo__list"),
     taskTitle: document.querySelector("#task-title"),
   },
   calendar: {

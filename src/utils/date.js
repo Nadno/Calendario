@@ -19,26 +19,27 @@ export const setInitialYearAndMonth = (year, month) => {
 
 export const setSelectedDate = (year, month) => {
   const FIRST_DAY = 1;
-  const selectedDate = new Date(year, month, FIRST_DAY);
+  const date = new Date(year, month, FIRST_DAY);
 
   selected.set(DAY, 0);
-  selected.set(WEEK_DAY, selectedDate.getDay());
-  selected.set(MONTH, selectedDate.getMonth());
-  selected.set(YEAR, selectedDate.getFullYear());
+  selected.set(WEEK_DAY, date.getDay());
+  selected.set(MONTH, date.getMonth());
+  selected.set(YEAR, date.getFullYear());
   selected.set(
     TOTAL_DAYS,
-    monthTotalDays(selectedDate.getFullYear(), selectedDate.getMonth())
+    monthTotalDays(date.getFullYear(), date.getMonth())
   );
 };
 
 export const setActualDate = () => {
-  const actualDate = new Date();
-  actual.set(DAY, actualDate.getDate());
-  actual.set(MONTH, actualDate.getMonth());
-  actual.set(YEAR, actualDate.getFullYear());
+  const date = new Date();
+  actual.set(DAY, date.getDate());
+  actual.set(MONTH, date.getMonth());
+  actual.set(YEAR, date.getFullYear());
+  actual.set(WEEK_DAY, date.getDay());
 };
 
-export default function setInitialDate(CalendarData) {
+export default function setInitialDate(Notify, Task) {
   setActualDate();
   setSelectedDate(actual.get(YEAR), actual.get(MONTH));
 
@@ -48,7 +49,8 @@ export default function setInitialDate(CalendarData) {
   }
 
   setInitialYearAndMonth(actual.get(YEAR), actual.get(MONTH));
-  CalendarData.selectDate(getDate("selected"));
+  Task.selectDate(getDate("selected"));
+  Notify.selectDate(getDate("selected"));
 }
 
 export function monthTotalDays(year, month) {
