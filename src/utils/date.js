@@ -39,7 +39,7 @@ export const setActualDate = () => {
   actual.set(WEEK_DAY, date.getDay());
 };
 
-export default function setInitialDate(Notify, Task) {
+export default function setInitialDate(calendar) {
   setActualDate();
   setSelectedDate(actual.get(YEAR), actual.get(MONTH));
 
@@ -49,8 +49,6 @@ export default function setInitialDate(Notify, Task) {
   }
 
   setInitialYearAndMonth(actual.get(YEAR), actual.get(MONTH));
-  Task.selectDate(getDate("selected"));
-  Notify.selectDate(getDate("selected"));
 }
 
 export function monthTotalDays(year, month) {

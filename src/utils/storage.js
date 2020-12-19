@@ -14,8 +14,8 @@ const stringifyObject = (data) => {
   }
 };
 
-const storage = () => {
-  const find = (name) => {
+const storage = (name) => {
+  const find = () => {
     const save = localStorage.getItem(name);
     return Object.assign({
       daily: [],
@@ -26,7 +26,7 @@ const storage = () => {
   }
 
   const save = (data) => {
-    localStorage.setItem("cronos", stringifyObject(data));
+    localStorage.setItem(name, stringifyObject(data));
   }
 
   return {
@@ -35,4 +35,4 @@ const storage = () => {
   }
 }
 
-export default storage();
+export default storage("cronos");

@@ -7,18 +7,20 @@ import calendarGenerator from "./Calendar/calendar";
 import calendarActions from "./Calendar/actions";
 import createMenu from "./Menu/menu";
 
+import calendar from "./utils/calendar";
+import setTaskActions from "./utils/task";
 
-import Notify from "./utils/notify";
-import Task from "./utils/task";
 
 import "../public/styles/style.scss";
 
-setInitialDate(Notify, Task);
-isNewDay(Notify);
-createMenu(Notify, Task);
-calendarActions(Task);
+setTaskActions(calendar);
+
+setInitialDate();
+// isNewDay();
+createMenu(calendar);
+calendarActions(calendar);
 
 calendarGenerator();
 
-Task.setDayWithItems();
-Notify.getNotifications().forEach(showNotification);;
+// Task.setDayWithItems();
+// Notify.getNotifications().forEach(showNotification);

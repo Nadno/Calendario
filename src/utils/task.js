@@ -2,9 +2,7 @@ import { getDate } from "../date";
 
 const ITEM_TYPE = "tasks";
 
-const task = (calendar) => {
-  
-
+const setTaskActions = (calendar) => {
   calendar.getTask = function getTask(callback) {
     const { day, month, year } = getDate("selected");
 
@@ -15,39 +13,29 @@ const task = (calendar) => {
       calendar.selected = calendar.data.daily;
     }
 
+    if (callback)
+      return callback(Object.assign([], calendar.selected), ITEM_TYPE);
+  };
 
-  
-    if (callback) return callback(Object.assign([], calendar.selected), ITEM_TYPE);
-  }
+  calendar.updateTask = function update(position, item, value) {
+    if (calendar.selected[position]) calendar.selected[position][item] = value;
+  };
 
-  // update(position, item, value) {
-  //   if (this.selected[position]) this.selected[position][item] = value;
+  calendar.createTask = function create(text) {
+    if (!calendar.selected.length) {
+      calendar.selected.push({ text, checked: false });
 
-  //   this.save();
-  //   return this;
-  // },
+      calendar.removeMarkFromDays().setDayWithItems();
+      return;
+    }
+    calendar.selected.push({ text, checked: false });
+  };
 
-  // create(text) {
-  //   if (!this.selected.length) {
-  //     this.selected.push({ text, checked: false });
-
-  //     removeMarkFromDays().setDayWithItems();
-  //     return this;
-  //   }
-  //   this.selected.push({ text, checked: false });
-
-  //   this.save();
-  //   return this;
-  // },
-
-  // delete(from, to) {
-  //   this.selected.splice(from, to);
-  //   if (!this.selected.length)
-  //     this.removeMarkFromDays().setDayWithItems();
-
-  //   this.save();
-  //   return this;
-  // },
+  calendar.deleteTask = function deleteTask(from, to) {
+    calendar.selected.splice(from, to);
+    if (!calendar.selected.length)
+      calendar.removeMarkFromDays().setDayWithItems();
+  };
 };
 
-export default task;
+export default setTaskActions;

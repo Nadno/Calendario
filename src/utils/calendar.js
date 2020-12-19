@@ -1,48 +1,43 @@
-import Storage from "./storage";
+import storage from "./storage";
 
-const CALENDAR = "cronos";
+const calendar = {
+  // const save = () => {
+  //   storage.save(this.calendar);
+  // }
 
-class CalendarData {
-  constructor() {
-    this.calendar = Storage.get(CALENDAR);
-    this.position = {
-      year: 0,
-      month: 0,
-      day: 0,
-    };
-    this.selected;
-  }
+  data: storage.find(),
+  selected: {},
 
   getNotifications() {
-    return Object.assign([], this.calendar.notifications);
-  }
+    return Object.assign([], calendar.notifications);
+  },
 
   finalizeNotification(position) {
-    this.calendar.notifications.splice(position, 1);
-    this.save();
-  }
+    calendar.notifications.splice(position, 1);
+    save();
+  },
 
   getMonth(callback) {
-    const { year, month } =this.position;
-    return callback(this.calendar[year][month]);
-  }
+    const { year, month } = position;
+    return callback(calendar[year][month]);
+  },
 
   getDaysWithItems() {
-    const { year, month } = this.position;
-    return Object.keys(this.calendar[year][month]).map((day) => {
-      const { tasks, events } = this.calendar[year][month][day];
+    const { year, month } = position;
+    return Object.keys(calendar[year][month]).map((day) => {
+      const { tasks, events } = calendar[year][month][day];
       return {
         day,
         hasTasks: tasks.length ? true : false,
         hasEvents: events.length ? true : false,
       };
     });
-  }
+  },
 
   setDayWithItems() {
-    this.getDaysWithItems().forEach(({ day, hasTasks, hasEvents }) => {
+    getDaysWithItems().forEach(({ day, hasTasks, hasEvents }) => {
       const dayElement = document.getElementById(day);
-  
+
       if (hasTasks && hasEvents) {
         dayElement.insertAdjacentHTML(
           "afterbegin",
@@ -60,8 +55,7 @@ class CalendarData {
         );
       }
     });
-    return this;
-  }
+  },
 
   removeMarkFromDays() {
     const hasEvent = Array.from(document.querySelectorAll(".has__event"));
@@ -71,55 +65,50 @@ class CalendarData {
     hasEvent.forEach((mark) => mark.remove());
     hasTask.forEach((mark) => mark.remove());
     hasBoth.forEach((mark) => mark.remove());
-    return this;
-  }
+  },
 
   setLastConnection({ day, month }) {
-    const NEW_DAY = day !== this.calendar.lastConnection.day;
-    const NEW_MONTH = month !== this.calendar.lastConnection.month;
+    const NEW_DAY = day !== calendar.lastConnection.day;
+    const NEW_MONTH = month !== calendar.lastConnection.month;
 
     if (NEW_DAY || NEW_MONTH) {
-      this.calendar.lastConnection.month = month;
-      this.calendar.lastConnection.day = day;
-    };
-
-    return this;
-  }
+      calendar.lastConnection.month = month;
+      calendar.lastConnection.day = day;
+    }
+  },
 
   getLastConnection() {
     return {
-      day: this.calendar.lastConnection.day,
-      month: this.calendar.lastConnection.month,
+      day: calendar.lastConnection.day,
+      month: calendar.lastConnection.month,
     };
-  }
+  },
 
   selectDate({ year, month, day }) {
-    if (year) this.position.year = year;
-    if (month >= 0 && month <= 11) this.position.month = month;
-    if (day >= 0) this.position.day = day;
-    
-    this.checkIfYearExists();
-    return this;
-  }
+    if (year) position.year = year;
+    if (month >= 0 && month <= 11) position.month = month;
+    if (day >= 0) position.day = day;
+
+    checkIfYearExists();
+  },
 
   checkIfDayExists() {
-    const { year, month, day } = this.position;
-    if (this.calendar[year][month]?.[day]) return this;
+    const { year, month, day } = position;
+    if (calendar[year][month]?.[day]) return;
 
-    Object.assign(this.calendar[year][month], {
+    Object.assign(calendar[year][month], {
       [day]: {
         tasks: [],
         events: [],
       },
     });
-    return this;
-  }
+  },
 
   checkIfYearExists() {
-    if (this.calendar[this.position.year]) return this;
+    if (calendar[position.year]) return;
 
-    Object.assign(this.calendar, {
-      [this.position.year]: {
+    Object.assign(calendar, {
+      [position.year]: {
         0: {},
         1: {},
         2: {},
@@ -134,13 +123,7 @@ class CalendarData {
         11: {},
       },
     });
-    return this;
-  }
+  },
+};
 
-  save() {
-    Storage.set(this.calendar);
-    return this;
-  }
-}
-
-export default CalendarData;
+export default calendar;

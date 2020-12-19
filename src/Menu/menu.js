@@ -22,7 +22,7 @@ function renderItemOnMenu(item) {
   if (isOnScreen(item)) return item.classList.add("on-screen");
 }
 
-export default function (Notify, Task) {
+export default function (calendar) {
   Menu.render = function (items, type) {
     element.menu.list.innerHTML = items.length
       ? ""
@@ -45,7 +45,7 @@ export default function (Notify, Task) {
 
   createMenu(Menu);
   menuInputs(Menu);
-  Task.get(Menu.render);
+  calendar.getTask(Menu.render);
   return Menu;
 }
 
