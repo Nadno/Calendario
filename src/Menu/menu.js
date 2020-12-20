@@ -1,13 +1,11 @@
 import element from "../Calendar/elements";
 import menuInputs from "./inputs";
 
-import createMenu from "../utils/menu";
+import setMenuActions from "../utils/setMenuActions";
 
-import { selected, DAY, WEEK_DAY, TOTAL_DAYS } from "../date";
+import date, { selected, DAY, WEEK_DAY, TOTAL_DAYS } from "../date";
 
 import "../utils/updateDate";
-
-let Menu = {};
 
 function isOnScreen(el) {
   let rect = el.getBoundingClientRect();
@@ -22,14 +20,23 @@ function renderItemOnMenu(item) {
   if (isOnScreen(item)) return item.classList.add("on-screen");
 }
 
+const menu = {
+  element: document.querySelector(".menu"),
+  date: document.querySelector(".selected__day"),
+  list: document.querySelector(".todo__list"),
+  title: document.querySelector("#task-title"),
+};
+
+setMenuActions(menu);
+
 export default function (calendar) {
-  Menu.render = function (items, type) {
-    element.menu.list.innerHTML = items.length
+  menu.render = function (items, type) {
+    menu.list.innerHTML = items.length
       ? ""
       : '<div class="alert">Nada encontrado!</div>';
 
     function addItemOnMenu(item, position) {
-      element.menu.list.appendChild(Menu.createElement[type](item, position));
+      menu.list.appendChild(menu.createElement[type](item, position));
     }
 
     items.forEach(addItemOnMenu);
@@ -40,13 +47,13 @@ export default function (calendar) {
     const render = () => itemsElements.forEach(renderItemOnMenu);
     render();
 
-    element.menu.list.addEventListener("scroll", render);
+    menu.list.addEventListener("scroll", render);
   };
 
-  createMenu(Menu);
-  menuInputs(Menu);
-  calendar.getTask(Menu.render);
-  return Menu;
+
+  menuInputs(menu);
+  menu.renderTasks();
+  return menu;
 }
 
 export function menuUpdate(day, week_day) {
@@ -59,25 +66,23 @@ export function menuUpdate(day, week_day) {
   const set = {
     SAME_DAY: () => {
       dayElement().classList.remove("selected");
-      selected.set(DAY, 0);
+      date.selected.day = 0;
 
-      Menu.exitDay(
-        eventActive()
-          ? { for: "Notify", title: "Eventos do mês: " }
-          : { for: "Task", title: "Tarefas diárias: " }
-      );
+      menu.setTitle("Tarefas diárias:");
+      menu.setMenuDateTo("actual");
+      menu.renderTasks();
     },
 
     DAY: () => {
       dayElement().classList.add("selected");
-      selected.set(DAY, day);
-      selected.set(WEEK_DAY, week_day);
+      Object.assign(date.selected, {
+        day,
+        week_day,
+      })
 
-      Menu.setDay(
-        eventActive()
-          ? { for: "Notify", title: "Eventos: " }
-          : { for: "Task", title: "Tarefas: " }
-      );
+      menu.setTitle("Tarefas:");
+      menu.setMenuDateTo("selected");
+      menu.renderTasks();
     },
   };
 

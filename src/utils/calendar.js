@@ -1,3 +1,4 @@
+import date, { getDate } from "../date";
 import storage from "./storage";
 
 const calendar = {
@@ -84,19 +85,10 @@ const calendar = {
     };
   },
 
-  selectDate({ year, month, day }) {
-    if (year) position.year = year;
-    if (month >= 0 && month <= 11) position.month = month;
-    if (day >= 0) position.day = day;
-
-    checkIfYearExists();
-  },
-
   checkIfDayExists() {
-    const { year, month, day } = position;
-    if (calendar[year][month]?.[day]) return;
-
-    Object.assign(calendar[year][month], {
+    const { year, month, day } = getDate("selected");
+    if (calendar.data[year]?.[month]?.[day]) return;
+    Object.assign(calendar.data[year][month], {
       [day]: {
         tasks: [],
         events: [],
@@ -105,10 +97,11 @@ const calendar = {
   },
 
   checkIfYearExists() {
-    if (calendar[position.year]) return;
+    const year = date.selected.year;
+    if (calendar.data[year]) return;
 
-    Object.assign(calendar, {
-      [position.year]: {
+    Object.assign(calendar.data, {
+      [year]: {
         0: {},
         1: {},
         2: {},

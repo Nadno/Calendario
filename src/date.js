@@ -43,6 +43,8 @@ const date = {
     "Sexta-feira",
     "Sábado",
   ],
+
+  events: false,
 };
 
 function setDate(type, name, value) {
@@ -71,3 +73,5 @@ export const nameOf = {
   month: (month) => getDate("MONTH_NAME", month),
   day: (day) => getDate("DAY_NAME", day),
 };
+
+export default date;
