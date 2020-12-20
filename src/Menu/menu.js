@@ -1,24 +1,12 @@
-import element from "../Calendar/elements";
 import menuInputs from "./inputs";
 
 import setMenuActions from "../utils/setMenuActions";
 
-import date, { selected, DAY, WEEK_DAY, TOTAL_DAYS } from "../date";
+import date, { selected, DAY, TOTAL_DAYS } from "../date";
 
 import "../utils/updateDate";
 
-function isOnScreen(el) {
-  let rect = el.getBoundingClientRect();
-  return (
-    rect.top > 0 &&
-    rect.bottom <
-      document.querySelector(".todo__list").getBoundingClientRect().bottom
-  );
-}
 
-function renderItemOnMenu(item) {
-  if (isOnScreen(item)) return item.classList.add("on-screen");
-}
 
 const menu = {
   element: document.querySelector(".menu"),
@@ -30,30 +18,32 @@ const menu = {
 
 setMenuActions(menu);
 
-export default function (calendar) {
-  menu.render = function (items, type) {
-    menu.list.innerHTML = items.length
-      ? ""
-      : '<div class="alert">Nada encontrado!</div>';
+export default function () {
+  // menu.render = function () {
+  //   const createElement = date.eventsOn ? createNotify : createTask;
+  //   const items = date.eventsOn ? calendar.getNotify() : calendar.getTask();
 
-    function addItemOnMenu(item, position) {
-      menu.list.appendChild(menu.createElement[type](item, position));
-    }
+  //   menu.list.innerHTML = items.length
+  //     ? ""
+  //     : '<div class="alert">Nada encontrado!</div>';
 
-    items.forEach(addItemOnMenu);
+  //   function addItemOnMenu(item, position) {
+  //     menu.list.appendChild(createElement(item, menu.changeContent, position));
+  //   }
 
-    const itemsElements = Array.from(
-      document.querySelector(".todo__list").childNodes
-    );
-    const render = () => itemsElements.forEach(renderItemOnMenu);
-    render();
+  //   items.forEach(addItemOnMenu);
 
-    menu.list.addEventListener("scroll", render);
-  };
+  //   const itemsElements = Array.from(
+  //     document.querySelector(".todo__list").childNodes
+  //   );
+  //   const render = () => itemsElements.forEach(renderItemOnMenu);
+  //   render();
 
+  //   menu.list.addEventListener("scroll", render);
+  // };
 
   menuInputs(menu);
-  menu.renderTasks();
+  menu.render();
   return menu;
 }
 
@@ -65,7 +55,7 @@ const setMenuTo = {
 
     menu.setTitle("Tarefas diárias:");
     menu.setMenuDateTo("actual");
-    menu.renderTasks();
+    menu.render();
   },
 
   DAY: (day, week_day) => {
@@ -73,17 +63,17 @@ const setMenuTo = {
     Object.assign(date.selected, {
       day,
       week_day,
-    })
+    });
 
     menu.setTitle("Tarefas:");
     menu.setMenuDateTo("selected");
-    menu.renderTasks();
+    menu.render();
   },
 };
 
 export function menuUpdate(day, week_day) {
   if (day < 0 || day > selected.get(TOTAL_DAYS)) return;
-  
+
   return function setDay() {
     if (date.selected.day) {
       dayElement(date.selected.day).classList.remove("selected");

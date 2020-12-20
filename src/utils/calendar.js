@@ -1,5 +1,7 @@
-import date, { getDate } from "../date";
 import storage from "./storage";
+import setTaskActions from "./setTaskActions";
+import setNotifyActions from "./notify";
+import date, { getDate } from "../date";
 
 const calendar = {
   // const save = () => {
@@ -19,14 +21,14 @@ const calendar = {
   },
 
   getMonth(callback) {
-    const { year, month } = position;
+    const { year, month } = date.selected;
     return callback(calendar[year][month]);
   },
 
   getDaysWithItems() {
-    const { year, month } = position;
-    return Object.keys(calendar[year][month]).map((day) => {
-      const { tasks, events } = calendar[year][month][day];
+    const { year, month } = date.selected;
+    return Object.keys(calendar.data[year][month]).map((day) => {
+      const { tasks, events } = calendar.data[year][month][day];
       return {
         day,
         hasTasks: tasks.length ? true : false,
@@ -36,7 +38,7 @@ const calendar = {
   },
 
   setDayWithItems() {
-    getDaysWithItems().forEach(({ day, hasTasks, hasEvents }) => {
+    this.getDaysWithItems().forEach(({ day, hasTasks, hasEvents }) => {
       const dayElement = document.getElementById(day);
 
       if (hasTasks && hasEvents) {
@@ -118,5 +120,8 @@ const calendar = {
     });
   },
 };
+
+setTaskActions(calendar);
+setNotifyActions(calendar);
 
 export default calendar;

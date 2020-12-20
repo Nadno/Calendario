@@ -12,8 +12,11 @@ export default function (menu) {
     });
   });
 
-  const setEvents = ({ target }) => date.eventsOn = target.checked;
-  menu.events.addEventListener("change", setEvents);
+  // const setEvents = ({ target }) => {
+  //   date.eventsOn = target.checked;
+  //   document.querySelector(".event__config").classList.toggle("active");
+  // };
+  // menu.events.addEventListener("change", setEvents);
 
  
 

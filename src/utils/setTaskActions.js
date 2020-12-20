@@ -3,7 +3,7 @@ import { getDate } from "../date";
 const ITEM_TYPE = "tasks";
 
 const setTaskActions = (calendar) => {
-  calendar.getTask = function getTask(callback) {
+  calendar.getTask = function getTask() {
     const { day, month, year } = getDate("selected");
 
     if (day) {
@@ -13,8 +13,7 @@ const setTaskActions = (calendar) => {
       calendar.selected = calendar.data.daily;
     }
 
-    if (callback)
-      return callback(Object.assign([], calendar.selected), ITEM_TYPE);
+    return Object.assign([], calendar.selected);
   };
 
   calendar.updateTask = function update(position, item, value) {
@@ -31,7 +30,7 @@ const setTaskActions = (calendar) => {
     calendar.selected.push({ text, checked: false });
   };
 
-  calendar.deleteTask = function deleteTask(from, to) {
+  calendar.deleteTask = function deleteTask(from, to = 1) {
     calendar.selected.splice(from, to);
     if (!calendar.selected.length)
       calendar.removeMarkFromDays().setDayWithItems();

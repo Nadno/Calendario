@@ -3,15 +3,14 @@ import element from "../Calendar/elements";
 
 import { createNotify, createTask } from "../createElement";
 
-import date, {
-  getDate,
-  selected,
-  DAY,
-} from "../date";
+import date, { getDate, selected, DAY } from "../date";
 
 import calendar from "./calendar";
+import setMenuRender from "./setMenuRender";
 
 export default function setMenuActions(menu) {
+  setMenuRender(menu, calendar);
+
   menu.setMenuDateTo = (name) => {
     menu.date.setAttribute(
       "datetime",
@@ -26,21 +25,9 @@ export default function setMenuActions(menu) {
   };
   menu.setTitle = (title) => (menu.title.innerHTML = title);
 
-  const SET = {
-    Notify: (title) => {
-      Notify.selectDate(getDate("selected"));
-      setTitle(title);
-      Notify.get(menu.render);
-    },
-  };
-
   menu.active = function (toggle) {
     if (toggle) return element.menu.self.classList.add("on");
     return element.menu.self.classList.remove("on");
-  };
-
-  menu.renderTasks = function () {
-    calendar.getTask(menu.render);
   };
 
   menu.exitDay = function (type) {
@@ -48,13 +35,25 @@ export default function setMenuActions(menu) {
     SET[type.for](type.title);
   };
 
+  menu.events.addEventListener("change", function setEvents({ target }) {
+    date.eventsOn = target.checked;
+    if (target.checked) {
+      document.querySelector(".event__config").classList.add("active");
+      menu.render();
+    } else {
+      document.querySelector(".event__config").classList.remove("active");
+      menu.render();
+    }
+    console.log(calendar);
+  });
+
   menu.createItem = function createItem({ eventsOn, body, title }) {
     if (eventsOn) {
-      Notify.createEvent({ title, body });
+      calendar.createEvent({ title, body, week_day: date.selected.week_day });
     } else {
       calendar.createTask(body);
-      calendar.getTask(menu.render);
     }
+    menu.render();
   };
 
   menu.deleteItem = function deleteItem({ eventsOn, from, to }) {
@@ -73,7 +72,7 @@ export default function setMenuActions(menu) {
     return function ({ target }) {
       const text = String(target.textContent).trim();
       if (!text) {
-        calendar.deleteTask(from, to);
+        calendar.deleteTask(position);
         return calendar.getTask(menu.render);
       }
       calendar.updateTask(position, "text", text);
@@ -83,16 +82,6 @@ export default function setMenuActions(menu) {
   menu.notify = {
     delete: function (position) {
       return () => Notify.delete(position, 1).get(menu.render);
-    },
-  };
-
-  menu.createElement = {
-    tasks: (item, position) =>
-      createTask(item, menu.changeContent(position), position),
-    events: (item, position) => {
-      if (selected.get(DAY))
-        return createNotify(item, menu.notify.delete(position));
-      return createNotify(item);
     },
   };
 }

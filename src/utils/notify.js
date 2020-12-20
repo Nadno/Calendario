@@ -1,83 +1,74 @@
-import CalendarData from "./calendar";
+import date from "../date";
 
-// class Notify extends CalendarData {
-//   get(callback) {
-//     const { day, month, year } = this.position;
-//     const TYPE = "events";
+export default function setNotifyActions(calendar) {
+  calendar.getNotify = function getNotify() {
+    const { day, month, year } = date.selected;
 
-//     if (day) {
-//       this.checkIfDayExists();
-//       this.selected = this.calendar[year][month][day][TYPE];
-//     } else {
-//       this.selected = this.getAllEvents();
-//     }
+    if (day) {
+      calendar.checkIfDayExists();
+      calendar.selected = calendar.data[year][month][day].events;
+    } else {
+      calendar.selected = calendar.getAllEvents();
+    }
 
-//     if (callback) return callback(Object.assign([], this.selected), TYPE);
-//     return this;
-//   }
+    return Object.assign([], calendar.selected);
+  };
 
-//   createEvent(content, week_day) {
-//     const { day, month } = this.position;
-//     if (!day) return this;
-//     if (!this.selected.length) {
-//       this.selected.push({
-//         title: content.title(),
-//         body: content.body(),
-//         day,
-//         week_day,
-//         month,
-//         alert: true,
-//         type: "event",
-//       });
-//       this.removeMarkFromDays().setDayWithItems().save();
-//       return this;
-//     }
+  calendar.createEvent = function createEvent({ title, body, week_day }) {
+    const { day, month } = date.selected;
+    if (!day) return;
+    if (!calendar.selected.length) {
+      calendar.selected.push({
+        title,
+        body,
+        day,
+        week_day,
+        month,
+        alert: true,
+        type: "event",
+      });
+      calendar.removeMarkFromDays();
+      calendar.setDayWithItems();
+    }
 
-//     this.selected.push({
-//       title: content.title(),
-//       body: content.body(),
-//       day,
-//       week_day,
-//       month,
-//       alert: true,
-//       type: "event",
-//     });
-    
-//     this.save();
-//     return this;
-//   }
+    calendar.selected.push({
+      title,
+      body,
+      day,
+      week_day,
+      month,
+      alert: true,
+      type: "event",
+    });
+    console.log(calendar.data);
+  };
 
-//   createError(body, title = "Ocorreu um erro") {
-//     return {
-//       type: "error",
-//       title,
-//       body,
-//       alert: {
-//         to: date.getDate(),
-//       },
-//       time: `${date.getHours()}:${date.getMinutes()}`,
-//     };
-//   }
+  calendar.createError = function createError(body, title = "Ocorreu um erro") {
+    return {
+      type: "error",
+      title,
+      body,
+      alert: {
+        to: date.getDate(),
+      },
+      time: `${date.getHours()}:${date.getMinutes()}`,
+    };
+  };
 
-//   getAllEvents() {
-//     const { year, month } = this.position;
-//     let events = [];
+  calendar.getAllEvents = function () {
+    const { year, month } = date.selected;
+    let events = [];
 
-//     Object.keys(this.calendar[year][month]).filter((day) => {
-//       events = [...events, ...this.calendar[year][month][day].events];
-//     });
+    Object.keys(calendar.data[year][month]).filter((day) => {
+      events = [...events, ...calendar.data[year][month][day].events];
+    });
 
-//     return events;
-//   }
+    return events;
+  };
 
-//   delete(from, to) {
-//     this.selected.splice(from, to);
-//     if (!this.selected.length)
-//       this.removeMarkFromDays().setDayWithItems();
-
-//     this.save();
-//     return this;
-//   }
-// }
-
-export default {};
+  calendar.deleteNotify = function (from, to) {
+    calendar.selected.splice(from, to);
+    if (!calendar.selected.length)
+      calendar.removeMarkFromDays().setDayWithItems();
+  };
+}
