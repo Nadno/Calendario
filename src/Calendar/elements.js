@@ -17,7 +17,6 @@ const element = {
       title: () => document.querySelector("#title").value,
       body: () => document.querySelector("#body").value,
     },
-    eventActive: document.querySelector("#event"),
   },
   mobile: document.querySelector("#mobile-menu"),
   notifications:  document.querySelector(".notifications"),

@@ -5,13 +5,8 @@ import { createNotify, createTask } from "../createElement";
 
 import date, {
   getDate,
-  nameOf,
   selected,
-  actual,
   DAY,
-  MONTH,
-  YEAR,
-  WEEK_DAY,
 } from "../date";
 
 import calendar from "./calendar";
@@ -53,34 +48,36 @@ export default function setMenuActions(menu) {
     SET[type.for](type.title);
   };
 
-  menu.create = {
-    todo: ({ body }) => {
-      calendar.createTask(body());
+  menu.createItem = function createItem({ eventsOn, body, title }) {
+    if (eventsOn) {
+      Notify.createEvent({ title, body });
+    } else {
+      calendar.createTask(body);
       calendar.getTask(menu.render);
-    },
-    event: (content) =>
-      Notify.createEvent(content, selected.get(WEEK_DAY)).get(menu.render),
+    }
   };
 
-  menu.task = {
-    update: function (position, item, value) {
-      calendar.updateTask(position, item, value);
-    },
-
-    delete: function (from, to = 1) {
+  menu.deleteItem = function deleteItem({ eventsOn, from, to }) {
+    if (eventsOn) {
+    } else {
       calendar.deleteTask(from, to);
-    },
+    }
+  };
 
-    changeContent: function (position) {
-      return function ({ target }) {
-        const text = String(target.textContent).trim();
-        if (!text) {
-          menu.task.delete(position);
-          return calendar.getTask(menu.render);
-        }
-        menu.task.update(position, "text", text);
-      };
-    },
+  menu.list.addEventListener("change", ({ target }) => {
+    const getPosition = (id) => Number(id.slice(7, 11).trim());
+    calendar.updateTask(getPosition(target.id), "checked", target.checked);
+  });
+
+  menu.changeContent = function (position) {
+    return function ({ target }) {
+      const text = String(target.textContent).trim();
+      if (!text) {
+        calendar.deleteTask(from, to);
+        return calendar.getTask(menu.render);
+      }
+      calendar.updateTask(position, "text", text);
+    };
   };
 
   menu.notify = {
@@ -91,7 +88,7 @@ export default function setMenuActions(menu) {
 
   menu.createElement = {
     tasks: (item, position) =>
-      createTask(item, menu.task.changeContent(position), position),
+      createTask(item, menu.changeContent(position), position),
     events: (item, position) => {
       if (selected.get(DAY))
         return createNotify(item, menu.notify.delete(position));

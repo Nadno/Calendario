@@ -25,6 +25,7 @@ const menu = {
   date: document.querySelector(".selected__day"),
   list: document.querySelector(".todo__list"),
   title: document.querySelector("#task-title"),
+  events: document.querySelector("#event"),
 };
 
 setMenuActions(menu);
@@ -56,41 +57,38 @@ export default function (calendar) {
   return menu;
 }
 
+const dayElement = (day) => document.getElementById(day);
+const setMenuTo = {
+  SAME_DAY: (day) => {
+    dayElement(day).classList.remove("selected");
+    date.selected.day = 0;
+
+    menu.setTitle("Tarefas diárias:");
+    menu.setMenuDateTo("actual");
+    menu.renderTasks();
+  },
+
+  DAY: (day, week_day) => {
+    dayElement(day).classList.add("selected");
+    Object.assign(date.selected, {
+      day,
+      week_day,
+    })
+
+    menu.setTitle("Tarefas:");
+    menu.setMenuDateTo("selected");
+    menu.renderTasks();
+  },
+};
+
 export function menuUpdate(day, week_day) {
   if (day < 0 || day > selected.get(TOTAL_DAYS)) return;
-  const DAY_OR_SAME_DAY = () =>
-    selected.get(DAY) === day ? "SAME_DAY" : "DAY";
-  const eventActive = () => element.create.eventActive.checked;
-  const dayElement = () => document.getElementById(day);
-
-  const set = {
-    SAME_DAY: () => {
-      dayElement().classList.remove("selected");
-      date.selected.day = 0;
-
-      menu.setTitle("Tarefas diárias:");
-      menu.setMenuDateTo("actual");
-      menu.renderTasks();
-    },
-
-    DAY: () => {
-      dayElement().classList.add("selected");
-      Object.assign(date.selected, {
-        day,
-        week_day,
-      })
-
-      menu.setTitle("Tarefas:");
-      menu.setMenuDateTo("selected");
-      menu.renderTasks();
-    },
-  };
-
-  return function () {
-    if (selected.get(DAY)) {
-      document.getElementById(selected.get(DAY)).classList.remove("selected");
+  
+  return function setDay() {
+    if (date.selected.day) {
+      dayElement(date.selected.day).classList.remove("selected");
     }
-
-    set[DAY_OR_SAME_DAY()]();
+    const action = date.selected.day === day ? "SAME_DAY" : "DAY";
+    setMenuTo[action](day, week_day);
   };
 }

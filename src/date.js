@@ -44,7 +44,7 @@ const date = {
     "Sábado",
   ],
 
-  events: false,
+  eventsOn: false,
 };
 
 function setDate(type, name, value) {
