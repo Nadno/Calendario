@@ -1,31 +1,39 @@
 import { menuUpdate } from "./Menu/menu";
 import { actual, nameOf } from "./date";
 
+const createElement = (name, content, attributes) => {
+  const element = document.createElement(name);
+
+  element.innerText = content;
+
+  const attributesAsArray = Object.entries(attributes);
+  if (!attributesAsArray) return element;
+
+  const setElementAttributes = ([key, value]) => (element[key] = value);
+  attributesAsArray.forEach(setElementAttributes);
+
+  return element;
+};
+
 export function createTask({ text, checked }, changeContent, position) {
-  const li = document.createElement("li");
-  const checkbox = document.createElement("input");
-  const content = document.createElement("div");
-  const label = document.createElement("label");
-
   const id = `to-do__${position}`;
-  label.htmlFor = id;
-  li.className = "to-do";
 
-  Object.assign(checkbox, {
+  const li = createElement("li", "", { className: "to-do" });
+  const label = createElement("label", "", { htmlFor: id });
+
+  const checkbox = createElement("input", "", {
     className: "input",
     type: "checkbox",
     id,
     checked,
   });
-
-  Object.assign(content, {
+  const content = createElement("div", text, {
     id: "content",
     className: "content",
     contentEditable: true,
-    innerText: text,
   });
-
   content.addEventListener("blur", changeContent);
+
   li.appendChild(checkbox);
   li.appendChild(label);
   li.appendChild(content);
@@ -35,53 +43,36 @@ export function createTask({ text, checked }, changeContent, position) {
 
 export function createDay({ day, month, week_day }) {
   const li = document.createElement("li");
-  const button = document.createElement("button");
-
-  Object.assign(button, {
+  const button = createElement("button", day, {
     id: day,
     type: "button",
-    innerText: day,
     className: month,
   });
-
   button.addEventListener("click", menuUpdate(day, week_day));
+
   li.appendChild(button);
 
   return li;
 }
 
-export function createYearOption(value) {
-  const op = document.createElement("option");
-  Object.assign(op, {
-    value,
-    innerText: value,
-  });
-  return op;
-}
-
-function deleteNotifyButton(head, deleteNotify) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.innerText = "X";
-  button.className = "delete";
-  button.addEventListener("click", deleteNotify);
-  head.appendChild(button);
-}
+export const createYearOption = (value) => 
+  createElement("option", value, { value });
 
 export function createNotify(
   { type, title, body, alert, day, week_day },
   deleteNotify
 ) {
-  const notify = document.createElement("li");
-  const head = document.createElement("div");
+  const notify = createElement("li", '', { className: `notify ${type?type:null}`, });
+  const head = createElement("div", title, { className: "notify__header" });
 
-  notify.className = "notify";
-  if (type) notify.classList.add(type);
-
-  head.className = "notify__header";
-  head.innerHTML = `<strong>${title}</strong>`;
-
-  if (deleteNotify) deleteNotifyButton(head, deleteNotify);
+  if (deleteNotify) {
+    const deleteButton = createElement("button", "X", {
+      type: "button",
+      className: "delete",
+    });
+    deleteButton.addEventListener("click", deleteNotify);
+    head.appendChild(deleteButton);
+  };
 
   const INFO = `
     <div class="notify__info">
