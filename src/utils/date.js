@@ -1,15 +1,6 @@
-import element from "../Calendar/elements";
+import element from "../_Calendar/elements";
 
-import {
-  selected,
-  actual,
-  getDate,
-  DAY,
-  MONTH,
-  YEAR,
-  WEEK_DAY,
-  TOTAL_DAYS,
-} from "../date";
+import date from "../date";
 import { createYearOption } from "../createElement";
 
 export const setInitialYearAndMonth = (year, month) => {
@@ -19,36 +10,38 @@ export const setInitialYearAndMonth = (year, month) => {
 
 export const setSelectedDate = (year, month) => {
   const FIRST_DAY = 1;
-  const date = new Date(year, month, FIRST_DAY);
-
-  selected.set(DAY, 0);
-  selected.set(WEEK_DAY, date.getDay());
-  selected.set(MONTH, date.getMonth());
-  selected.set(YEAR, date.getFullYear());
-  selected.set(
-    TOTAL_DAYS,
-    monthTotalDays(date.getFullYear(), date.getMonth())
-  );
+  const selectedDate = new Date(year, month, FIRST_DAY);
+  Object.assign(date.selected, {
+    day: 0,
+    month: selectedDate.getMonth(),
+    year: selectedDate.getFullYear(),
+    week_day: selectedDate.getDay(),
+    total_days: monthTotalDays(selectedDate.getFullYear(), selectedDate.getMonth()),
+  });
 };
 
 export const setActualDate = () => {
-  const date = new Date();
-  actual.set(DAY, date.getDate());
-  actual.set(MONTH, date.getMonth());
-  actual.set(YEAR, date.getFullYear());
-  actual.set(WEEK_DAY, date.getDay());
+  const actualDate = new Date();
+  Object.assign(date.actual, {
+    day: actualDate.getDate(),
+    month: actualDate.getMonth(),
+    year: actualDate.getFullYear(),
+    week_day: actualDate.getDay(),
+  });
 };
 
-export default function setInitialDate(calendar) {
+export default function setInitialDate() {
+  const actual = date.actual;
   setActualDate();
-  setSelectedDate(actual.get(YEAR), actual.get(MONTH));
+  setSelectedDate(actual.year, actual.month);
 
-  const totalNextYear = actual.get(YEAR) + 10;
-  for (let nextYear = actual.get(YEAR); nextYear <= totalNextYear; nextYear++) {
+  const totalNextYear = actual.year + 10;
+  for (let nextYear = actual.year; nextYear <= totalNextYear; nextYear++) {
     element.calendar.year.appendChild(createYearOption(nextYear));
   }
 
-  setInitialYearAndMonth(actual.get(YEAR), actual.get(MONTH));
+  setInitialYearAndMonth(actual.year, actual.month);
+  console.log(date);
 }
 
 export function monthTotalDays(year, month) {

@@ -16,7 +16,7 @@ const createElement = (name, content, attributes) => {
 };
 
 export function createTask({ text, checked }, changeContent, position) {
-  const id = `to-do__${position}`;
+  const id = `${position}-todo`;
 
   const li = createElement("li", "", { className: "to-do" });
   const label = createElement("label", "", { htmlFor: id });

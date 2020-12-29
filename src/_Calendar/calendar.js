@@ -2,16 +2,8 @@ import element from "./elements";
 
 import { createDay } from "../createElement";
 import { monthTotalDays } from "../utils/date";
-import {
-  actual,
-  selected,
-  nameOf,
-  DAY,
-  MONTH,
-  YEAR,
-  WEEK_DAY,
-  TOTAL_DAYS,
-} from "../date";
+import date from "../date";
+import calendar from "../calendar";
 
 const render = ({ from, to }, renderDay) => {
   for (let day = from; day <= to; day++) {
@@ -31,29 +23,32 @@ const thisMonth = (day) => {
     createDay({
       day,
       month: "this__month",
-      week_day: getWeekDay(selected.get(YEAR), selected.get(MONTH), day),
+      week_day: getWeekDay(date.selected.year, date.selected.month, day),
     })
   );
 };
 
-const setMonth = () =>
-  (element.calendar.title.innerHTML = nameOf.month(selected.get(MONTH)));
+const setMonth = (month) =>
+  (element.calendar.title.innerHTML = date.MONTH_NAME[month]);
 const setToday = (day) => document.getElementById(day).classList.add("today");
 const backOneMonth = (month) => (month === 0 ? 11 : month - 1);
 
-export default function () {
+export default function calendarGenerator() {
   element.calendar.self.innerHTML = "";
+  const selected = date.selected;
 
-  setMonth();
-  if (selected.get(WEEK_DAY) > 0) {
+  setMonth(selected.month);
+
+  const HAS_LAST_MONTH = selected.week_day > 0;
+  if (HAS_LAST_MONTH) {
     const lastMonthTotalDays = monthTotalDays(
-      selected.get(YEAR),
-      backOneMonth(selected.get(MONTH))
+      selected.year,
+      backOneMonth(selected.month)
     );
-
+    const firstVisibleDay = lastMonthTotalDays - selected.week_day + 1;
     render(
       {
-        from: lastMonthTotalDays - selected.get(WEEK_DAY) + 1,
+        from: firstVisibleDay,
         to: lastMonthTotalDays,
       },
       lastMonth
@@ -63,13 +58,14 @@ export default function () {
   render(
     {
       from: 1,
-      to: selected.get(TOTAL_DAYS),
+      to: selected.total_days,
     },
     thisMonth
   );
 
-  const isToday =
-    actual.get(MONTH) === selected.get(MONTH) &&
-    actual.get(YEAR) === selected.get(YEAR);
-  if (isToday) setToday(actual.get(DAY));
+  const actual = date.actual;
+  const today =
+    actual.month === selected.month && actual.year === selected.year;
+  if (today) setToday(actual.day);
+  calendar.setMarks();
 }

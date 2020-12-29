@@ -1,12 +1,10 @@
 import menuInputs from "./inputs";
 
-import setMenuActions from "../utils/setMenuActions";
+import setMenuActions from "../setMenuActions";
 
-import date, { selected, DAY, TOTAL_DAYS } from "../date";
+import date from "../date";
 
 import "../utils/updateDate";
-
-
 
 const menu = {
   element: document.querySelector(".menu"),
@@ -16,35 +14,11 @@ const menu = {
   events: document.querySelector("#event"),
 };
 
-setMenuActions(menu);
 
-export default function () {
-  // menu.render = function () {
-  //   const createElement = date.eventsOn ? createNotify : createTask;
-  //   const items = date.eventsOn ? calendar.getNotify() : calendar.getTask();
-
-  //   menu.list.innerHTML = items.length
-  //     ? ""
-  //     : '<div class="alert">Nada encontrado!</div>';
-
-  //   function addItemOnMenu(item, position) {
-  //     menu.list.appendChild(createElement(item, menu.changeContent, position));
-  //   }
-
-  //   items.forEach(addItemOnMenu);
-
-  //   const itemsElements = Array.from(
-  //     document.querySelector(".todo__list").childNodes
-  //   );
-  //   const render = () => itemsElements.forEach(renderItemOnMenu);
-  //   render();
-
-  //   menu.list.addEventListener("scroll", render);
-  // };
-
+export default function startMenu() {
+  setMenuActions(menu);
   menuInputs(menu);
   menu.render();
-  return menu;
 }
 
 const dayElement = (day) => document.getElementById(day);
@@ -54,8 +28,7 @@ const setMenuTo = {
     date.selected.day = 0;
 
     menu.setTitle("Tarefas diárias:");
-    menu.setMenuDateTo("actual");
-    menu.render();
+    menu.setMenuDateTo("");
   },
 
   DAY: (day, week_day) => {
@@ -67,12 +40,11 @@ const setMenuTo = {
 
     menu.setTitle("Tarefas:");
     menu.setMenuDateTo("selected");
-    menu.render();
   },
 };
 
 export function menuUpdate(day, week_day) {
-  if (day < 0 || day > selected.get(TOTAL_DAYS)) return;
+  if (day < 0 || day > date.selected.total_days) return;
 
   return function setDay() {
     if (date.selected.day) {
@@ -80,5 +52,6 @@ export function menuUpdate(day, week_day) {
     }
     const action = date.selected.day === day ? "SAME_DAY" : "DAY";
     setMenuTo[action](day, week_day);
+    menu.render();
   };
 }

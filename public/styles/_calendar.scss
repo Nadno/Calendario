@@ -66,11 +66,14 @@
       transition: linear 0.4s;
 
       &:focus {
-        @extend .no-bg;
         outline: none;
-        color: $primary-color;
         border: 1px solid $primary-color;
         box-shadow: 2px 2px 6px $primary-color;
+      }
+
+      &.selected {
+        color: #fff;
+        background-color: #60cdff;
       }
     }
 

@@ -10,15 +10,15 @@
     <title>Cronos</title>
   </head>
   <body>
-    <section class="menu">
-      <div class="menu__selected">
+    <div class="menu">
+      <section class="menu__selected">
         <time class="selected__day" datetime="">
         </time>
         <h2 id="task-title">Tarefas diárias:</h2>
-        <form class="todo__list"></form>
-      </div>
+        <ul class="todo__list"></ul>
+      </section>
 
-      <section class="create">
+      <div class="create">
         <div class="create__event">
           <input type="checkbox" id="event" />
           <label for="event">Eventos</label>
@@ -37,8 +37,8 @@
         ></textarea>
 
         <button id="create" type="submit">Criar</button>
-      </section>
-    </section>
+      </div>
+    </div>
 
     <main class="calendar">
       <h1>Cronos - Calendário</h1>
@@ -93,9 +93,9 @@
 
     <section class="mobile__menu">
       <button id="mobile-menu" type="button">Menu</button>
-      <article class="selected__day">
-        <strong id="mobile__full__date"></strong>
-      </article>
+      <div class="selected__day">
+        <h2 id="mobile__full__date"></h2>
+      </div>
     </section>
 
     <ol class="notifications"></ol>

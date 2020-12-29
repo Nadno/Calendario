@@ -3,13 +3,16 @@ import element from "./elements";
 import calendarGenerator from "./calendar";
 
 import { setSelectedDate } from "../utils/date";
-import { getDate } from "../date";
+import date, { getDate } from "../date";
 
-export default function (task) {
+export default function () {
   const changeSelect = () => {
     setSelectedDate(element.calendar.year.value, element.calendar.month.value);
     calendarGenerator();
-    Object.assign(task.position, getDate("selected"));
+    Object.assign(date.selected, {
+      year: element.calendar.year.value,
+      month: element.calendar.month.value,
+    });
   };
 
   element.calendar.month.addEventListener("change", changeSelect);
