@@ -12,12 +12,14 @@ const menu = {
   list: document.querySelector(".todo__list"),
   title: document.querySelector("#task-title"),
   events: document.querySelector("#event"),
+
+  ...setMenuActions(),
 };
 
 
 export default function startMenu() {
-  setMenuActions(menu);
   menuInputs(menu);
+  menu.setEvents();
   menu.render();
 }
 
