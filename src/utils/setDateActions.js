@@ -1,11 +1,9 @@
-import element from "../_Calendar/elements";
-
-import { createYearOption } from "../createElement";
+import createElement from "../createElement";
 
 const dateActions = () => ({
   setInitialYearAndMonth(year, month){
-    element.calendar.month.value = month;
-    element.calendar.year.value = year;
+    document.querySelector(`#month`).value = month;
+    document.querySelector(`#year`).value = year;
   },
 
   setSelectedDate(year, month) {
@@ -30,18 +28,21 @@ const dateActions = () => ({
     });
   },
   
-  setInitialDate() {
+  start() {
     const actual = this.actual;
     this.setActualDate();
     this.setSelectedDate(actual.year, actual.month);
-  
+    
+    const createYearOption = (value) => 
+      createElement("option", value, { value });
+
     const totalNextYear = actual.year + 10;
     for (let nextYear = actual.year; nextYear <= totalNextYear; nextYear++) {
-      element.calendar.year.appendChild(createYearOption(nextYear));
+      document.querySelector(`#year`).appendChild(createYearOption(nextYear));
     }
   
     this.setInitialYearAndMonth(actual.year, actual.month);
-    console.log(this);
+    
   },
   
   monthTotalDays(year, month) {

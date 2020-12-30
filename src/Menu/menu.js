@@ -1,58 +1,65 @@
-import menuInputs from "./inputs";
-import setMenuActions from "../setMenuActions";
-
-import date from "../date";
+import setMenuActions from "../utils/setMenuActions";
 
 import "../utils/updateDate";
 
-const menu = {
-  element: document.querySelector(".menu"),
-  date: document.querySelector(".selected__day"),
-  list: document.querySelector(".todo__list"),
-  title: document.querySelector("#task-title"),
-  events: document.querySelector("#event"),
+const createMenu = () => ({
+  menu: {
+    element: document.querySelector(".menu"),
+    dateTitle: document.querySelector(".selected__day"),
+    list: document.querySelector(".todo__list"),
+    title: document.querySelector("#task-title"),
+    events: document.querySelector("#event"),
+    createItemForm: {
+      title: () => document.querySelector("#title").value,
+      body: () => document.querySelector("#body").value,
+      submit: document.querySelector("#create"),
+    },
+    mobileMenu: document.querySelector("#mobile-menu"),
 
-  ...setMenuActions(),
-};
+    ...setMenuActions(),
 
+    update(day, week_day) {
+      const dayElement = (day) => document.getElementById(day);
+      const { selected, } = this.date;
 
-export default function startMenu() {
-  menuInputs(menu);
-  menu.setEvents();
-  menu.render();
-}
+      if (day < 0 || day > selected.total_days) return;
 
-const dayElement = (day) => document.getElementById(day);
-const setMenuTo = {
-  SAME_DAY: (day) => {
-    dayElement(day).classList.remove("selected");
-    date.selected.day = 0;
+      return () => {
+        const setMenuTo = {
+          SAME_DAY: (day) => {
+            dayElement(day).classList.remove("selected");
+            selected.day = 0;
 
-    menu.setTitle("Tarefas diárias:");
-    menu.setMenuDateTo("");
+            this.setTitle("Tarefas diárias:");
+            this.setMenuDateTo("");
+          },
+
+          DAY: (day, week_day) => {
+            dayElement(day).classList.add("selected");
+            Object.assign(selected, {
+              day,
+              week_day,
+            });
+
+            this.setTitle("Tarefas:");
+            this.setMenuDateTo("selected");
+          },
+        };
+
+        if (selected.day) {
+          dayElement(selected.day).classList.remove("selected");
+        }
+        const action = selected.day === day ? "SAME_DAY" : "DAY";
+        setMenuTo[action](day, week_day);
+        this.render();
+      };
+    },
+
+    start() {
+      this.setEvents();
+      this.render();
+    },
   },
+});
 
-  DAY: (day, week_day) => {
-    dayElement(day).classList.add("selected");
-    Object.assign(date.selected, {
-      day,
-      week_day,
-    });
-
-    menu.setTitle("Tarefas:");
-    menu.setMenuDateTo("selected");
-  },
-};
-
-export function menuUpdate(day, week_day) {
-  if (day < 0 || day > date.selected.total_days) return;
-
-  return function setDay() {
-    if (date.selected.day) {
-      dayElement(date.selected.day).classList.remove("selected");
-    }
-    const action = date.selected.day === day ? "SAME_DAY" : "DAY";
-    setMenuTo[action](day, week_day);
-    menu.render();
-  };
-}
+export default createMenu;

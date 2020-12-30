@@ -1,4 +1,4 @@
-import setDateActions from './utils/setDateActions';
+import setDateActions from "./utils/setDateActions";
 
 const createDate = () => {
   const MONTH_NAME = [
@@ -45,14 +45,15 @@ const createDate = () => {
   Object.preventExtensions(selected);
 
   return Object.preventExtensions({
-    selected,
-    actual,
-    DAY_NAME,
-    MONTH_NAME,
-    eventsOn,
-    ...setDateActions(),
+    date: {
+      selected,
+      actual,
+      DAY_NAME,
+      MONTH_NAME,
+      eventsOn,
+      ...setDateActions(),
+    },
   });
 };
 
-
-export default createDate();
+export default createDate;

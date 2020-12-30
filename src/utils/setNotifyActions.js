@@ -1,8 +1,6 @@
-import date from "./date";
-
 const notify = () => ({
   createEvent({ title, body, week_day }) {
-    const { day, month } = date.selected;
+    const { day, month } = this.date.selected;
     if (!day) return;
 
     this.selected.push({

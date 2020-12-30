@@ -1,18 +1,20 @@
 "use strict";
 
-import date from "./date";
-import calendarGenerator from "./_Calendar/calendar";
-
-import calendarActions from "./_Calendar/actions";
-import startMenu from "./Menu/menu";
+import createApp from "./app";
 
 import "../public/styles/style.scss";
 
+
+const app = createApp();
+console.log(app);
+
+app.start();
+
+
 // isNewDay();
-date.setInitialDate();
-calendarGenerator();
-calendarActions();
-startMenu();
+// date.setInitialDate();
+// calendarActions();
+// startMenu();
 
 // Task.setDayWithItems();
 // Notify.getNotifications().forEach(showNotification);
