@@ -1,7 +1,7 @@
 import element from "./elements";
 
 import { createDay } from "../createElement";
-import { monthTotalDays } from "../utils/date";
+
 import date from "../date";
 import calendar from "../calendar";
 
@@ -41,7 +41,7 @@ export default function calendarGenerator() {
 
   const HAS_LAST_MONTH = selected.week_day > 0;
   if (HAS_LAST_MONTH) {
-    const lastMonthTotalDays = monthTotalDays(
+    const lastMonthTotalDays = date.monthTotalDays(
       selected.year,
       backOneMonth(selected.month)
     );

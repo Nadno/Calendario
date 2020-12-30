@@ -1,5 +1,5 @@
 import { menuUpdate } from "./Menu/menu";
-import { actual, nameOf } from "./date";
+import date from "./date";
 
 const createElement = (name, content, attributes) => {
   const element = document.createElement(name);
@@ -62,6 +62,7 @@ export function createNotify(
   { type, title, body, alert, day, week_day },
   deleteNotify
 ) {
+  const { actual, DAY_NAME } = date;
   const notify = createElement("li", '', { className: `notify ${type?type:null}`, });
   const head = createElement("div", title, { className: "notify__header" });
 
@@ -77,9 +78,9 @@ export function createNotify(
   const INFO = `
     <div class="notify__info">
       ${
-        actual.get("day") === day
+        actual.day === day
           ? "Evento do dia!"
-          : `Evento para ${nameOf.day(week_day)}, dia ${day}`
+          : `Evento para ${DAY_NAME[week_day]}, dia ${day}`
       } </br>
       ${alert ? "" : "Finalizado!"}
     </div>

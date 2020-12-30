@@ -1,5 +1,3 @@
-import date from "./date";
-
 const task = () => ({
   updateTask(position, item, value) {
     if (this.selected[position]) this.selected[position][item] = value;

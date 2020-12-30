@@ -12,14 +12,6 @@ export default function (menu) {
     });
   });
 
-  // const setEvents = ({ target }) => {
-  //   date.eventsOn = target.checked;
-  //   document.querySelector(".event__config").classList.toggle("active");
-  // };
-  // menu.events.addEventListener("change", setEvents);
-
- 
-
   let active = false;
   element.mobile.addEventListener("click", () => {
     const PRIMARY_COLOR = "#60cdff";

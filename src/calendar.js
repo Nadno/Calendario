@@ -2,7 +2,7 @@ import storage from "./utils/storage";
 import task from "./setTaskActions";
 import notify from "./setNotifyActions";
 
-import date, { getDate } from "./date";
+import date from "./date";
 
 const createCalendar = () => {
   const calendarData = storage.find();
@@ -14,7 +14,7 @@ const createCalendar = () => {
     },
     
     selectItem(ITEM_TYPE) {
-      const { day, month, year } = getDate("selected");
+      const { day, month, year } = date.selected;
 
       if (day) {
         this.checkIfDayExists();
@@ -98,7 +98,7 @@ const createCalendar = () => {
     },
 
     checkIfDayExists() {
-      const { year, month, day } = getDate("selected");
+      const { year, month, day } = date.selected;
       if (calendarData[year]?.[month]?.[day]) return;
       Object.assign(calendarData[year][month], {
         [day]: {

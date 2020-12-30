@@ -1,5 +1,4 @@
 import menuInputs from "./inputs";
-
 import setMenuActions from "../setMenuActions";
 
 import date from "../date";

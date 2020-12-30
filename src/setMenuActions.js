@@ -1,5 +1,3 @@
-import element from "./_Calendar/elements";
-
 import date from "./date";
 
 import calendar from "./calendar";
