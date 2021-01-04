@@ -36,8 +36,8 @@ const dateActions = () => ({
     const createYearOption = (value) => 
       createElement("option", value, { value });
 
-    const totalNextYear = actual.year + 10;
-    for (let nextYear = actual.year; nextYear <= totalNextYear; nextYear++) {
+    const totalNextYear = actual.year + 5;
+    for (let nextYear = actual.year - 5; nextYear <= totalNextYear; nextYear++) {
       document.querySelector(`#year`).appendChild(createYearOption(nextYear));
     }
   

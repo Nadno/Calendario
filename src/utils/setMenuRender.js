@@ -13,8 +13,8 @@ function renderItemOnMenu(item) {
   if (isOnScreen(item)) return item.classList.add("on-screen");
 }
 
-const createTask = ({ text, checked }, changeContent, position) => {
-  const id = `${position}-todo`;
+const createTask = ({ text, checked }, position) => {
+  const id = `todoAt-${position}`;
 
   const li = createElement("li", "", { className: "to-do" });
   const label = createElement("label", "", { htmlFor: id });
@@ -30,7 +30,6 @@ const createTask = ({ text, checked }, changeContent, position) => {
     className: "content",
     contentEditable: true,
   });
-  content.addEventListener("blur", changeContent);
 
   li.appendChild(checkbox);
   li.appendChild(label);
@@ -41,20 +40,17 @@ const createTask = ({ text, checked }, changeContent, position) => {
 
 const createNotify = (
   { type, title, body, alert, day, week_day },
-  deleteNotify, date
+  position, date
 ) => {
   const { actual, DAY_NAME } = date;
   const notify = createElement("li", '', { className: `notify ${type?type:null}`, });
   const head = createElement("div", title, { className: "notify__header" });
 
-  if (deleteNotify) {
-    const deleteButton = createElement("button", "X", {
-      type: "button",
-      className: "delete",
-    });
-    deleteButton.addEventListener("click", deleteNotify);
-    head.appendChild(deleteButton);
-  };
+  const deleteButton = createElement("span", "X", {
+    id: `eventAt-${position}`,
+    className: "delete-button",
+  });
+  head.appendChild(deleteButton);
 
   const INFO = `
     <div class="notify__info">
@@ -88,10 +84,9 @@ export const setMenuRender = () => ({
 
     const addItemOnList = (item, position) => {
       const elementsTypes = {
-        tasks: () => createTask(item, this.changeContent(), position),
+        tasks: () => createTask(item, position),
         events: () =>
-          createNotify(item, 
-            () => this.deleteItem({ eventsOn: date.eventsOn, from: position }), date
+          createNotify(item, position, date
           ),
       };
 
