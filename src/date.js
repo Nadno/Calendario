@@ -37,7 +37,6 @@ const createDate = () => {
     year: 0,
     week_day: 0,
   };
-  const eventsOn = false;
 
   Object.freeze(DAY_NAME);
   Object.freeze(MONTH_NAME);
@@ -50,7 +49,6 @@ const createDate = () => {
       actual,
       DAY_NAME,
       MONTH_NAME,
-      eventsOn,
       ...setDateActions(),
     },
   });

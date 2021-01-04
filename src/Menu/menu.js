@@ -15,6 +15,7 @@ const createMenu = () => ({
       submit: document.querySelector("#create"),
     },
     mobileMenu: document.querySelector("#mobile-menu"),
+    eventsOn: false,
 
     ...setMenuActions(),
 
@@ -47,11 +48,14 @@ const createMenu = () => ({
         };
 
         if (selected.day) {
+          this.calendar.checkTaskDay();
           dayElement(selected.day).classList.remove("selected");
         }
+
         const action = selected.day === day ? "SAME_DAY" : "DAY";
         setMenuTo[action](day, week_day);
-        this.render();
+        
+        if (!this.eventsOn) this.render();
       };
     },
 

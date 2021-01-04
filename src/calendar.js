@@ -5,12 +5,13 @@ import setCalendarRender from "./utils/setCalendarRender";
 
 const createCalendar = () => {
   const calendarData = storage.find();
+  console.log(calendarData);
   return {
     calendar: {
-      selected: {},
+      selected: [],
       element: document.querySelector("ul.days"),
       title: document.querySelector(".month__name"),
-      dateOption: document.querySelector(`#date`),
+      selectDate: document.querySelector(`#date`),
       nextStep: document.querySelector("#next-step"),
       backStep: document.querySelector("#back-step"),
 
@@ -18,14 +19,39 @@ const createCalendar = () => {
         storage.save(calendarData);
       },
 
-      selectItem(ITEM_TYPE) {
+      selectTask() {
         const { day, month, year } = this.date.selected;
-
-        if (day) {
+  
+        if (day !== 0) {
           this.checkIfDayExists();
-          this.selected = calendarData[year][month][day][ITEM_TYPE];
+          this.selected = calendarData[year][month].tasks[day];
         } else {
-          this.selected = ITEM_TYPE === "tasks" ? calendarData.daily : [];
+          this.selected = calendarData.daily;
+        }
+
+        console.clear()
+        console.log("task: ", calendarData[year][month]);
+      },
+
+      selectEvent() {
+        const { month, year } = this.date.selected;
+
+        this.checkIfHasEvents();
+        this.selected = calendarData[year][month].events;
+
+        console.clear()
+        console.log("event: ", calendarData[year][month]);
+      },
+
+      getMonth() {
+        const { year, month } = this.date.selected;
+        return calendarData[year][month];
+      },
+
+      checkTaskDay() {
+        if (this.selected && !this.selected.length) {
+          const { day, month, year } = this.date.selected;
+          delete calendarData[year][month].tasks[day];
         }
       },
 
@@ -34,45 +60,43 @@ const createCalendar = () => {
       },
 
       setMarks() {
-        // ARRUMAR REDENRIZAÇÃO QUANDO APAGAR O ITEM, POIS NÃO RETIRA AS MARACAÇÕES
-        const getDaysWithItems = () => {
-          const { year, month } = this.date.selected;
-        
-          return Object.keys(calendarData[year][month]).map((day) => {
-            const { tasks, events } = calendarData[year][month][day];
-            return {
-              day,
-              hasTasks: tasks.length ? true : false,
-              hasEvents: events.length ? true : false,
-            };
-          });
-        };
+        // const getDaysWithItems = () => {
+        //   const { year, month } = this.date.selected;
 
-        const setDaysWithItems = ({ day, hasTasks, hasEvents }) => {
-          const dayElement = document.getElementById(day);
+        //   const daysWithItems = Object.keys(calendarData[year][month].tasks)
+        //     .map((day) => day);
 
-          if (hasTasks && hasEvents) {
-            dayElement.insertAdjacentHTML(
-              "afterbegin",
-              '<div class="has__both"></div>'
-            );
-            dayElement.title = "Há Eventos e Tarefas para este dia";
-          } else if (hasTasks) {
-            dayElement.insertAdjacentHTML(
-              "afterbegin",
-              '<div class="has__task"></div>'
-            );
-            dayElement.title = "Há Tarefas para este dia";
-          } else if (hasEvents) {
-            dayElement.insertAdjacentHTML(
-              "afterbegin",
-              '<div class="has__event"></div>'
-            );
-            dayElement.title = "Há Eventos para este dia";
-          }
-        };
+        //   const daysWidthEventscalendarData[year][month].events
+        //     .forEach((event) => {
+        //       if (event.day )
+        //     });
+        // };
 
-        getDaysWithItems().forEach(setDaysWithItems);
+        // const setDaysWithItems = ({ day, hasTasks, hasEvents }) => {
+        //   const dayElement = document.getElementById(day);
+
+        //   if (hasTasks && hasEvents) {
+        //     dayElement.insertAdjacentHTML(
+        //       "afterbegin",
+        //       '<div class="has__both"></div>'
+        //     );
+        //     dayElement.title = "Há Eventos e Tarefas para este dia";
+        //   } else if (hasTasks) {
+        //     dayElement.insertAdjacentHTML(
+        //       "afterbegin",
+        //       '<div class="has__task"></div>'
+        //     );
+        //     dayElement.title = "Há Tarefas para este dia";
+        //   } else if (hasEvents) {
+        //     dayElement.insertAdjacentHTML(
+        //       "afterbegin",
+        //       '<div class="has__event"></div>'
+        //     );
+        //     dayElement.title = "Há Eventos para este dia";
+        //   }
+        // };
+
+        // getDaysWithItems().forEach(setDaysWithItems);
       },
 
       removeMarkFromDays() {
@@ -80,35 +104,59 @@ const createCalendar = () => {
         const hasTask = Array.from(document.querySelectorAll(".has__task"));
         const hasBoth = Array.from(document.querySelectorAll(".has__both"));
 
-        hasEvent.forEach((mark) => mark.remove());
-        hasTask.forEach((mark) => mark.remove());
-        hasBoth.forEach((mark) => mark.remove());
+        if (hasEvent) hasEvent.forEach((mark) => mark.remove());
+        if (hasTask) hasTask.forEach((mark) => mark.remove());
+        if (hasBoth) hasBoth.forEach((mark) => mark.remove());
+      },
+
+      resetMarks() {
+        this.removeMarkFromDays();
+        this.setMarks();
       },
 
       setLastConnection({ day, month }) {
-        const NEW_DAY = day !== this.lastConnection.day;
-        const NEW_MONTH = month !== this.lastConnection.month;
+        Object.assign(calendarData.lastConnection, {
+          day,
+          month,
+        });
 
-        if (NEW_DAY || NEW_MONTH) {
-          this.lastConnection.month = month;
-          this.lastConnection.day = day;
-        }
+        console.log(calendarData);
       },
 
       getLastConnection() {
         return {
-          day: this.lastConnection.day,
-          month: this.lastConnection.month,
+          day: calendarData.lastConnection.day,
+          month: calendarData.lastConnection.month,
         };
+      },
+
+      checkIfHasEvents() {
+        const { year, month } = this.date.selected;
+        if (calendarData[year]?.[month].events) return;
+
+        calendarData[year][month].events = [];
       },
 
       checkIfDayExists() {
         const { year, month, day } = this.date.selected;
-        if (calendarData[year]?.[month]?.[day]) return;
-        Object.assign(calendarData[year][month], {
-          [day]: {
-            tasks: [],
+        const calendarMonth = calendarData[year][month];
+
+        if (calendarMonth.tasks?.[day]) return;
+
+        Object.assign(calendarData[year][month].tasks, {
+          [day]: [],
+        });
+      },
+
+      checkIfMonthExists() {
+        const { year, month } = this.date.selected;
+        if (calendarData[year][month]) return;
+        Object.assign(calendarData[year], {
+          [month]: {
+            daysWithEvents: [],
+            daysWithTasks: [],
             events: [],
+            tasks: {},
           },
         });
       },
@@ -118,20 +166,7 @@ const createCalendar = () => {
         if (calendarData[year]) return;
 
         Object.assign(calendarData, {
-          [year]: {
-            0: {},
-            1: {},
-            2: {},
-            3: {},
-            4: {},
-            5: {},
-            6: {},
-            7: {},
-            8: {},
-            9: {},
-            10: {},
-            11: {},
-          },
+          [year]: {},
         });
       },
 
@@ -139,15 +174,24 @@ const createCalendar = () => {
       ...notify(),
       ...setCalendarRender(),
 
+      newDay() {
+        this.resetDailyTasks(calendarData.daily);
+        this.setLastConnection(this.date.actual);
+      },
+
       start() {
         this.checkIfYearExists();
+        this.checkIfMonthExists();
         this.calendarGenerator();
         this.setSelectYearAndMonthEvent();
       },
 
       restart() {
         this.checkIfYearExists();
+        this.checkIfMonthExists();
         this.calendarGenerator();
+        console.clear();
+        console.log(calendarData);
       },
     },
   };

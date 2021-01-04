@@ -81,7 +81,7 @@ const setCalendarRender = () => ({
 
   setSelectYearAndMonthEvent() {
     const changeSelect = () => {
-      const [year, month] = this.dateOption.value.split("-");
+      const [year, month] = this.selectDate.value.split("-");
       const formattedMonth = Number(month) - 1;
       this.date.setSelectedDate(year, formattedMonth);
       this.restart();
@@ -89,15 +89,15 @@ const setCalendarRender = () => ({
 
     const changeStep = ({ target }) => {
       const step = {
-        "next-step": () => this.dateOption.stepUp(),
-        "back-step": () => this.dateOption.stepDown(),
+        "next-step": () => this.selectDate.stepUp(),
+        "back-step": () => this.selectDate.stepDown(),
       };
 
       step[target.id]();
       changeSelect();
     };
 
-    this.dateOption.addEventListener("change", changeSelect);
+    this.selectDate.addEventListener("change", changeSelect);
     this.nextStep.addEventListener("click", changeStep);
     this.backStep.addEventListener("click", changeStep);
   },

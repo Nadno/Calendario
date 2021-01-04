@@ -16,12 +16,21 @@ const createApp = () => ({
     menu.calendar = calendar;
   },
 
+  isNewDay() {
+    const { day, month } = this.calendar.getLastConnection();
+    const { actual } = this.date;
+    return day !== actual.day || month !== actual.month;
+  },
+
   start() {
     const { calendar, menu, date } = this;
     this.setDependencies();
 
     date.start();
     calendar.start();
+
+    if (this.isNewDay()) this.calendar.newDay();
+
     menu.start();
   },
 });

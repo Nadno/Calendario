@@ -1,13 +1,11 @@
-import createElement from "../createElement";
-
 const dateActions = () => ({
   setInitialYearAndMonth(year, month){
-    const dateOption = document.querySelector(`#date`);
+    const selectDate = document.querySelector(`#date`);
     const formattedMonth = month >= 10 ? month + 1 : `0${month+1}`;
 
-    dateOption.value = `${year}-${formattedMonth}`;
-    dateOption.min = `${year - 5}-0${1}`;
-    dateOption.max = `${year + 5}-0${1}`;
+    selectDate.value = `${year}-${formattedMonth}`;
+    selectDate.min = `${year - 5}-0${1}`;
+    selectDate.max = `${year + 5}-0${1}`;
   },
 
   setSelectedDate(year, month) {

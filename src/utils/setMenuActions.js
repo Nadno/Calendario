@@ -37,23 +37,14 @@ const setMenuActions = () => ({
     return this.element.classList.remove("on");
   },
 
-  createItem({ eventsOn, body, title }) {
-    if (eventsOn) {
+  createItem({ body, title }) {
+    if (this.eventsOn) {
       const { week_day } = this.date.selected;
       this.calendar.createEvent({ title, body, week_day });
     } else {
       this.calendar.createTask(body);
     }
     this.render();
-  },
-
-  deleteItem({ eventsOn, from }) {
-    const { calendar } = this;
-    if (eventsOn) {
-    } else {
-      calendar.deleteTask(from);
-      calendar.selectItem("tasks");
-    }
   },
 
   changeContent() {
@@ -71,7 +62,7 @@ const setMenuActions = () => ({
       this.list.childNodes.forEach(resetPositions);
 
       this.calendar.deleteTask(position);
-      this.calendar.selectItem("tasks");
+      this.calendar.selectTask();
       this.render();
     };
 
@@ -88,6 +79,7 @@ const setMenuActions = () => ({
           target.parentNode,
           getToDoPosition(target.parentNode)
         );
+        
       this.calendar.updateTask(
         getToDoPosition(target.parentNode),
         "text",
@@ -97,11 +89,11 @@ const setMenuActions = () => ({
   },
 
   setEvents() {
-    const { list, events, createItemForm, mobileMenu, date } = this;
+    const { list, events, createItemForm, mobileMenu } = this;
 
     const updateTask = ({ target }) =>
       this.calendar.updateTask(
-        getItemPosition(target.parentNode),
+        getToDoPosition(target.parentNode),
         "checked",
         target.checked
       );
@@ -113,7 +105,7 @@ const setMenuActions = () => ({
       if (target.className !== "delete-button") return;
 
       this.calendar.deleteNotify(getEventPosition(target));
-      this.calendar.selectItem("events");
+      this.calendar.selectEvent();
       this.render();
     };
 
@@ -122,12 +114,16 @@ const setMenuActions = () => ({
     list.addEventListener("focusout", this.changeContent());
 
     const toggleEvents = ({ target }) => {
-      date.eventsOn = target.checked;
+      this.eventsOn = target.checked;
+      
       if (target.checked) {
         document.querySelector(".event__config").classList.add("active");
+        this.calendar.selectEvent();
+        this.setTitle("Eventos:");
         this.render();
       } else {
         document.querySelector(".event__config").classList.remove("active");
+        this.calendar.selectTask();
         this.render();
       }
     };
@@ -138,7 +134,6 @@ const setMenuActions = () => ({
       if (!body()) return;
 
       this.createItem({
-        eventsOn: date.eventsOn,
         body: body(),
         title: title(),
       });

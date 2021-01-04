@@ -76,21 +76,18 @@ const createNotify = (
 export const setMenuRender = () => ({
   render() {
     const { calendar, date, list } = this;
-    const ITEM_TYPE = date.eventsOn ? "events" : "tasks";
-    calendar.selectItem(ITEM_TYPE);
+    const createItemElement = this.eventsOn ? createNotify : createTask;
+    
+    this.eventsOn
+      ? calendar.selectEvent()
+      : calendar.selectTask();
+    
     list.innerHTML = calendar.selected.length
       ? ""
       : '<div class="alert">Nada encontrado!</div>';
 
     const addItemOnList = (item, position) => {
-      const elementsTypes = {
-        tasks: () => createTask(item, position),
-        events: () =>
-          createNotify(item, position, date
-          ),
-      };
-
-      list.appendChild(elementsTypes[ITEM_TYPE]());
+      list.appendChild(createItemElement(item, position, date));
     }
 
     calendar.selected.forEach(addItemOnList);
