@@ -2,8 +2,12 @@ import createElement from "../createElement";
 
 const dateActions = () => ({
   setInitialYearAndMonth(year, month){
-    document.querySelector(`#month`).value = month;
-    document.querySelector(`#year`).value = year;
+    const dateOption = document.querySelector(`#date`);
+    const formattedMonth = month >= 10 ? month + 1 : `0${month+1}`;
+
+    dateOption.value = `${year}-${formattedMonth}`;
+    dateOption.min = `${year - 5}-0${1}`;
+    dateOption.max = `${year + 5}-0${1}`;
   },
 
   setSelectedDate(year, month) {
@@ -32,17 +36,7 @@ const dateActions = () => ({
     const actual = this.actual;
     this.setActualDate();
     this.setSelectedDate(actual.year, actual.month);
-    
-    const createYearOption = (value) => 
-      createElement("option", value, { value });
-
-    const totalNextYear = actual.year + 5;
-    for (let nextYear = actual.year - 5; nextYear <= totalNextYear; nextYear++) {
-      document.querySelector(`#year`).appendChild(createYearOption(nextYear));
-    }
-  
     this.setInitialYearAndMonth(actual.year, actual.month);
-    
   },
   
   monthTotalDays(year, month) {

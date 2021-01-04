@@ -10,8 +10,9 @@ const createCalendar = () => {
       selected: {},
       element: document.querySelector("ul.days"),
       title: document.querySelector(".month__name"),
-      yearOption: document.querySelector(`#year`),
-      monthOption: document.querySelector(`#month`),
+      dateOption: document.querySelector(`#date`),
+      nextStep: document.querySelector("#next-step"),
+      backStep: document.querySelector("#back-step"),
 
       save() {
         storage.save(calendarData);

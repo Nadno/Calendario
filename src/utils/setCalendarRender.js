@@ -81,15 +81,25 @@ const setCalendarRender = () => ({
 
   setSelectYearAndMonthEvent() {
     const changeSelect = () => {
-      this.date.setSelectedDate(
-        this.yearOption.value,
-        this.monthOption.value
-      );
+      const [year, month] = this.dateOption.value.split("-");
+      const formattedMonth = Number(month) - 1;
+      this.date.setSelectedDate(year, formattedMonth);
       this.restart();
     };
 
-    this.monthOption.addEventListener("change", changeSelect);
-    this.yearOption.addEventListener("change", changeSelect);
+    const changeStep = ({ target }) => {
+      const step = {
+        "next-step": () => this.dateOption.stepUp(),
+        "back-step": () => this.dateOption.stepDown(),
+      };
+
+      step[target.id]();
+      changeSelect();
+    };
+
+    this.dateOption.addEventListener("change", changeSelect);
+    this.nextStep.addEventListener("click", changeStep);
+    this.backStep.addEventListener("click", changeStep);
   },
 });
 
