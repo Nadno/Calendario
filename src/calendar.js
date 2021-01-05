@@ -5,6 +5,7 @@ import setCalendarRender from "./utils/setCalendarRender";
 
 const createCalendar = () => {
   const calendarData = storage.find();
+
   return {
     calendar: {
       selected: [],
@@ -16,10 +17,6 @@ const createCalendar = () => {
 
       save() {
         storage.save(calendarData);
-      },
-
-      addNotification(notify) {
-        calendarData.notifications.push(notify);
       },
 
       selectTask() {
@@ -52,10 +49,6 @@ const createCalendar = () => {
         if (this.selected && !this.selected.length) {
           delete calendarData[year][month].tasks[day];
         }
-      },
-
-      getNotifications() {
-        return Object.assign([], calendarData.notifications);
       },
 
       setLastConnection({ day, month }) {

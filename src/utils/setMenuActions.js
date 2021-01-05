@@ -18,7 +18,7 @@ const setMenuActions = () => ({
 
     this.dateTitle.setAttribute(
       "datetime",
-      `${this.date[name].year}-${this.date[name].month}-${this.date[name].day}`
+      `${this.date[name].year}-${this.date[name].month + 1}-${this.date[name].day}`
     );
 
     this.dateTitle.innerHTML = `<strong>

@@ -39,8 +39,9 @@ const notify = () => ({
     const events = this.getMonth().events;
 
     const showEventsForToday = (event, position) => {
-      if (event.month === month && event.day === day) {
+      if (event.alert === true && event.month === month && event.day <= day) {
         document.querySelector(".notifications").appendChild(createNotify(event, position, this.date));
+        event.alert = false;
       };
     };
 

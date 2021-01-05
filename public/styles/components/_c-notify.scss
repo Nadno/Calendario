@@ -1,4 +1,4 @@
-.notify {
+.c-notify {
   @include box-shadow();
   position: relative;
   width: 100%;
@@ -10,7 +10,7 @@
   transform: scale(0);
   transition: transform 0.4s;
 
-  .notify__header {
+  &__header {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -18,7 +18,7 @@
     font-size: 1.4rem;
   }
 
-  .notify__delete {
+  &__delete {
     width: 28px;
     height: 28px;
     font-size: 1.8rem;
@@ -28,12 +28,12 @@
     background-color: initial
   }
 
-  .notify__body {
+  &__body {
     font-size: 1.4rem;
     margin-top: 0.5rem;
   }
 
-  .notify__info {
+  &__info {
     font-size: 1.2rem;
     margin-top: 0.5rem;
     padding-top: 0.5rem;
@@ -44,14 +44,16 @@
     width: 3.2rem;
     height: 3.2rem;
     border: none;
-    font-size: 1.6rem;
+    font-size: 2rem;
     color: var(--color-secondary);
 
+    cursor: pointer;
     align-self: center;
     transition: color 0.6s;
-    
-    background-color: initial;
-    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     &:hover {
       color: var(--color-tertiary);

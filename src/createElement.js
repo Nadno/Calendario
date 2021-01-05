@@ -43,8 +43,8 @@ export const createNotify = (
   position, date
 ) => {
   const { actual, DAY_NAME } = date;
-  const notify = createElement("li", '', { className: `notify ${type?type:null} on-screen`, });
-  const head = createElement("div", title, { className: "notify__header" });
+  const notify = createElement("li", '', { className: `c-notify ${type?type:null} on-screen`, });
+  const head = createElement("div", title, { className: "c-notify__header" });
 
   const deleteButton = createElement("span", "X", {
     id: `eventAt-${position}`,
@@ -53,7 +53,7 @@ export const createNotify = (
   head.appendChild(deleteButton);
 
   const INFO = `
-    <div class="notify__info">
+    <div class="c-notify__info">
       ${
         actual.day === day
           ? "Evento do dia!"
@@ -63,7 +63,7 @@ export const createNotify = (
     </div>
   `;
   const BODY = `
-    <div class="notify__body">${body}</div>
+    <div class="c-notify__body">${body}</div>
   `;
 
   notify.appendChild(head);

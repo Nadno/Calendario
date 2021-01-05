@@ -11,10 +11,15 @@
 }
 
 .c-calendar {
+
+  li {
+    height: 100%;
+  }
+
   &__month-name {
     font-size: 2rem;
     text-align: center;
-    color: $text-title;
+    color: var(--color-text-title);
     margin-bottom: 2rem;
   }
 
@@ -27,6 +32,7 @@
 
   &__days {
     @extend %calendar-grid;
+    grid-template-rows: repeat(6, 4rem);
   }
 
 
@@ -35,7 +41,7 @@
     @include align-center(flex);
 
     width: 100%;
-    height: 8vh;
+    height: 100%;
     border: none;
     font-size: 1.6rem;
     background-color: initial;
@@ -62,7 +68,7 @@
   }
 
   &__last-month {
-    color: $neutral-color;
+    color: var(--color-neutral);
   }
 
   &__has-task {

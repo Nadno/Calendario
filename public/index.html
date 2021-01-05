@@ -47,14 +47,14 @@
         <input type="month" name="date" id="date">
 
         <div class="select-date__step">
-          <button id="back-step">&lt;</button>
-          <button id="next-step">&gt;</button>
+          <button id="back-step" title="Voltar um mês">&lt;</button>
+          <button id="next-step" title="Avançar um mês">&gt;</button>
         </div>
       </div>
       
       <section class="c-calendar">
         <h2 h2 class="c-calendar__month-name" id="month-name"></h2>
-        <ol id="calendar" class="c-calendar__week-days">
+        <ol class="c-calendar__week-days">
           <li>Dom</li>
           <li>Seg</li>
           <li>Ter</li>
@@ -63,17 +63,11 @@
           <li>Sex</li>
           <li>Sáb</li>
         </ol>
-        <ul class="c-calendar__days"></ul>
+        <ul class="c-calendar__days" id="calendar"></ul>
       </section>
     </div>
 
-    <section class="mobile__menu">
-      <button id="mobile-menu" type="button">Menu</button>
-      <div class="selected__day">
-        <h2 id="mobile__full__date"></h2>
-      </div>
-    </section>
-
+    <button id="mobile-menu" type="button">Menu</button>
     <ol class="notifications"></ol>
   </body>
 </html>

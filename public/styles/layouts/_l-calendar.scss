@@ -10,5 +10,29 @@
 
   &__select-date {
     margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      cursor: pointer;
+      height: 3.2rem;
+      width: 3.2rem;
+
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--color-secondary);
+      border: none;
+      background-color: initial;
+
+      &:hover,
+      &:focus {
+        outline: none;
+        color: var(--color-primary);
+      }
+
+      &:active {
+        transform: scale(0.8);
+      }
+    }
   }
 }
