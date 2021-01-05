@@ -5,7 +5,7 @@ function isOnScreen(el) {
   return (
     rect.top > 0 &&
     rect.bottom <
-      document.querySelector(".todo__list").getBoundingClientRect().bottom
+      document.querySelector(".l-menu__list").getBoundingClientRect().bottom
   );
 }
 

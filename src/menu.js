@@ -2,9 +2,9 @@ import setMenuActions from "./utils/setMenuActions";
 
 const createMenu = () => ({
   menu: {
-    element: document.querySelector(".menu"),
-    dateTitle: document.querySelector(".selected__day"),
-    list: document.querySelector(".todo__list"),
+    element: document.querySelector(".l-menu"),
+    dateTitle: document.querySelector("#selected__day"),
+    list: document.querySelector(".l-menu__list"),
     title: document.querySelector("#task-title"),
     events: document.querySelector("#event"),
     createItemForm: {

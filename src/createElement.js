@@ -17,18 +17,17 @@ export default createElement;
 export const createTask = ({ text, checked }, position) => {
   const id = `todoAt-${position}`;
 
-  const li = createElement("li", "", { className: "to-do" });
+  const li = createElement("li", "", { className: "c-todo" });
   const label = createElement("label", "", { htmlFor: id });
 
   const checkbox = createElement("input", "", {
-    className: "input",
+    className: "c-todo__input",
     type: "checkbox",
     id,
     checked,
   });
   const content = createElement("div", text, {
-    id: "content",
-    className: "content",
+    className: "c-todo__content",
     contentEditable: true,
   });
 

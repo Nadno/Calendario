@@ -1,0 +1,14 @@
+.l-calendar {
+  width: 100%;
+  max-height: 900px;
+  font-weight: 700;
+
+  padding: 2rem;
+  padding-top: 6rem;
+  align-self: center;
+  color: var(--color-secondary);
+
+  &__select-date {
+    margin-bottom: 2rem;
+  }
+}

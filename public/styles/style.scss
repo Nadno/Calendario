@@ -1,11 +1,3 @@
-$white-color: #fff;
-$gray-color: #f5f5f5;
-
-$primary-color: #60cdff;
-$primary-dark-color: #499ABF;
-$secondary-color: #6d7695;
-$tertiary-color: rgb(220, 50, 50);
-
 $text-title: #3a495e;
 $neutral-color: #959595;
 
@@ -13,6 +5,16 @@ $primary-spacing: 1rem;
 $secondary-spacing: 2rem;
 
 :root {
+  --color-white: #fff;
+  --color-gray: #f5f5f5;
+
+  --color-primary: #60cdff;
+  --color-primary-dark: #499ABF;
+  --color-secondary: #6d7695;
+  --color-tertiary: rgb(220, 50, 50);
+
+  --color-text-title: #3a495e;
+
   font-family: "Roboto", sans-serif;
   font-size: 62.5%;
 }
@@ -24,9 +26,19 @@ $secondary-spacing: 2rem;
 }
 
 body {
-  @extend .bg-gray;
   display: flex;
   height: 100vh;
+  background-color: var(--color-gray);
+
+  h1 {
+    position: absolute;
+    width: 90%;
+    text-align: center;
+
+    left: 50%;
+    top: 2rem;
+    transform: translateX(-50%);
+  }
 }
 
 @mixin default-flex {
@@ -41,49 +53,29 @@ body {
   justify-content: center;
 }
 
-.font-size-primary {
-  font-size: 1.4rem;
-}
-
-.font-size-secondary {
-  font-size: 1.6rem;
-}
-
-.font-size-tertiary {
-  font-size: 1.8rem;
-}
-
-.no-bg {
-  background-color: transparent;
-}
-
-.bg-white {
-  background-color: $white-color;
-}
-
-.bg-gray {
-  background-color: $gray-color;
-}
-
-.box-shadow {
-  @extend .bg-gray;
+@mixin box-shadow {
+  background-color: var(--color-gray);
   border: 1px solid rgb(200, 200, 200);
   box-shadow: 2px 2px 8px rgba(190, 190, 190, 0.2);
 }
 
-.button {
-  @extend .font-size-secondary;
-  height: 4rem;
-  border: none;
-  border-radius: 4px;
-  padding: $primary-spacing;
+@import "./components/c-calendar";
+@import "./components/c-button";
+@import "./components/c-todo";
 
-  font-weight: bold;
-  color: white;
-  background-color: $primary-color;
-}
-
-@import "menu";
-@import "calendar";
-@import "todoList";
+@import "./layouts/l-menu";
+@import "./layouts/l-calendar";
 @import "notifications";
+
+@media (min-width:700px) {
+  body h1 {
+    position: absolute;
+    width: 24rem;
+    text-align: center;
+
+    right: 2rem;
+    left: initial;
+    top: 2rem;
+    transform: initial;
+  }
+}

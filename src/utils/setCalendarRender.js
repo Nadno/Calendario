@@ -30,13 +30,13 @@ const setCalendarRender = () => ({
     const render = ({ from, to }, dayType) => {
       const dayElements = {
         lastMonth: (day) =>
-          (this.element.innerHTML += `<li class="last__month">${day}</li>`),
+          (this.element.innerHTML += `<li class="c-calendar__last-month">${day}</li>`),
 
         thisMonth: (day) =>
           this.element.appendChild(
             this.createDayElement({
               day,
-              month: "this__month",
+              month: "c-calendar__this-month",
               week_day: this.getWeekDay(selected.year, selected.month, day),
             })
           ),

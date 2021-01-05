@@ -4,7 +4,7 @@ const task = () => ({
 
     this.getMonth().daysWithTasks.forEach((day) => {
       const dayElement = document.getElementById(String(day));
-      dayElement.classList.add("has-task");
+      dayElement.classList.add("c-calendar__has-task");
       dayElement.title = "Há tarefas para este dia";
     });
   },

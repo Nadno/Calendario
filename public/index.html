@@ -10,16 +10,18 @@
     <title>Cronos</title>
   </head>
   <body>
-    <div class="menu">
-      <section class="menu__selected">
-        <time class="selected__day" datetime="">
+    <h1>Cronos - Calendário</h1>
+
+    <div class="l-menu">
+      <div>
+        <time id="selected__day" datetime="">
         </time>
         <h2 id="task-title">Tarefas diárias:</h2>
-        <ul class="todo__list"></ul>
-      </section>
+        <ul class="l-menu__list"></ul>
+      </div>
 
-      <div class="create">
-        <div class="create__event">
+      <div class="l-menu__create">
+        <div class="l-menu__event">
           <input type="checkbox" id="event" />
           <label for="event">Eventos</label>
 
@@ -36,25 +38,23 @@
           autofocus
         ></textarea>
 
-        <button id="create" type="submit">Criar</button>
+        <button id="create" class="c-button" type="submit">Criar</button>
       </div>
     </div>
 
-    <main class="calendar">
-      <h1>Cronos - Calendário</h1>
-
-      <div class="select__date">
+    <div class="l-calendar">
+      <div class="l-calendar__select-date">
         <input type="month" name="date" id="date">
 
-        <div class="select__date__step">
+        <div class="select-date__step">
           <button id="back-step">&lt;</button>
           <button id="next-step">&gt;</button>
         </div>
       </div>
       
-      <h2 class="month__name"></h2>
-      <article>
-        <ol class="week__days">
+      <section class="c-calendar">
+        <h2 h2 class="c-calendar__month-name" id="month-name"></h2>
+        <ol id="calendar" class="c-calendar__week-days">
           <li>Dom</li>
           <li>Seg</li>
           <li>Ter</li>
@@ -63,9 +63,9 @@
           <li>Sex</li>
           <li>Sáb</li>
         </ol>
-        <ul class="days"></ul>
-      </article>
-    </main>
+        <ul class="c-calendar__days"></ul>
+      </section>
+    </div>
 
     <section class="mobile__menu">
       <button id="mobile-menu" type="button">Menu</button>

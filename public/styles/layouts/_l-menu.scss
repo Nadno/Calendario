@@ -1,27 +1,57 @@
-.menu {
+
+
+.l-menu {
   @include default-flex;
-  @extend .bg-white;
   
   position: absolute;
   width: 100%;
   height: 100vh;
   padding: $secondary-spacing;
+  background-color: var(--color-white);
   
   z-index: 5;
   transform: translateX(-120%);
   transition: linear 0.4s;
 
-  .selected__day {
-    @extend .font-size-secondary;
+  #selected__day {
+    font-size: 1.6rem;
     color: $text-title;
   }
 
-  .create {
+  &__list {
+    @include box-shadow();
+
+    height: 40vh;
+    width: 100%;
+    padding: 0.5rem;
+    list-style: none;
+    
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-bottom: $secondary-spacing;
+  
+    transition: 0.2s;
+  
+    .on-screen {
+      transform: scale(1);
+    }
+    
+    .alert {
+      @include align-center(flex);
+      width: 100%;
+      height: 100%;
+      
+      font-size: 2.4rem;
+      color: rgba(130, 130, 130, 0.4);
+    }
+  }
+
+  &__create {
     @include default-flex;
     align-items: center;
 
     #body {
-      @extend .box-shadow;
+      @include box-shadow();
       width: 100%;
       height: 8rem;
       
@@ -37,26 +67,15 @@
       margin-bottom: $secondary-spacing;
     }
 
-    button {
-      @extend .button;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: button 0.3s;
-
-      &:hover {
-        background-color: #6b7897;
-        opacity: 0.8;
-      }
-    }
 
     #todo,
-    button {
+    .c-button {
       width: 100%;
       max-width: 100%;
     }
   }
 
-  .create__event {
+  &__event {
     width: 100%;
 
     #event {
@@ -64,39 +83,41 @@
     }
 
     label {
-      @extend .box-shadow, .font-size-primary;
+      @include box-shadow();
       display: inline-block;
       width: 8rem;
 
+      font-size: 1.4rem;
       text-align: center;
       margin-bottom: 1rem;
       cursor: pointer;
     }
 
     #event:checked ~ label {
-      color: white;
-      background-color: $tertiary-color;
+      color: var(--color-white);
+      background-color: var(--color-tertiary);
     }
-  }
 
-  .event__config {
-    transform: scale(0);
-    transition: transform 0.4s;
-  }
+    .event__config {
+      transform: scale(0);
+      transition: transform 0.4s;
+    }
 
-  .event__config.active {
-    transform: scale(1);
-    #title,
-    #first-alert {
-      @extend .box-shadow, .font-size-primary;
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: $primary-spacing;
+    .event__config.active {
+      transform: scale(1);
+      #title,
+      #first-alert {
+        @include box-shadow();
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.4rem;
+        margin-bottom: $primary-spacing;
+      }
     }
   }
 }
 
-.menu.on {
+.l-menu.on {
   transform: translateX(0);
   left: 0;
 }
@@ -114,18 +135,17 @@
   bottom: 0;
   right: 0;
   button {
-    @extend .font-size-primary;
     width: 100%;
     border: none;
-    color: $white-color;
-
+    font-size: 1.4rem;
+    color: var(--color-white);
     border-radius: 40% 0 0 40%;
-    background-color: $primary-color;
+    background-color: var(--color-primary);
   }
 }
 
 @media (min-width: 700px) {
-  .menu {
+  .l-menu {
     transform: translateX(0);
     position: relative;
     height: 100vh;

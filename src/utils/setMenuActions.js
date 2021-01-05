@@ -69,7 +69,7 @@ const setMenuActions = () => ({
       event.stopPropagation();
 
       const { target } = event;
-      if (target.id !== "content") throw new Error("Elemento inesperado");
+      if (target.className !== "c-todo__content") throw new Error("Elemento inesperado");
 
       const text = String(target.textContent).trim();
 

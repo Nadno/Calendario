@@ -8,8 +8,8 @@ const createCalendar = () => {
   return {
     calendar: {
       selected: [],
-      element: document.querySelector("ul.days"),
-      title: document.querySelector(".month__name"),
+      element: document.querySelector("#calendar"),
+      title: document.querySelector("#month-name"),
       selectDate: document.querySelector(`#date`),
       nextStep: document.querySelector("#next-step"),
       backStep: document.querySelector("#back-step"),
