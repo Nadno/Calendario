@@ -1,6 +1,6 @@
 import createCalendar from "./calendar";
 import createDate from "./date";
-import createMenu from "./Menu/menu";
+import createMenu from "./menu";
 
 const createApp = () => ({
   ...createCalendar(),

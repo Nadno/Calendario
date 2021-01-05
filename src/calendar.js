@@ -5,7 +5,6 @@ import setCalendarRender from "./utils/setCalendarRender";
 
 const createCalendar = () => {
   const calendarData = storage.find();
-  console.log(calendarData);
   return {
     calendar: {
       selected: [],
@@ -19,18 +18,19 @@ const createCalendar = () => {
         storage.save(calendarData);
       },
 
+      addNotification(notify) {
+        calendarData.notifications.push(notify);
+      },
+
       selectTask() {
         const { day, month, year } = this.date.selected;
-  
+
         if (day !== 0) {
           this.checkIfDayExists();
           this.selected = calendarData[year][month].tasks[day];
         } else {
           this.selected = calendarData.daily;
         }
-
-        console.clear()
-        console.log("task: ", calendarData[year][month]);
       },
 
       selectEvent() {
@@ -38,9 +38,6 @@ const createCalendar = () => {
 
         this.checkIfHasEvents();
         this.selected = calendarData[year][month].events;
-
-        console.clear()
-        console.log("event: ", calendarData[year][month]);
       },
 
       getMonth() {
@@ -49,69 +46,16 @@ const createCalendar = () => {
       },
 
       checkTaskDay() {
+        const { day, month, year } = this.date.selected;
+
+        if (day === 0) return;
         if (this.selected && !this.selected.length) {
-          const { day, month, year } = this.date.selected;
           delete calendarData[year][month].tasks[day];
         }
       },
 
       getNotifications() {
-        return Object.assign([], this.notifications);
-      },
-
-      setMarks() {
-        // const getDaysWithItems = () => {
-        //   const { year, month } = this.date.selected;
-
-        //   const daysWithItems = Object.keys(calendarData[year][month].tasks)
-        //     .map((day) => day);
-
-        //   const daysWidthEventscalendarData[year][month].events
-        //     .forEach((event) => {
-        //       if (event.day )
-        //     });
-        // };
-
-        // const setDaysWithItems = ({ day, hasTasks, hasEvents }) => {
-        //   const dayElement = document.getElementById(day);
-
-        //   if (hasTasks && hasEvents) {
-        //     dayElement.insertAdjacentHTML(
-        //       "afterbegin",
-        //       '<div class="has__both"></div>'
-        //     );
-        //     dayElement.title = "Há Eventos e Tarefas para este dia";
-        //   } else if (hasTasks) {
-        //     dayElement.insertAdjacentHTML(
-        //       "afterbegin",
-        //       '<div class="has__task"></div>'
-        //     );
-        //     dayElement.title = "Há Tarefas para este dia";
-        //   } else if (hasEvents) {
-        //     dayElement.insertAdjacentHTML(
-        //       "afterbegin",
-        //       '<div class="has__event"></div>'
-        //     );
-        //     dayElement.title = "Há Eventos para este dia";
-        //   }
-        // };
-
-        // getDaysWithItems().forEach(setDaysWithItems);
-      },
-
-      removeMarkFromDays() {
-        const hasEvent = Array.from(document.querySelectorAll(".has__event"));
-        const hasTask = Array.from(document.querySelectorAll(".has__task"));
-        const hasBoth = Array.from(document.querySelectorAll(".has__both"));
-
-        if (hasEvent) hasEvent.forEach((mark) => mark.remove());
-        if (hasTask) hasTask.forEach((mark) => mark.remove());
-        if (hasBoth) hasBoth.forEach((mark) => mark.remove());
-      },
-
-      resetMarks() {
-        this.removeMarkFromDays();
-        this.setMarks();
+        return Object.assign([], calendarData.notifications);
       },
 
       setLastConnection({ day, month }) {
@@ -119,8 +63,6 @@ const createCalendar = () => {
           day,
           month,
         });
-
-        console.log(calendarData);
       },
 
       getLastConnection() {
@@ -153,7 +95,6 @@ const createCalendar = () => {
         if (calendarData[year][month]) return;
         Object.assign(calendarData[year], {
           [month]: {
-            daysWithEvents: [],
             daysWithTasks: [],
             events: [],
             tasks: {},
@@ -177,12 +118,15 @@ const createCalendar = () => {
       newDay() {
         this.resetDailyTasks(calendarData.daily);
         this.setLastConnection(this.date.actual);
+        this.checkEventsForToday();
+        this.save();
       },
 
       start() {
         this.checkIfYearExists();
         this.checkIfMonthExists();
         this.calendarGenerator();
+        this.setTaskMarks();
         this.setSelectYearAndMonthEvent();
       },
 
@@ -190,8 +134,7 @@ const createCalendar = () => {
         this.checkIfYearExists();
         this.checkIfMonthExists();
         this.calendarGenerator();
-        console.clear();
-        console.log(calendarData);
+        this.setTaskMarks();
       },
     },
   };

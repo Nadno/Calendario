@@ -1,4 +1,14 @@
 const task = () => ({
+  setTaskMarks() {
+    if (!this.getMonth().daysWithTasks.length) return;
+
+    this.getMonth().daysWithTasks.forEach((day) => {
+      const dayElement = document.getElementById(String(day));
+      dayElement.classList.add("has-task");
+      dayElement.title = "Há tarefas para este dia";
+    });
+  },
+
   setDaysWithTasks() {
     const { day } = this.date.selected;
     this.getMonth().daysWithTasks.push(day);
@@ -19,12 +29,12 @@ const task = () => ({
   },
 
   createTask(text) {
-    if (!this.selected.length) {
+    if (!this.selected.length && this.date.selected.day !== 0) {
       this.selected.push({ text, checked: false });
       this.setDaysWithTasks();
-      // this.save();
+      this.save();
 
-      return this.resetMarks();
+      return this.setTaskMarks();
     }
 
     this.selected.push({ text, checked: false });
@@ -33,9 +43,9 @@ const task = () => ({
 
   deleteTask(from, to = 1) {
     this.selected.splice(from, to);
-    // this.save();
+    if (!this.selected.length) this.unsetDaysWithTasks();
 
-    if (!this.selected.length) return this.unsetDaysWithTasks();
+    this.save();
   },
 
   resetDailyTasks(daily) {

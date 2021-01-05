@@ -14,7 +14,6 @@ const setCalendarRender = () => ({
     });
 
     button.addEventListener("click", this.menu.update(day, week_day));
-
     li.appendChild(button);
 
     return li;
@@ -76,7 +75,6 @@ const setCalendarRender = () => ({
     const setToday = () =>
       document.getElementById(actual.day).classList.add("today");
     if (today) setToday();
-    this.setMarks();
   },
 
   setSelectYearAndMonthEvent() {

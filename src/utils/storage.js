@@ -19,8 +19,6 @@ const storage = (name) => {
     const save = localStorage.getItem(name);
     return Object.assign({
       daily: [],
-      events: [],
-      notifications: [],
       lastConnection: { month: 0, day: 0, },
     }, save ? parseJson(save) : {});
   }

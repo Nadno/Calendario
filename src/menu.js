@@ -1,6 +1,4 @@
-import setMenuActions from "../utils/setMenuActions";
-
-import "../utils/updateDate";
+import setMenuActions from "./utils/setMenuActions";
 
 const createMenu = () => ({
   menu: {
@@ -48,7 +46,7 @@ const createMenu = () => ({
         };
 
         if (selected.day) {
-          this.calendar.checkTaskDay();
+          if (!this.eventsOn) this.calendar.checkTaskDay();
           dayElement(selected.day).classList.remove("selected");
         }
 

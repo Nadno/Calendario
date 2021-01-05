@@ -3,7 +3,7 @@
   @extend .bg-white;
   
   position: absolute;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   padding: $secondary-spacing;
   
@@ -129,7 +129,7 @@
     transform: translateX(0);
     position: relative;
     height: 100vh;
-    max-width: 400px;
+    max-width: 500px;
 
     border: 1px solid rgb(200, 200, 200);
     box-shadow: 2px 2px 8px rgba(200, 200, 200, 0.5);

@@ -63,7 +63,6 @@ const setMenuActions = () => ({
 
       this.calendar.deleteTask(position);
       this.calendar.selectTask();
-      this.render();
     };
 
     return (event) => {
