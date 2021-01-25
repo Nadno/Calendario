@@ -1,6 +1,6 @@
 # Calendário
 
-O calendário foi recriado a partir das funcionalidades criadas no (Cronos)[https://github.com/Nadno/Cronos/blob/master/src/Date.js], com o intuito de aplicar uma melhor estrutura de códigos, usando Factory Functions e boas práticas tornando o código mais legível. A parte visual da aplicação foi feita utilizando o conceito de Mobile First e Sass, e com o restante foi utilizado Javascript, e WebPack, para por em prática o uso do Minificador de arquivo.
+O calendário foi recriado a partir das funcionalidades criadas no [Cronos](https://github.com/Nadno/Cronos/blob/master/src/Date.js "Aplicação cronos"), com o intuito de aplicar uma melhor estrutura de códigos, usando Factory Functions e boas práticas tornando o código mais legível. A parte visual da aplicação foi feita utilizando o conceito de Mobile First e Sass, e com o restante foi utilizado Javascript, e WebPack, para por em prática o uso do Minificador de arquivo.
 
 Funcionalidades:
 - Navegação por meses e anos.
